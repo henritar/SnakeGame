@@ -12,6 +12,9 @@ namespace Project.Snake.UMVCS.View
         private SnakeView _snakeViewPrefab = null;
 
         [SerializeField]
+        private SnakeAIView _snakeAIViewPrefab = null;
+
+        [SerializeField]
         private SnakeBodyView _snakeBodyViewPrefab = null;
 
         [SerializeField]
@@ -21,5 +24,6 @@ namespace Project.Snake.UMVCS.View
         public SnakeView SnakeViewPrefab { get => _snakeViewPrefab; }
         public SnakeBodyView SnakeBodyViewPrefab { get => _snakeBodyViewPrefab; }
         public BlockView BlockViewPrefab { get => _blockViewPrefab; }
+        public SnakeAIView SnakeAIViewPrefab { get => _snakeAIViewPrefab; }
     }
 }

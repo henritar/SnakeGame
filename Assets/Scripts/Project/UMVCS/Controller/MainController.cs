@@ -43,15 +43,20 @@ namespace Project.Snake.UMVCS.Controller
 
         private void RestartApplication()
         {
-            if(_mainModel.SnakeView != null)
+            if(_mainModel.SnakeController != null)
             {
-                Destroy(_mainModel.SnakeView.gameObject);
+                foreach (SnakeBodyController bodyPart in _mainModel.SnakeController.SnakeModel.BodyList)
+                {
+                    Destroy(bodyPart.SnakeBodyView.gameObject);
+                }
+                Destroy(_mainModel.SnakeController.SnakeView.gameObject);
                 Destroy(Context.ModelLocator.GetModel<BlockModel>()?.transform.parent.gameObject);
             }
 
-            _mainModel.SnakeView = Instantiate(_mainView.SnakeViewPrefab) as SnakeView;
-            _mainModel.SnakeView.transform.SetParent(_mainView.MainParent);
-            _mainModel.SnakeView.MoveSnake(_mainModel.MainConfigData.InitialSnakePosition);
+            SnakeView snakeView = Instantiate(_mainView.SnakeViewPrefab) as SnakeView;
+            _mainModel.SnakeController = snakeView.GetComponentInChildren<SnakeController>();
+            snakeView.transform.SetParent(_mainView.MainParent);
+            snakeView.MoveSnake(_mainModel.MainConfigData.InitialSnakePosition);
 
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
 
@@ -71,7 +76,7 @@ namespace Project.Snake.UMVCS.Controller
             Vector3 position = new Vector3(Random.Range(boundariesX.x, boundariesX.y), Random.Range(boundariesY.x, boundariesY.y), 0);
             BlockView newBlock = Instantiate(_mainView.BlockViewPrefab, position, Quaternion.identity) as BlockView;
             newBlock.transform.SetParent(_mainView.MainParent);
-            _mainModel.BlockView = newBlock;
+            _mainModel.BlockController = newBlock.GetComponentInChildren<BlockController>();
         }
 
         private void CommandManager_OnAddBodyPart(AddBodyPartCommand e)

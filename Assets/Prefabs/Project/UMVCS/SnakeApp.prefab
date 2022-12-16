@@ -90,9 +90,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _configData: {fileID: 11400000, guid: 7f225a4b49896964faa8149cf4bc3a25, type: 2}
-  _snakeView: {fileID: 0}
-  _snakeBodyView: {fileID: 0}
-  _blockView: {fileID: 0}
+  _snakeController: {fileID: 0}
+  _snakeAIController: {fileID: 0}
+  _snakeBodyController: {fileID: 0}
+  _blockController: {fileID: 0}
 --- !u!1 &1485979559808176672
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,6 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainParent: {fileID: 6826099114954526358}
   _snakeViewPrefab: {fileID: 943154835849456427, guid: 75f45d9b91d37a646a69675d56bfbbb1, type: 3}
+  _snakeAIViewPrefab: {fileID: 6611207575101552538, guid: bdd48390f17cbfc428d98efcf76afa11, type: 3}
   _snakeBodyViewPrefab: {fileID: 5184871657994859143, guid: c0ab9efd657ea6041843c412b287c520, type: 3}
   _blockViewPrefab: {fileID: 6477561047506931670, guid: bbf5dc818f1429d4f8c0880f65035ef0, type: 3}
 --- !u!1 &2022957252981580559

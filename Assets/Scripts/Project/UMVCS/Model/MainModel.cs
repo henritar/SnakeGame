@@ -1,6 +1,6 @@
 using Architectures.UMVCS.Model;
 using Attributes;
-using Project.Snake.UMVCS.View;
+using Project.Snake.UMVCS.Controller;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
@@ -8,21 +8,25 @@ namespace Project.Snake.UMVCS.Model
     public class MainModel : BaseModel
     {
         public MainConfigData MainConfigData { get => ConfigData as MainConfigData; }
-        public SnakeView SnakeView { get => _snakeView; set => _snakeView = value; }
-        public SnakeBodyView SnakeBodyView { get => _snakeBodyView; }
-        public BlockView BlockView { get => _blockView; set => _blockView = value; }
+        public SnakeController SnakeController { get => _snakeController; set => _snakeController = value; }
+        public SnakeBodyController SnakeBodyController { get => _snakeBodyController; }
+        public BlockController BlockController { get => _blockController; set => _blockController = value; }
 
         [ReadOnly]
         [SerializeField]
-        private SnakeView _snakeView = null;
+        private SnakeController _snakeController = null;
 
         [ReadOnly]
         [SerializeField]
-        private SnakeBodyView _snakeBodyView = null;
+        private SnakeAIController _snakeAIController = null;
 
         [ReadOnly]
         [SerializeField]
-        private BlockView _blockView = null;
+        private SnakeBodyController _snakeBodyController = null;
+
+        [ReadOnly]
+        [SerializeField]
+        private BlockController _blockController = null;
         
 
         public override void Initialize()
