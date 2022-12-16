@@ -214,3 +214,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _configData: {fileID: 11400000, guid: f66ec6f2a73425c47bd274c4c36848bd, type: 2}
+  _blockTypeList:
+  - {fileID: 11400000, guid: a4cd44d2e3b3d3e4b9189f581ae58544, type: 2}
+  - {fileID: 11400000, guid: 5efb5a3f4388bd54a8f0a6157e162bf6, type: 2}
+  - {fileID: 11400000, guid: 6c91dae837c245641a45151c8bed8fbd, type: 2}
+  _blockType: 0

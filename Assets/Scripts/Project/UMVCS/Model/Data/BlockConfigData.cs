@@ -1,11 +1,10 @@
 using Architectures.UMVCS.Model.Data;
-using Project.Snake;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
 {
+
     [System.Serializable]
     public enum BlockTypeEnum
     {
@@ -24,6 +23,10 @@ namespace Project.Snake.UMVCS.Model
         [SerializeField]
         private BlockTypeEnum _blockType;
 
+        [SerializeField]
+        private Material _materialRef;
+
         public BlockTypeEnum BlockType { get => _blockType; }
+        public Material MaterialRef { get => _materialRef; }
     }
 }

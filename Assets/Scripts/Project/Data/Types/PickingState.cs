@@ -4,7 +4,6 @@ using Project.Snake;
 using Project.Snake.UMVCS.Controller;
 using System;
 using System.Collections;
-using UnityEngine;
 
 namespace Project.Data.Types
 {
@@ -20,7 +19,6 @@ namespace Project.Data.Types
 
         public override void DestroyState()
         {
-           
         }
 
         public override void EnterState()

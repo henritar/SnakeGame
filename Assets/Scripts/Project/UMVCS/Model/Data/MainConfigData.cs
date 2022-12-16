@@ -13,12 +13,12 @@ namespace Project.Snake.UMVCS.Model
         private Vector3 _initialSnakePosition = new Vector3(0, 0, 0);
 
 		[SerializeField]
-        private Vector2 _blockSpawnBounderiesX = new Vector2(0, 0);
+        private Vector2Int _blockSpawnBounderiesX = new Vector2Int(0, 0);
 		[SerializeField]
-		private Vector2 _blockSpawnBounderiesY = new Vector2(0, 0);
+		private Vector2Int _blockSpawnBounderiesY = new Vector2Int(0, 0);
 
         public Vector3 InitialSnakePosition { get => _initialSnakePosition;}
-        public Vector2 BlockSpawnBounderiesX { get => _blockSpawnBounderiesX; }
-        public Vector2 BlockSpawnBounderiesY { get => _blockSpawnBounderiesY; }
+        public Vector2Int BlockSpawnBounderiesX { get => _blockSpawnBounderiesX; }
+        public Vector2Int BlockSpawnBounderiesY { get => _blockSpawnBounderiesY; }
     }
 }
