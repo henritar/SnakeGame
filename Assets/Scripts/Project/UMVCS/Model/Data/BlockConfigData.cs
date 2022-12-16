@@ -10,7 +10,8 @@ namespace Project.Snake.UMVCS.Model
     {
         EnginePower = 0,
         BatteringRam = 1,
-        TimeTravel = 2
+        TimeTravel = 2,
+        Head = 3
     }
 
     [CreateAssetMenu(fileName = "BlockType",
@@ -28,5 +29,11 @@ namespace Project.Snake.UMVCS.Model
 
         public BlockTypeEnum BlockType { get => _blockType; }
         public Material MaterialRef { get => _materialRef; }
+
+        public BlockConfigData(BlockTypeEnum type, Material mat)
+        {
+            _materialRef= mat;
+            _blockType = type;
+        }
     }
 }

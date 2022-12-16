@@ -18,7 +18,7 @@ namespace Project.Snake.UMVCS.Model
 
         public void InitializeBlock(BlockView view)
         {
-            var randIndex = Random.Range(0, _blockTypeList.Count);
+            var randIndex = Random.Range(0, _blockTypeList.Count - 1);
             BlockConfigData blockType = _blockTypeList[randIndex];
 
             _blockType = blockType;

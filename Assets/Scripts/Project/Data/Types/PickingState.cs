@@ -21,12 +21,10 @@ namespace Project.Data.Types
 
         public override void EnterState()
         {
-            Debug.Log("Entered PickingState");
         }
 
         public override void ExitState()
         {
-            Debug.Log("Exiting PickingState");
         }
 
         public override void InitializeState()

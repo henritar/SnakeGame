@@ -16,6 +16,8 @@ namespace Project.Snake.UMVCS.Controller
 
         private void Start()
         {
+            SnakeModel.HeadBlockType = new BlockConfigData(BlockTypeEnum.Head, SnakeView.GetComponent<Renderer>().material);
+
             SnakeModel.Target.Value = transform.position;
             SnakeModel.Direction.Value = Vector3.up;
             SnakeModel.Velocity.Value = SnakeAppConstants.SnakeVelocity;
@@ -99,6 +101,12 @@ namespace Project.Snake.UMVCS.Controller
                     SnakeModel.BodyList[i].SetTarget(pos);
                 }
             }
+        }
+
+        public void SetHeadBlockType(BlockConfigData newType)
+        {
+            SnakeModel.HeadBlockType = newType;
+            SnakeView.GetComponent<Renderer>().material = newType.MaterialRef;
         }
     }
 

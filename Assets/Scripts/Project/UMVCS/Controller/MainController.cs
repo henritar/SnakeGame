@@ -5,6 +5,7 @@ using Assets.Scripts.Project.UMVCS.Controller.Commands;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
@@ -78,8 +79,20 @@ namespace Project.Snake.UMVCS.Controller
             SnakeBodyView bodyView = Instantiate(_mainView.SnakeBodyViewPrefab, e.BlockPicked.BlockView.transform.position, Quaternion.identity) as SnakeBodyView;
             bodyView.transform.SetParent(_mainView.MainParent);
             SnakeBodyController bodyController = bodyView.GetComponentInChildren<SnakeBodyController>();
+
             bodyController.SetBodyBlockType(e.BlockPicked.BlockModel.BlockType);
-            e.PickSnake.SnakeModel.BodyList.Add(bodyController);
+            List<SnakeBodyController> bodyList = e.PickSnake.SnakeModel.BodyList;
+            bodyList.Add(bodyController);
+
+            var previousType = e.PickSnake.SnakeModel.HeadBlockType;
+            e.PickSnake.SetHeadBlockType(e.BlockPicked.BlockModel.BlockType);
+
+            foreach (var bodyPart in bodyList)
+            {
+                var tempType = bodyPart.SnakeBodyModel.BodyBlockType;
+                bodyPart.SetBodyBlockType(previousType);
+                previousType = tempType;
+            }
         }
     }
 }
