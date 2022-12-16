@@ -7,6 +7,8 @@ namespace Project.Snake.UMVCS.Model
 {
     public class SnakeBodyModel : BaseModel
     {
+        [SerializeField]
+        private BlockConfigData _bodyBlockType = null;
 
         [Observable(IsEditable = false)]
         [SerializeField]
@@ -20,5 +22,6 @@ namespace Project.Snake.UMVCS.Model
         [SerializeField]
         public ObservableInt WaitUps = new ObservableInt();
 
+        public BlockConfigData BodyBlockType { get => _bodyBlockType; set => _bodyBlockType = value; }
     }
 }

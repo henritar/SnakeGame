@@ -45,9 +45,10 @@ namespace Project.Snake.UMVCS.Controller
 
             if (SnakeView.transform.position == SnakeModel.Target.Value)
             {
+                SetBodyTarget();
+                
                 SnakeModel.Target.Value += SnakeModel.Direction.Value;
 
-                SetBodyTarget();
             }
         }
 

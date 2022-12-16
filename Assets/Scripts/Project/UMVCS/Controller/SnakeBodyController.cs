@@ -35,6 +35,12 @@ namespace Project.Snake.UMVCS.Controller
             SnakeBodyModel.Velocity.Value = observable.Value;
         }
 
+        public void SetBodyBlockType(BlockConfigData blockType)
+        {
+            SnakeBodyModel.BodyBlockType = blockType;
+            SnakeBodyView.GetComponent<Renderer>().material = blockType.MaterialRef;
+        }
+
         public void SetTarget(Vector3 pos)
         {
             if (SnakeBodyModel.WaitUps.Value > 0)

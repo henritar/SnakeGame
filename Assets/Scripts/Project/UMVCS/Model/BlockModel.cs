@@ -11,17 +11,17 @@ namespace Project.Snake.UMVCS.Model
         private List<BlockConfigData> _blockTypeList = null;
 
         [SerializeField]
-        private BlockTypeEnum _blockType;
+        private BlockConfigData _blockType = null;
 
         public List<BlockConfigData> BlockTypeList { get => BlockTypeList; }
-        public BlockTypeEnum BlockType { get => _blockType; }
+        public BlockConfigData BlockType { get => _blockType; }
 
         public void InitializeBlock(BlockView view)
         {
             var randIndex = Random.Range(0, _blockTypeList.Count);
             BlockConfigData blockType = _blockTypeList[randIndex];
 
-            _blockType = blockType.BlockType;
+            _blockType = blockType;
 
             view.GetComponent<Renderer>().material = blockType.MaterialRef;
         }

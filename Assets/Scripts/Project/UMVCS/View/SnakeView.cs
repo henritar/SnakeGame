@@ -16,10 +16,10 @@ namespace Project.Snake.UMVCS.View
         }
 
        
-        protected void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             BlockController block = other.gameObject.GetComponentInChildren<BlockController>();
-            if (block)
+            if (block as BlockController)
             {
                 OnPickBlock?.Invoke(block);
             }

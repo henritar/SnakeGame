@@ -13,8 +13,8 @@ namespace Project.Snake.UMVCS.Model
         TimeTravel = 2
     }
 
-    [CreateAssetMenu(fileName = "BlockConfigData",
-        menuName = SnakeAppConstants.CreateAssetMenuPath + "BlockConfigData",
+    [CreateAssetMenu(fileName = "BlockType",
+        menuName = SnakeAppConstants.CreateAssetMenuPath + "BlockType",
         order = SnakeAppConstants.CreateAssetMenuOrder)]
 
     

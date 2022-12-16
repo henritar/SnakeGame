@@ -75,9 +75,11 @@ namespace Project.Snake.UMVCS.Controller
 
         private void CommandManager_OnAddBodyPart(AddBodyPartCommand e)
         {
-            SnakeBodyView newBody = Instantiate(_mainView.SnakeBodyViewPrefab, e.BlockPicked.BlockView.transform.position, Quaternion.identity) as SnakeBodyView;
-            newBody.transform.SetParent(_mainModel.SnakeView.transform);
-            e.PickSnake.SnakeModel.BodyList.Add(newBody.GetComponentInChildren<SnakeBodyController>());
+            SnakeBodyView bodyView = Instantiate(_mainView.SnakeBodyViewPrefab, e.BlockPicked.BlockView.transform.position, Quaternion.identity) as SnakeBodyView;
+            bodyView.transform.SetParent(_mainView.MainParent);
+            SnakeBodyController bodyController = bodyView.GetComponentInChildren<SnakeBodyController>();
+            bodyController.SetBodyBlockType(e.BlockPicked.BlockModel.BlockType);
+            e.PickSnake.SnakeModel.BodyList.Add(bodyController);
         }
     }
 }
