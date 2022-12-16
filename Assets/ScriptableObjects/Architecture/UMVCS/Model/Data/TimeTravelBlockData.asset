@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: TimeTravelBlockData
   m_EditorClassIdentifier: 
   _blockType: 2
+  _materialRef: {fileID: 2100000, guid: 70e2a9ba1f7fa6d4dbb24237a0374612, type: 2}

@@ -1,9 +1,7 @@
-﻿using Assets.Utils.Runtime.Managers;
-using Data.Types;
-using Project.Snake;
+﻿using Data.Types;
 using Project.Snake.UMVCS.Controller;
 using System;
-using System.Collections;
+using UnityEngine;
 
 namespace Project.Data.Types
 {
@@ -23,12 +21,12 @@ namespace Project.Data.Types
 
         public override void EnterState()
         {
-            _snakeController.ChangeSnakeVelocity(-SnakeAppConstants.SnakeVelocityModifier);
+            Debug.Log("Entered PickingState");
         }
 
         public override void ExitState()
         {
-            CoroutinerManager.Start(ExitStateCoroutine());
+            Debug.Log("Exiting PickingState");
         }
 
         public override void InitializeState()
@@ -38,14 +36,9 @@ namespace Project.Data.Types
 
         public override Type UpdateState()
         {
-            return typeof(MovingState);
+            return typeof(AddingBodyPartState);
         }
 
-        private IEnumerator ExitStateCoroutine()
-        {
-            
-            yield return CoroutinerManager.WaitOneSecond;
-            _snakeController.ChangeSnakeVelocity(SnakeAppConstants.SnakeVelocityModifier);
-        }
+        
     }
 }

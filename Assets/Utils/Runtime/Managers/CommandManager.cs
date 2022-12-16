@@ -38,7 +38,7 @@ namespace Managers
 		private void AddCommandListenerImpl<T>(CommandDelegate<T> del) where T : Command
 		{
 
-			if (_commandDelegatesLookup.ContainsKey(del))
+			if (SearchCommandListener(del))
 			{
 				return;
 			}
@@ -80,6 +80,15 @@ namespace Managers
 				_commandDelegatesLookup.Remove(del);
 			}
 		}
+
+		public bool SearchCommandListener<T>(CommandDelegate<T> del) where T : Command
+        {
+            if (_commandDelegatesLookup.ContainsKey(del))
+            {
+                return true;
+            }
+			return false;
+        }
 
 		public int DelegateLookupCount { get { return _commandDelegatesLookup.Count; } }
 

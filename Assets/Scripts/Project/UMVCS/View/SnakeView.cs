@@ -1,4 +1,6 @@
 ﻿using Architectures.UMVCS.View;
+using Project.Snake.UMVCS.Controller;
+using Project.Snake.UMVCS.Model;
 using Project.UMVCS.Controller.Events;
 using UnityEngine;
 
@@ -16,9 +18,10 @@ namespace Project.Snake.UMVCS.View
        
         protected void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.GetComponent<BlockView>())
+            BlockController block = other.gameObject.GetComponentInChildren<BlockController>();
+            if (block)
             {
-                OnPickBlock?.Invoke();
+                OnPickBlock?.Invoke(block);
             }
         }
     }

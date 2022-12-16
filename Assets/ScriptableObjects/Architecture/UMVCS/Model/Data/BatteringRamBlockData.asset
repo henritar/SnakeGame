@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: BatteringRamBlockData
   m_EditorClassIdentifier: 
   _blockType: 1
+  _materialRef: {fileID: 2100000, guid: e8bc13cdca974b149a2107655f4953eb, type: 2}

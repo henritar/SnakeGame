@@ -5,7 +5,6 @@ using Project.Data.Types;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
@@ -15,17 +14,11 @@ namespace Project.Snake.UMVCS.Controller
         public SnakeView SnakeView { get => BaseView as SnakeView; }
         public SnakeModel SnakeModel { get => BaseModel as SnakeModel; }
 
-        [SerializeField] private Vector3 target;
-        [SerializeField] private Vector3 newDir;
-        [SerializeField] private float velocity;
-
-        [SerializeField] private List<Transform> bodyList;
-
         private void Start()
         {
-            target = transform.position;
-            newDir = Vector3.up;
-            velocity = SnakeAppConstants.SnakeVelocity;
+            SnakeModel.Target.Value = transform.position;
+            SnakeModel.Direction.Value = Vector3.up;
+            SnakeModel.Velocity.Value = SnakeAppConstants.SnakeVelocity;
 
             Context.CommandManager.AddCommandListener<ChangeSnakeDirectionCommand>(CommandManager_OnChangeSnakeDirection);
 
@@ -48,17 +41,19 @@ namespace Project.Snake.UMVCS.Controller
         {
             SnakeModel.StateMachine.UpdateStates();
 
-            SnakeView.MoveSnake(Vector3.MoveTowards(SnakeView.transform.position, target, velocity * Time.deltaTime));
+            SnakeView.MoveSnake(Vector3.MoveTowards(SnakeView.transform.position, SnakeModel.Target.Value, SnakeModel.Velocity.Value * Time.deltaTime));
 
-            if (SnakeView.transform.position == target)
+            if (SnakeView.transform.position == SnakeModel.Target.Value)
             {
-                target += newDir;
+                SnakeModel.Target.Value += SnakeModel.Direction.Value;
+
+                SetBodyTarget();
             }
         }
 
         public void ChangeSnakeVelocity(float modifier)
         {
-            velocity += modifier;
+            SnakeModel.Velocity.Value += modifier;
         }
  
         private void CommandManager_OnChangeSnakeDirection(ChangeSnakeDirectionCommand e)
@@ -66,18 +61,43 @@ namespace Project.Snake.UMVCS.Controller
             var dir = e.Direction;
             if (dir.x != 0) 
             {
-                newDir = Vector3.right * dir.x;
+                ValidateDirectionChange(Vector3.right * dir.x);
             }
             if (dir.y != 0)
             {
-                newDir = Vector3.up * dir.y;
+                ValidateDirectionChange(Vector3.up * dir.y);
             }
         }
 
-        private void SnakeModel_OnBlockPicked()
+        private void SnakeModel_OnBlockPicked(BlockController block)
         {
             SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
+            Context.CommandManager.InvokeCommand(new AddBodyPartCommand(this, block));
+        }
+
+        private void ValidateDirectionChange(Vector3 newDir)
+        {
+
+            if (SnakeModel.Direction.Value.x == -newDir.x || SnakeModel.Direction.Value.y == -newDir.y)
+            {
+                return;
+            }
+            SnakeModel.Direction.Value = newDir;
+        }
+
+        private void SetBodyTarget()
+        {
+            if (SnakeModel.BodyList.Count > 0)
+            {
+                SnakeModel.BodyList[0].SetTarget(transform.position);
+
+                for (int i = SnakeModel.BodyList.Count - 1; i > 0; i--)
+                {
+                    Vector3 pos = new Vector3(Mathf.RoundToInt(SnakeModel.BodyList[i - 1].transform.position.x), Mathf.RoundToInt(SnakeModel.BodyList[i - 1].transform.position.y), 0);
+                    SnakeModel.BodyList[i].SetTarget(pos);
+                }
+            }
         }
     }
 

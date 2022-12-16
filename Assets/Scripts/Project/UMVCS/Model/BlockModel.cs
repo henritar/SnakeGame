@@ -1,7 +1,4 @@
 ﻿using Architectures.UMVCS.Model;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Project.Snake.UMVCS.View;
@@ -21,7 +18,7 @@ namespace Project.Snake.UMVCS.Model
 
         public void InitializeBlock(BlockView view)
         {
-            var randIndex = UnityEngine.Random.Range(0, _blockTypeList.Count);
+            var randIndex = Random.Range(0, _blockTypeList.Count);
             BlockConfigData blockType = _blockTypeList[randIndex];
 
             _blockType = blockType.BlockType;

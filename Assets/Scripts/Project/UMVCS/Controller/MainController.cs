@@ -21,6 +21,8 @@ namespace Project.Snake.UMVCS.Controller
 
             Context.CommandManager.AddCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
 
+            Context.CommandManager.AddCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
+
             Context.ModelLocator.AddModel(_mainModel);
 
             RestartApplication();
@@ -32,6 +34,8 @@ namespace Project.Snake.UMVCS.Controller
                 CommandManager_OnRestartApplication);
 
             Context.CommandManager.RemoveCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
+
+            Context.CommandManager.RemoveCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
 
             Context.ModelLocator.RemoveModel(_mainModel);
         }
@@ -67,6 +71,13 @@ namespace Project.Snake.UMVCS.Controller
             BlockView newBlock = Instantiate(_mainView.BlockViewPrefab, position, Quaternion.identity) as BlockView;
             newBlock.transform.SetParent(_mainView.MainParent);
             _mainModel.BlockView = newBlock;
+        }
+
+        private void CommandManager_OnAddBodyPart(AddBodyPartCommand e)
+        {
+            SnakeBodyView newBody = Instantiate(_mainView.SnakeBodyViewPrefab, e.BlockPicked.BlockView.transform.position, Quaternion.identity) as SnakeBodyView;
+            newBody.transform.SetParent(_mainModel.SnakeView.transform);
+            e.PickSnake.SnakeModel.BodyList.Add(newBody.GetComponentInChildren<SnakeBodyController>());
         }
     }
 }

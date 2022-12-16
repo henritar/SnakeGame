@@ -1,8 +1,10 @@
 using Architectures.UMVCS.Model;
 using Data.Types;
+using Attributes;
 using Project.Data.Types;
 using Project.Snake.UMVCS.Controller;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
 {
@@ -10,13 +12,30 @@ namespace Project.Snake.UMVCS.Model
     {
         public MainConfigData MainConfigData { get { return ConfigData as MainConfigData; } }
         public StateMachine StateMachine { get { return _stateMachine; } }
+        public List<SnakeBodyController> BodyList { get => _bodyList; }
+
         private StateMachine _stateMachine = new StateMachine();
+
+        [SerializeField] private List<SnakeBodyController> _bodyList;
+
+        [Observable(IsEditable = false)]
+        [SerializeField]
+        public ObservableFloat Velocity = new ObservableFloat();
+
+        [Observable(IsEditable = false)]
+        [SerializeField]
+        public ObservableVector3 Direction = new ObservableVector3();
+
+        [Observable(IsEditable = false)]
+        [SerializeField]
+        public ObservableVector3 Target = new ObservableVector3();
 
         public void InitializeStateMachine(SnakeController snakeController)
         {
             List<IState> states = new List<IState>();
             states.Add(new MovingState(snakeController));
             states.Add(new PickingState(snakeController));
+            states.Add(new AddingBodyPartState(snakeController));
             _stateMachine.States = states;
         }
     }

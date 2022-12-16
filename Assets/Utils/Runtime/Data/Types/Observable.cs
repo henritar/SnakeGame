@@ -21,7 +21,14 @@ namespace Data.Types
 		public ObservableFloat(float value) : base(value) { }
 	}
 
-	[Serializable]
+    [Serializable]
+    public class ObservableVector3 : Observable<Vector3>
+    {
+        public ObservableVector3() { }
+        public ObservableVector3(Vector3 value) : base(value) { }
+    }
+
+    [Serializable]
 	public class ObservableString : Observable<string>
 	{
 		public ObservableString() { }
@@ -29,10 +36,10 @@ namespace Data.Types
 	}
 
 	[Serializable]
-	public class ObservableChangedEvent : UnityEvent<Observable> {}
+	public class ObservableChangedEvent : UnityEvent<Observable> { }
 
-	[Serializable]
-	public class ObservableOnValidateEvent : UnityEvent<Observable> { }
+    [Serializable]
+    public class ObservableOnValidateEvent : UnityEvent<Observable> { }
 
 	[Serializable]
 	public abstract class Observable 
@@ -69,13 +76,13 @@ namespace Data.Types
 		}
 
 		public ObservableChangedEvent OnChanged = new ObservableChangedEvent();
-		public ObservableOnValidateEvent OnValidate = new ObservableOnValidateEvent();
+        public ObservableOnValidateEvent OnValidate = new ObservableOnValidateEvent();
 
 		public T Value
 		{
 			get { return _value; }
 			set
-			{
+			{	
 				var oldValue = _value;
 				if (!oldValue.Equals(value))
 				{

@@ -1,4 +1,5 @@
 ﻿using Commands;
+using Project.Snake.UMVCS.Controller;
 using Project.Snake.UMVCS.Model;
 
 namespace Project.UMVCS.Controller.Commands
@@ -6,13 +7,16 @@ namespace Project.UMVCS.Controller.Commands
     public class AddBodyPartCommand : Command
     {
 
-        public BlockConfigData BlockType { get => _blockType; }
+        public BlockController BlockPicked { get => _blockPicker; }
+        public SnakeController PickSnake { get => _pickSnake; }
 
-        private BlockConfigData _blockType;
+        private BlockController _blockPicker;
 
-        public AddBodyPartCommand(BlockConfigData type)
+        private SnakeController _pickSnake;
+        public AddBodyPartCommand(SnakeController snake, BlockController block)
         {
-            _blockType = type;
+            _blockPicker = block;
+            _pickSnake = snake;
         }
     }
 }

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: EnginePowerBlockData
   m_EditorClassIdentifier: 
   _blockType: 0
+  _materialRef: {fileID: 2100000, guid: 7f907fd145040a248b50bfcf2616e6eb, type: 2}
