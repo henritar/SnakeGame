@@ -12,18 +12,17 @@ namespace Project.Snake.UMVCS.Model
     {
         public MainConfigData MainConfigData { get { return ConfigData as MainConfigData; } }
         public StateMachine StateMachine { get { return _stateMachine; } }
-        public List<SnakeBodyController> BodyList { get => _bodyList; }
-        public BlockConfigData HeadBlockType { get => _headBlockType; set => _headBlockType = value; }
+        
 
         private StateMachine _stateMachine = new StateMachine();
-
-        [SerializeField] private List<SnakeBodyController> _bodyList;
-
-        [SerializeField] private BlockConfigData _headBlockType;
 
         [Observable(IsEditable = false)]
         [SerializeField]
         public ObservableFloat Velocity = new ObservableFloat();
+
+        [Observable(IsEditable = false)]
+        [SerializeField]
+        public ObservableInt BodySize = new ObservableInt();
 
         [Observable(IsEditable = false)]
         [SerializeField]

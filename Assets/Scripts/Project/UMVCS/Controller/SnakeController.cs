@@ -1,26 +1,37 @@
 using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Assets.Scripts.Project.UMVCS.Controller.Commands;
+using Interfaces;
 using Project.Data.Types;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
 {
-    public class SnakeController : BaseController<SnakeModel, SnakeView, NullService>
+    public class SnakeController : BaseController<SnakeModel, SnakeView, NullService>, ISnake
     {
         public SnakeView SnakeView { get => BaseView as SnakeView; }
         public SnakeModel SnakeModel { get => BaseModel as SnakeModel; }
 
+        public List<SnakeBodyController> BodyList { get => _bodyList; set => _bodyList = value; }
+        public BlockConfigData HeadBlockType { get => _headBlockType; set => _headBlockType = value; }
+        public float BodyVelocity { get => SnakeModel.Velocity.Value; set => SnakeModel.Velocity.Value = value; }
+
+        [SerializeField] private List<SnakeBodyController> _bodyList;
+
+        [SerializeField] private BlockConfigData _headBlockType;
+
         private void Start()
         {
-            SnakeModel.HeadBlockType = new BlockConfigData(BlockTypeEnum.Head, SnakeView.GetComponent<Renderer>().material);
+            HeadBlockType = new BlockConfigData(BlockTypeEnum.Head, SnakeView.GetComponent<Renderer>().material);
 
             SnakeModel.Target.Value = transform.position;
             SnakeModel.Direction.Value = Vector3.up;
             SnakeModel.Velocity.Value = SnakeAppConstants.SnakeVelocity;
+            SnakeModel.BodySize.Value = 0;
 
             Context.CommandManager.AddCommandListener<ChangeSnakeDirectionCommand>(CommandManager_OnChangeSnakeDirection);
 
@@ -57,6 +68,10 @@ namespace Project.Snake.UMVCS.Controller
         public void ChangeSnakeVelocity(float modifier)
         {
             SnakeModel.Velocity.Value += modifier;
+            foreach (var bodyPart in BodyList)
+            {
+                bodyPart.BaseModel.Velocity.Value = SnakeModel.Velocity.Value;
+            }
         }
  
         private void CommandManager_OnChangeSnakeDirection(ChangeSnakeDirectionCommand e)
@@ -76,6 +91,7 @@ namespace Project.Snake.UMVCS.Controller
         {
             SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
+            Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
             Context.CommandManager.InvokeCommand(new AddBodyPartCommand(this, block));
         }
 
@@ -91,22 +107,28 @@ namespace Project.Snake.UMVCS.Controller
 
         private void SetBodyTarget()
         {
-            if (SnakeModel.BodyList.Count > 0)
+            if (BodyList.Count > 0)
             {
-                SnakeModel.BodyList[0].SetTarget(transform.position);
+                BodyList[0].SetTarget(transform.position);
 
-                for (int i = SnakeModel.BodyList.Count - 1; i > 0; i--)
+                for (int i = BodyList.Count - 1; i > 0; i--)
                 {
-                    Vector3 pos = new Vector3(Mathf.RoundToInt(SnakeModel.BodyList[i - 1].transform.position.x), Mathf.RoundToInt(SnakeModel.BodyList[i - 1].transform.position.y), 0);
-                    SnakeModel.BodyList[i].SetTarget(pos);
+                    Vector3 pos = new Vector3(Mathf.RoundToInt(BodyList[i - 1].transform.position.x), Mathf.RoundToInt(BodyList[i - 1].transform.position.y), 0);
+                    BodyList[i].SetTarget(pos);
                 }
             }
         }
 
         public void SetHeadBlockType(BlockConfigData newType)
         {
-            SnakeModel.HeadBlockType = newType;
+            HeadBlockType = newType;
             SnakeView.GetComponent<Renderer>().material = newType.MaterialRef;
+        }
+
+        public void AddBodyPart(SnakeBodyController bodyPart)
+        {
+            BodyList.Add(bodyPart);
+            SnakeModel.BodySize.Value += 1;
         }
     }
 

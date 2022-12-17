@@ -9,7 +9,8 @@ namespace Project.Snake.UMVCS.Model
     {
         public MainConfigData MainConfigData { get => ConfigData as MainConfigData; }
         public SnakeController SnakeController { get => _snakeController; set => _snakeController = value; }
-        public SnakeBodyController SnakeBodyController { get => _snakeBodyController; }
+        public SnakeAIController SnakeAIController { get => _snakeAIController; set => _snakeAIController = value; }
+        public SnakeBodyController SnakeBodyController { get => _snakeBodyController; set => _snakeBodyController = value; }
         public BlockController BlockController { get => _blockController; set => _blockController = value; }
 
         [ReadOnly]

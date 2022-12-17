@@ -7,6 +7,7 @@ using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Project.Snake.UMVCS.Controller
 {
@@ -14,6 +15,8 @@ namespace Project.Snake.UMVCS.Controller
     {
         private MainModel _mainModel { get { return BaseModel as MainModel; } }
         private MainView _mainView { get { return BaseView as MainView; } }
+
+
 
         protected void Start()
         {
@@ -23,6 +26,8 @@ namespace Project.Snake.UMVCS.Controller
             Context.CommandManager.AddCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
 
             Context.CommandManager.AddCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
+
+            Context.CommandManager.AddCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
 
             Context.ModelLocator.AddModel(_mainModel);
 
@@ -38,6 +43,8 @@ namespace Project.Snake.UMVCS.Controller
 
             Context.CommandManager.RemoveCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
 
+            Context.CommandManager.RemoveCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
+
             Context.ModelLocator.RemoveModel(_mainModel);
         }
 
@@ -45,7 +52,7 @@ namespace Project.Snake.UMVCS.Controller
         {
             if(_mainModel.SnakeController != null)
             {
-                foreach (SnakeBodyController bodyPart in _mainModel.SnakeController.SnakeModel.BodyList)
+                foreach (SnakeBodyController bodyPart in _mainModel.SnakeController.BodyList)
                 {
                     Destroy(bodyPart.SnakeBodyView.gameObject);
                 }
@@ -59,7 +66,7 @@ namespace Project.Snake.UMVCS.Controller
             snakeView.MoveSnake(_mainModel.MainConfigData.InitialSnakePosition);
 
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
-
+            Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
         }
 
         private void CommandManager_OnRestartApplication(RestartApplicationCommand e)
@@ -67,16 +74,35 @@ namespace Project.Snake.UMVCS.Controller
             RestartApplication();
         }
 
+        private void CommandManager_OnSpawnAISnake(SpawnAISnakeCommand e)
+        {
+            if (_mainModel.SnakeAIController != null)
+            {
+                _mainModel.SnakeAIController.ShuffleLocation();
+            }
+            else
+            {
+                SnakeAIView newSnakeAI = Instantiate(_mainView.SnakeAIViewPrefab, GetRandomPosition(), Quaternion.identity) as SnakeAIView;
+                newSnakeAI.transform.SetParent(_mainView.MainParent);
+                _mainModel.SnakeAIController = newSnakeAI.GetComponentInChildren<SnakeAIController>();
+            }
+        }
+
         private void CommandManager_OnSpawnBlock(SpawnBlockCommand e)
         {
             Destroy(Context.ModelLocator.GetModel<BlockModel>()?.transform.parent.gameObject);
 
+            BlockView newBlock = Instantiate(_mainView.BlockViewPrefab, GetRandomPosition(), Quaternion.identity) as BlockView;
+            newBlock.transform.SetParent(_mainView.MainParent);
+            _mainModel.BlockController = newBlock.GetComponentInChildren<BlockController>();
+        }
+
+        private Vector3 GetRandomPosition()
+        {
             var boundariesX = _mainModel.MainConfigData.BlockSpawnBounderiesX;
             var boundariesY = _mainModel.MainConfigData.BlockSpawnBounderiesY;
             Vector3 position = new Vector3(Random.Range(boundariesX.x, boundariesX.y), Random.Range(boundariesY.x, boundariesY.y), 0);
-            BlockView newBlock = Instantiate(_mainView.BlockViewPrefab, position, Quaternion.identity) as BlockView;
-            newBlock.transform.SetParent(_mainView.MainParent);
-            _mainModel.BlockController = newBlock.GetComponentInChildren<BlockController>();
+            return position;
         }
 
         private void CommandManager_OnAddBodyPart(AddBodyPartCommand e)
@@ -84,12 +110,14 @@ namespace Project.Snake.UMVCS.Controller
             SnakeBodyView bodyView = Instantiate(_mainView.SnakeBodyViewPrefab, e.BlockPicked.BlockView.transform.position, Quaternion.identity) as SnakeBodyView;
             bodyView.transform.SetParent(_mainView.MainParent);
             SnakeBodyController bodyController = bodyView.GetComponentInChildren<SnakeBodyController>();
+            bodyController.InitializeBodyPart(e.PickSnake);
 
             bodyController.SetBodyBlockType(e.BlockPicked.BlockModel.BlockType);
-            List<SnakeBodyController> bodyList = e.PickSnake.SnakeModel.BodyList;
-            bodyList.Add(bodyController);
 
-            var previousType = e.PickSnake.SnakeModel.HeadBlockType;
+            List<SnakeBodyController> bodyList = e.PickSnake.BodyList;
+            e.PickSnake.AddBodyPart(bodyController);
+
+            var previousType = e.PickSnake.HeadBlockType;
             e.PickSnake.SetHeadBlockType(e.BlockPicked.BlockModel.BlockType);
 
             foreach (var bodyPart in bodyList)

@@ -1,6 +1,7 @@
 ﻿using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Data.Types;
+using Interfaces;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
@@ -13,17 +14,17 @@ namespace Project.Snake.UMVCS.Controller
         public SnakeBodyModel SnakeBodyModel { get => BaseModel as SnakeBodyModel; }
         public SnakeBodyView SnakeBodyView { get => BaseView as SnakeBodyView; }
 
-        private SnakeModel _snakeModel = null;
+        private ISnake _snake = null;
 
-        protected void Start()
+        public void InitializeBodyPart(ISnake snake)
         {
-            _snakeModel = Context.ModelLocator.GetModel<SnakeModel>();
-            SnakeBodyModel.Velocity.Value = _snakeModel.Velocity.Value; 
-            _snakeModel.Velocity.OnChanged.AddListener(SnakeModel_OnVelocityChanged);
+            _snake = snake;
+            SnakeBodyModel.Velocity.Value = snake.BodyVelocity;
+            SnakeBodyModel.WaitUps.Value = snake.BodyList.Count
+                ;
             SnakeBodyModel.Target.Value = transform.position;
-            SnakeBodyModel.WaitUps.Value = _snakeModel.BodyList.Count;
         }
-
+        
         protected void Update()
         {
             SnakeBodyView.MoveBodyPart(Vector3.MoveTowards(SnakeBodyView.transform.position, SnakeBodyModel.Target.Value, SnakeBodyModel.Velocity.Value * Time.deltaTime));
