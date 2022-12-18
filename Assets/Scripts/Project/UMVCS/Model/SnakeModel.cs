@@ -32,11 +32,11 @@ namespace Project.Snake.UMVCS.Model
 
         [Observable(IsEditable = false)]
         [SerializeField]
-        public ObservableVector3 Direction = new ObservableVector3();
+        public ObservableVector3 Target = new ObservableVector3();
 
         [Observable(IsEditable = false)]
         [SerializeField]
-        public ObservableVector3 Target = new ObservableVector3();
+        public ObservableVector3 Direction = new ObservableVector3();
 
         public void InitializeStateMachine(SnakeController snakeController)
         {

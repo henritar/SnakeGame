@@ -39,14 +39,6 @@ namespace Project.Snake.UMVCS.Controller
             SnakeModel.StateMachine.UpdateStates();
 
             SnakeView.MoveSnake(Vector3.MoveTowards(SnakeView.transform.position, SnakeModel.Target.Value, SnakeModel.Velocity.Value * Time.deltaTime));
-
-            if (SnakeView.transform.position == SnakeModel.Target.Value)
-            {
-                SetBodyTarget();
-
-                SnakeModel.Target.Value += SnakeModel.Direction.Value;
-
-            }
         }
 
         protected virtual void InitializeStateMachine()
@@ -57,12 +49,12 @@ namespace Project.Snake.UMVCS.Controller
 
         protected virtual void AddListenersCallbacks()
         {
-            SnakeView.OnPickBlock.AddListener(SnakeModel_OnBlockPicked);
+            SnakeView.OnPickBlock.AddListener(SnakeView_OnBlockPicked);
         }
 
         protected virtual void RemoveListenersCallbacks()
         {
-            SnakeView.OnPickBlock.RemoveListener(SnakeModel_OnBlockPicked);
+            SnakeView.OnPickBlock.RemoveListener(SnakeView_OnBlockPicked);
         }
 
         protected virtual void StartModelValues()
@@ -80,10 +72,9 @@ namespace Project.Snake.UMVCS.Controller
             SnakeModel.HeadBlockType.BlockType = BlockTypeEnum.Head;
         }
 
-        protected virtual void SnakeModel_OnBlockPicked(BlockController block)
+        protected virtual void SnakeView_OnBlockPicked(BlockController block)
         {
             SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
-            Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
             Context.CommandManager.InvokeCommand(new AddBodyPartCommand(this, block));
         }
@@ -93,7 +84,7 @@ namespace Project.Snake.UMVCS.Controller
             var bodyList = SnakeModel.BodyList;
             if (bodyList.Count > 0)
             {
-                bodyList[0].SetTarget(transform.position);
+                bodyList[0].SetTarget(new Vector3(Mathf.RoundToInt(SnakeView.transform.position.x), Mathf.RoundToInt(SnakeView.transform.position.y), SnakeView.transform.position.z));
 
                 for (int i = bodyList.Count - 1; i > 0; i--)
                 {

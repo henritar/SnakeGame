@@ -19,9 +19,12 @@ namespace Project.Snake.UMVCS.Controller
             
             AddListenersCallbacks();
 
-            Context.ModelLocator.AddModel(SnakeAIModel);
+            SnakeAIModel.StartPosition.Value = SnakeView.transform.position;
+
             MainModel mainModel = Context.ModelLocator.GetModel<MainModel>();
             Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(mainModel.BlockController.BlockModel.Position));
+
+            Context.ModelLocator.AddModel(SnakeAIModel);
         }
 
         protected override void OnDestroy()
@@ -39,7 +42,6 @@ namespace Project.Snake.UMVCS.Controller
 
             Context.CommandManager.AddCommandListener<SnakeAIDestinationCommand>(CommandManager_OnSnakeAIDestination);
 
-            Debug.Log("SNAKE AI COMMAND ADDED");
         }
 
         protected override void RemoveListenersCallbacks()
@@ -54,6 +56,7 @@ namespace Project.Snake.UMVCS.Controller
             var boundariesX = SnakeAIModel.MainConfigData.BlockSpawnBounderiesX;
             var boundariesY = SnakeAIModel.MainConfigData.BlockSpawnBounderiesY;
             Vector3 position = new Vector3(Random.Range(boundariesX.x, boundariesX.y), Random.Range(boundariesY.x, boundariesY.y), 0);
+            SnakeAIModel.StartPosition.Value = position;
             SnakeAIView.transform.position = position;
         }
 
@@ -64,9 +67,11 @@ namespace Project.Snake.UMVCS.Controller
 
         private IEnumerator MovementCoroutine(Vector3 position)
         {
-            Debug.Log("AI TARGET: " + position);
-            bool xCloser = System.Math.Abs(position.x - SnakeAIView.transform.position.x) < System.Math.Abs(position.y);
-            if (xCloser) {
+            bool xCloser = System.Math.Abs(position.x - SnakeAIView.transform.position.x) < System.Math.Abs(position.y - position.y - SnakeAIView.transform.position.y);
+            bool yPreviousPosCloser = System.Math.Abs(position.x - SnakeAIModel.StartPosition.PreviousValue.x) > System.Math.Abs(position.y - SnakeAIModel.StartPosition.PreviousValue.y);
+
+            if (xCloser && yPreviousPosCloser)
+            {
                 SnakeAIModel.Target.Value = new Vector3(position.x, SnakeAIView.transform.position.y, SnakeAIView.transform.position.z);
                 yield return new WaitWhile(() => SnakeAIView.transform.position.x != position.x);
                 SnakeAIModel.Target.Value = new Vector3(SnakeAIView.transform.position.x, position.y, SnakeAIView.transform.position.z);
@@ -77,6 +82,8 @@ namespace Project.Snake.UMVCS.Controller
                 yield return new WaitWhile(() => SnakeAIView.transform.position.y != position.y);
                 SnakeAIModel.Target.Value = new Vector3(position.x, SnakeAIView.transform.position.y, SnakeAIView.transform.position.z);
             }
+
+            SnakeAIModel.StartPosition.Value = position;
         }
     }
 }

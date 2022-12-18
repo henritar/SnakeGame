@@ -1,4 +1,6 @@
-﻿using Project.Snake.UMVCS.Controller;
+﻿using Assets.Scripts.Project.UMVCS.Controller.Commands;
+using Project.Data.Types;
+using Project.Snake.UMVCS.Controller;
 using Project.Snake.UMVCS.Model;
 using Project.UMVCS.Controller.Commands;
 using UnityEngine;
@@ -8,7 +10,17 @@ public class SnakePlayerController : SnakeController
     public SnakePlayerView SnakePlayerView { get => BaseView as SnakePlayerView; }
     public SnakePlayerModel SnakePlayerModel { get => BaseModel as SnakePlayerModel; }
 
+    protected override void Update()
+    {
+        base.Update();
 
+        if (SnakePlayerView.transform.position == SnakePlayerModel.Target.Value)
+        {
+            SetBodyTarget();
+            SnakePlayerModel.Target.Value += SnakePlayerModel.Direction.Value;
+
+        }
+    }
     protected override void AddListenersCallbacks()
     {
         base.AddListenersCallbacks();
@@ -23,12 +35,18 @@ public class SnakePlayerController : SnakeController
 
     private void ValidateDirectionChange(Vector3 newDir)
     {
-
-        if (SnakeModel.Direction.Value.x == -newDir.x || SnakeModel.Direction.Value.y == -newDir.y)
+        Vector3 nextTarget = newDir + SnakePlayerModel.Target.Value;
+        if (nextTarget == SnakePlayerModel.Target.PreviousValue)
         {
             return;
         }
-        SnakeModel.Direction.Value = newDir;
+        SnakePlayerModel.Direction.Value = newDir;
+    }
+
+    protected override void SnakeView_OnBlockPicked(BlockController block)
+    {
+        Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
+        base.SnakeView_OnBlockPicked(block);
     }
 
     private void CommandManager_OnChangeSnakeDirection(ChangeSnakeDirectionCommand e)
@@ -38,7 +56,7 @@ public class SnakePlayerController : SnakeController
         {
             ValidateDirectionChange(Vector3.right * dir.x);
         }
-        if (dir.y != 0)
+        else if (dir.y != 0)
         {
             ValidateDirectionChange(Vector3.up * dir.y);
         }

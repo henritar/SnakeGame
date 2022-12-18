@@ -107,7 +107,6 @@ namespace Project.Snake.UMVCS.Controller
             BlockView newBlock = Instantiate(_mainView.BlockViewPrefab, GetRandomPosition(), Quaternion.identity) as BlockView;
             newBlock.transform.SetParent(_mainView.MainParent);
             _mainModel.BlockController = newBlock.GetComponentInChildren<BlockController>();
-            Debug.Log("BLOCK LOCATION: " + newBlock.transform.position);
             Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(newBlock.transform.position));
         }
 
