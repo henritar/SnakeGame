@@ -87,7 +87,6 @@ namespace Project.Snake.UMVCS.Controller
 
             bool xCloser = System.Math.Abs(dirX) < System.Math.Abs(dirY);
 
-            
             if(xCloser)
             {
                 SnakeAIModel.Direction.Value = dirX < 0 ? Vector3.left : dirX > 0 ? Vector3.right : dirY < 0 ? Vector3.down : Vector3.up;
@@ -96,8 +95,36 @@ namespace Project.Snake.UMVCS.Controller
             {
                 SnakeAIModel.Direction.Value = dirY < 0 ? Vector3.down : dirY > 0 ? Vector3.up : dirX < 0 ? Vector3.left : Vector3.right;
             }
+
+            Vector3 nextTarget = SnakeAIModel.Direction.Value + SnakeAIModel.Target.Value;
+            if (nextTarget == SnakeAIModel.Target.PreviousValue)
+            {
+                SnakeAIModel.Direction.Value = xCloser ? RotateVectorRight(SnakeAIModel.Direction.Value,90) : RotateVectorUp(SnakeAIModel.Direction.Value, 90);
+            }
         }
 
-        
+        private Vector3 RotateVectorUp(Vector3 start, float angle)
+        {
+            start.Normalize();
+
+            Vector3 axis = Vector3.Cross(start, Vector3.up);
+
+            if (axis == Vector3.zero) axis = Vector3.forward;
+
+            return Quaternion.AngleAxis(angle, axis) * start;
+        }
+
+        private Vector3 RotateVectorRight(Vector3 start, float angle)
+        {
+            start.Normalize();
+
+            Vector3 axis = Vector3.Cross(start, Vector3.right);
+
+            if (axis == Vector3.zero) axis = Vector3.forward;
+
+            return Quaternion.AngleAxis(angle, axis) * start;
+        }
+
+
     }
 }
