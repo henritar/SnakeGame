@@ -15,7 +15,6 @@ namespace Project.Snake.UMVCS.View
             transform.position = position;
         }
 
-       
         private void OnTriggerEnter2D(Collider2D other)
         {
             BlockController block = other.gameObject.GetComponentInChildren<BlockController>();

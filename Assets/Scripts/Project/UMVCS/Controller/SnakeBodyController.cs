@@ -4,6 +4,7 @@ using Data.Types;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
+using System;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
@@ -12,7 +13,15 @@ namespace Project.Snake.UMVCS.Controller
     {
         public SnakeBodyModel SnakeBodyModel { get => BaseModel as SnakeBodyModel; }
         public SnakeBodyView SnakeBodyView { get => BaseView as SnakeBodyView; }
-        
+
+        private void Start()
+        {
+            SnakeBodyModel.BodyCollider = SnakeBodyView.GetComponent<BoxCollider2D>();
+            SnakeBodyModel.BodyCollider.enabled = false;
+            SnakeBodyView.OnPlayerHitEvent.AddListener(SnakeBodyView_OnPlayerHit);
+            SnakeBodyView.OnAIHitEvent.AddListener(SnakeBodyView_OnAIHit);
+        }
+
         protected virtual void Update()
         {
             SnakeBodyView.MoveBodyPart(Vector3.MoveTowards(SnakeBodyView.transform.position, SnakeBodyModel.Target.Value, SnakeBodyModel.Velocity.Value * Time.deltaTime));
@@ -21,6 +30,8 @@ namespace Project.Snake.UMVCS.Controller
         protected virtual void OnDestroy()
         {
             SnakeBodyModel.Snake.SnakeModel.Velocity.OnChanged.RemoveListener(SnakeModel_OnVelocityChanged);
+            SnakeBodyView.OnPlayerHitEvent.RemoveListener(SnakeBodyView_OnPlayerHit);
+            SnakeBodyView.OnAIHitEvent.RemoveListener(SnakeBodyView_OnAIHit);
         }
 
         public void InitializeBodyPart(SnakeController snake)
@@ -37,6 +48,16 @@ namespace Project.Snake.UMVCS.Controller
         {
             ObservableFloat observable = obs as ObservableFloat;
             SnakeBodyModel.Velocity.Value = observable.Value;
+        }
+
+        private void SnakeBodyView_OnAIHit(SnakeAIController sc)
+        {
+            Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
+        }
+
+        private void SnakeBodyView_OnPlayerHit(SnakePlayerController sc)
+        {
+            Context.CommandManager.InvokeCommand(new RestartApplicationCommand());
         }
 
         public void SetBodyBlockType(BlockConfigData blockType)
@@ -56,6 +77,7 @@ namespace Project.Snake.UMVCS.Controller
             {
                 Context.CommandManager.InvokeCommand(new LoadBlockCommand());
                 SnakeBodyModel.WaitUps.Value--;
+                SnakeBodyModel.BodyCollider.enabled = true;
             }
             SnakeBodyModel.Target.Value = pos;
         }

@@ -31,7 +31,7 @@ namespace Project.Data.Types
             _nextState = null;
             if (_blocksToConsume == 0 ) {
                 _snakeController.Context.CommandManager.AddCommandListener<LoadBlockCommand>(CommandManager_OnLoadBlockCommand);
-                _snakeController.ChangeSnakeVelocity(-SnakeAppConstants.SnakeVelocityModifier);
+                _snakeController.ChangeSnakeVelocity(-SnakeAppConstants.SnakeVelocityDebuffModifier);
             }
             _blocksToConsume++;
         }
@@ -56,7 +56,7 @@ namespace Project.Data.Types
             _blocksToConsume--;
             if(_blocksToConsume == 0 )
             {
-                _snakeController.ChangeSnakeVelocity(SnakeAppConstants.SnakeVelocityModifier);
+                _snakeController.ChangeSnakeVelocity(SnakeAppConstants.SnakeVelocityDebuffModifier);
                 _nextState = typeof(MovingState);
             }
         }

@@ -1,5 +1,6 @@
 ﻿using Data.Types;
 using Project.Snake.UMVCS.Controller;
+using Project.Snake.UMVCS.Model;
 using System;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace Project.Data.Types
 
         public override void EnterState()
         {
+            _snakeController.SnakeModel.HeadBlockType.ApplyPowerUp(_snakeController);
         }
 
         public override void ExitState()

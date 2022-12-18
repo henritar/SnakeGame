@@ -32,6 +32,7 @@ namespace Project.Snake.UMVCS.Controller
                 SetBodyTarget();
                 SetTargetDirection();
                 SnakeAIModel.Target.Value += SnakeAIModel.Direction.Value;
+                LookAtTarget();
             }
         }
 

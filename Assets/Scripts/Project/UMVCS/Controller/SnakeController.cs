@@ -7,6 +7,7 @@ using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Project.Snake.UMVCS.Controller
 {
@@ -74,9 +75,9 @@ namespace Project.Snake.UMVCS.Controller
 
         protected virtual void SnakeView_OnBlockPicked(BlockController block)
         {
-            SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
             Context.CommandManager.InvokeCommand(new AddBodyPartCommand(this, block));
+            SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
         }
 
         protected void SetBodyTarget()
@@ -93,6 +94,13 @@ namespace Project.Snake.UMVCS.Controller
                 }
             }
         }
+
+        protected void LookAtTarget()
+        {
+            SnakeView.transform.rotation = SnakeModel.Direction.Value == Vector3.up ? Quaternion.Euler(0, 0, 0) : SnakeModel.Direction.Value == Vector3.down ? Quaternion.Euler(0, 0, 180)
+                : SnakeModel.Direction.Value == Vector3.right ? Quaternion.Euler(0, 0, -90) : Quaternion.Euler(0, 0, 90);
+        }
+
 
         public void ChangeSnakeVelocity(float modifier)
         {

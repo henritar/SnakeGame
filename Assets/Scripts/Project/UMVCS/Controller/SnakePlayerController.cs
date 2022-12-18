@@ -14,7 +14,9 @@ public class SnakePlayerController : SnakeController
         if (SnakePlayerView.transform.position == SnakePlayerModel.Target.Value)
         {
             SetBodyTarget();
+            
             SnakePlayerModel.Target.Value += SnakePlayerModel.Direction.Value;
+            LookAtTarget();
         }
     }
 

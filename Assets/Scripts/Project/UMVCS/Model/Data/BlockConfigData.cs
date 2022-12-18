@@ -1,4 +1,5 @@
 using Architectures.UMVCS.Model.Data;
+using Project.Snake.UMVCS.Controller;
 using System;
 using UnityEngine;
 
@@ -30,5 +31,24 @@ namespace Project.Snake.UMVCS.Model
         public BlockTypeEnum BlockType { get => _blockType; set => _blockType = value; }
         public Material MaterialRef { get => _materialRef; set => _materialRef = value; }
 
+
+        public void ApplyPowerUp(SnakeController snakeController)
+        {
+            switch (_blockType)
+            {
+                case BlockTypeEnum.EnginePower:
+
+                    snakeController.ChangeSnakeVelocity(SnakeAppConstants.SnakeVelocityEnginePowerModifier);
+                    break;
+                case BlockTypeEnum.BatteringRam:
+
+                    break;
+
+                case BlockTypeEnum.TimeTravel:
+                    break;
+
+                default: break;
+            }
+        }
     }
 }
