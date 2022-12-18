@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6611207575101552542}
   - component: {fileID: 6611207575101552543}
   - component: {fileID: 6611207575101552536}
-  - component: {fileID: 6611207575101552538}
   - component: {fileID: 5020929892915539413}
   - component: {fileID: 4698288429584389254}
+  - component: {fileID: 6744675381656021146}
   m_Layer: 0
   m_Name: SnakeAIView
   m_TagString: Untagged
@@ -87,18 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6611207575101552538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611207575101552539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f42ef1d61c76b0d42b7c3e15dccac047, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &5020929892915539413
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -146,6 +134,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6744675381656021146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6611207575101552539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42ef1d61c76b0d42b7c3e15dccac047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6611207575215066402
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _model: {fileID: 6611207576302801736}
-  _view: {fileID: 6611207575101552538}
+  _view: {fileID: 6744675381656021146}
   _service: {fileID: 0}
 --- !u!1 &6611207576302801738
 GameObject:

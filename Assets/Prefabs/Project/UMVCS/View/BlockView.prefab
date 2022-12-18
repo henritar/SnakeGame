@@ -220,3 +220,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6c91dae837c245641a45151c8bed8fbd, type: 2}
   - {fileID: 11400000, guid: eca02e879bafafb4ca853042ab629923, type: 2}
   _blockType: {fileID: 0}
+  _position: {x: 0, y: 0, z: 0}

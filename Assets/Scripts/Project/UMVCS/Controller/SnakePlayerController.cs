@@ -15,9 +15,9 @@ public class SnakePlayerController : SnakeController
         {
             SetBodyTarget();
             SnakePlayerModel.Target.Value += SnakePlayerModel.Direction.Value;
-
         }
     }
+
     protected override void AddListenersCallbacks()
     {
         base.AddListenersCallbacks();

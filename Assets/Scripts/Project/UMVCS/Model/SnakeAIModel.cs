@@ -9,6 +9,8 @@ namespace Project.Snake.UMVCS.Model
     {
         [Observable(IsEditable = false)]
         [SerializeField]
-        public ObservableVector3 StartPosition = new ObservableVector3();
+        public ObservableVector3 BlockPosition = new ObservableVector3();
+
+
     }
 }
