@@ -1,5 +1,4 @@
 ﻿using Data.Types;
-using Interfaces;
 using Project.Snake;
 using Project.Snake.UMVCS.Controller;
 using Project.UMVCS.Controller.Commands;
@@ -10,13 +9,13 @@ namespace Project.Data.Types
 {
     public class AddingBodyPartState : BaseState
     {
-        private ISnake _snakeController;
+        private SnakeController _snakeController;
 
         private Type _nextState = null;
 
         private int _blocksToConsume = 0;
         
-        public AddingBodyPartState(ISnake sc)
+        public AddingBodyPartState(SnakeController sc)
         {
             _snakeController = sc;
             _blocksToConsume = 0;
@@ -31,7 +30,7 @@ namespace Project.Data.Types
         {
             _nextState = null;
             if (_blocksToConsume == 0 ) {
-                _snakeController.IContext.CommandManager.AddCommandListener<LoadBlockCommand>(CommandManager_OnLoadBlockCommand);
+                _snakeController.Context.CommandManager.AddCommandListener<LoadBlockCommand>(CommandManager_OnLoadBlockCommand);
                 _snakeController.ChangeSnakeVelocity(-SnakeAppConstants.SnakeVelocityModifier);
             }
             _blocksToConsume++;
@@ -39,7 +38,7 @@ namespace Project.Data.Types
 
         public override void ExitState()
         {
-            _snakeController.IContext.CommandManager.RemoveCommandListener<LoadBlockCommand>(CommandManager_OnLoadBlockCommand);
+            _snakeController.Context.CommandManager.RemoveCommandListener<LoadBlockCommand>(CommandManager_OnLoadBlockCommand);
         }
 
         public override void InitializeState()

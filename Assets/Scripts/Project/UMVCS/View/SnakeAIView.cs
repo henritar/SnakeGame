@@ -2,7 +2,7 @@
 
 namespace Project.Snake.UMVCS.View
 {
-    public class SnakeAIView : BaseView
+    public class SnakeAIView : SnakeView
     {
     }
 }

@@ -52,7 +52,7 @@ namespace Project.Snake.UMVCS.Controller
         {
             if(_mainModel.SnakeController != null)
             {
-                foreach (SnakeBodyController bodyPart in _mainModel.SnakeController.BodyList)
+                foreach (SnakeBodyController bodyPart in _mainModel.SnakeController.SnakeModel.BodyList)
                 {
                     Destroy(bodyPart.SnakeBodyView.gameObject);
                 }
@@ -114,10 +114,10 @@ namespace Project.Snake.UMVCS.Controller
 
             bodyController.SetBodyBlockType(e.BlockPicked.BlockModel.BlockType);
 
-            List<SnakeBodyController> bodyList = e.PickSnake.BodyList;
+            List<SnakeBodyController> bodyList = e.PickSnake.SnakeModel.BodyList;
             e.PickSnake.AddBodyPart(bodyController);
 
-            var previousType = e.PickSnake.HeadBlockType;
+            var previousType = e.PickSnake.SnakeModel.HeadBlockType;
             e.PickSnake.SetHeadBlockType(e.BlockPicked.BlockModel.BlockType);
 
             foreach (var bodyPart in bodyList)

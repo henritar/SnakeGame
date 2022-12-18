@@ -27,13 +27,8 @@ namespace Project.Snake.UMVCS.Model
         [SerializeField]
         private Material _materialRef;
 
-        public BlockTypeEnum BlockType { get => _blockType; }
-        public Material MaterialRef { get => _materialRef; }
+        public BlockTypeEnum BlockType { get => _blockType; set => _blockType = value; }
+        public Material MaterialRef { get => _materialRef; set => _materialRef = value; }
 
-        public BlockConfigData(BlockTypeEnum type, Material mat)
-        {
-            _materialRef= mat;
-            _blockType = type;
-        }
     }
 }

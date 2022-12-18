@@ -2,54 +2,39 @@ using Architectures.UMVCS;
 using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Assets.Scripts.Project.UMVCS.Controller.Commands;
-using Data.Types;
-using Interfaces;
 using Project.Data.Types;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
 {
-    public class SnakeController : BaseController<SnakeModel, SnakeView, NullService>, ISnake
+    public class SnakeController : BaseController<SnakeModel, SnakeView, NullService>
     {
-        public SnakeView SnakeView { get => BaseView as SnakeView; }
-        public SnakeModel SnakeModel { get => BaseModel as SnakeModel; }
+        public virtual SnakeView SnakeView { get => BaseView as SnakeView; }
+        public virtual SnakeModel SnakeModel { get => BaseModel as SnakeModel; }
 
-        public Context IContext { get => Context; }
-        public List<SnakeBodyController> BodyList { get => SnakeModel.BodyList; set => SnakeModel.BodyList = value; }
-        public BlockConfigData HeadBlockType { get => SnakeModel.HeadBlockType; set => SnakeModel.HeadBlockType = value; }
-        public ObservableFloat BodyVelocity { get => SnakeModel.Velocity; set => SnakeModel.Velocity.Value = value.Value; }
-
-        private void Start()
+        protected virtual void Start()
         {
-            HeadBlockType = new BlockConfigData(BlockTypeEnum.Head, SnakeView.GetComponent<Renderer>().material);
+            CreateHeadBlockInstance();
 
-            SnakeModel.Target.Value = transform.position;
-            SnakeModel.Direction.Value = Vector3.up;
-            SnakeModel.Velocity.Value = SnakeAppConstants.SnakeVelocity;
-            SnakeModel.BodySize.Value = 0;
+            StartModelValues();
 
-            Context.CommandManager.AddCommandListener<ChangeSnakeDirectionCommand>(CommandManager_OnChangeSnakeDirection);
+            AddListenersCallbacks();
 
-            SnakeView.OnPickBlock.AddListener(SnakeModel_OnBlockPicked);
+            InitializeStateMachine();
 
-            SnakeModel.InitializeStateMachine(this);
-            SnakeModel.StateMachine.CurrentStateType = typeof(MovingState);
-
-            Context.ModelLocator.AddModel(SnakeModel);
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
-            Context.CommandManager.RemoveCommandListener<ChangeSnakeDirectionCommand>(CommandManager_OnChangeSnakeDirection);
-            SnakeView.OnPickBlock.RemoveListener(SnakeModel_OnBlockPicked);
+            RemoveListenersCallbacks();
+
             Context.ModelLocator.RemoveModel(SnakeModel);
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             SnakeModel.StateMachine.UpdateStates();
 
@@ -58,35 +43,45 @@ namespace Project.Snake.UMVCS.Controller
             if (SnakeView.transform.position == SnakeModel.Target.Value)
             {
                 SetBodyTarget();
-                
+
                 SnakeModel.Target.Value += SnakeModel.Direction.Value;
 
             }
         }
 
-        public void ChangeSnakeVelocity(float modifier)
+        protected virtual void InitializeStateMachine()
         {
-            SnakeModel.Velocity.Value += modifier;
-            foreach (var bodyPart in BodyList)
-            {
-                bodyPart.BaseModel.Velocity.Value = SnakeModel.Velocity.Value;
-            }
-        }
- 
-        private void CommandManager_OnChangeSnakeDirection(ChangeSnakeDirectionCommand e)
-        {
-            var dir = e.Direction;
-            if (dir.x != 0) 
-            {
-                ValidateDirectionChange(Vector3.right * dir.x);
-            }
-            if (dir.y != 0)
-            {
-                ValidateDirectionChange(Vector3.up * dir.y);
-            }
+            SnakeModel.InitializeStateMachine(this);
+            SnakeModel.StateMachine.CurrentStateType = typeof(MovingState);
         }
 
-        private void SnakeModel_OnBlockPicked(BlockController block)
+        protected virtual void AddListenersCallbacks()
+        {
+
+            SnakeView.OnPickBlock.AddListener(SnakeModel_OnBlockPicked);
+        }
+
+        protected virtual void RemoveListenersCallbacks()
+        {
+            SnakeView.OnPickBlock.RemoveListener(SnakeModel_OnBlockPicked);
+        }
+
+        protected virtual void StartModelValues()
+        {
+            SnakeModel.Target.Value = SnakeView.transform.position;
+            SnakeModel.Direction.Value = Vector3.up;
+            SnakeModel.Velocity.Value = SnakeAppConstants.SnakeVelocity;
+            SnakeModel.BodySize.Value = 0;
+        }
+
+        protected virtual void CreateHeadBlockInstance()
+        {
+            SnakeModel.HeadBlockType = ScriptableObject.CreateInstance<BlockConfigData>();
+            SnakeModel.HeadBlockType.MaterialRef = SnakeView.GetComponent<Renderer>().material;
+            SnakeModel.HeadBlockType.BlockType = BlockTypeEnum.Head;
+        }
+
+        protected virtual void SnakeModel_OnBlockPicked(BlockController block)
         {
             SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
@@ -94,39 +89,39 @@ namespace Project.Snake.UMVCS.Controller
             Context.CommandManager.InvokeCommand(new AddBodyPartCommand(this, block));
         }
 
-        private void ValidateDirectionChange(Vector3 newDir)
+        protected void SetBodyTarget()
         {
-
-            if (SnakeModel.Direction.Value.x == -newDir.x || SnakeModel.Direction.Value.y == -newDir.y)
+            var bodyList = SnakeModel.BodyList;
+            if (bodyList.Count > 0)
             {
-                return;
+                bodyList[0].SetTarget(transform.position);
+
+                for (int i = bodyList.Count - 1; i > 0; i--)
+                {
+                    Vector3 pos = new Vector3(Mathf.RoundToInt(bodyList[i - 1].transform.position.x), Mathf.RoundToInt(bodyList[i - 1].transform.position.y), 0);
+                    bodyList[i].SetTarget(pos);
+                }
             }
-            SnakeModel.Direction.Value = newDir;
         }
 
-        private void SetBodyTarget()
+        public void ChangeSnakeVelocity(float modifier)
         {
-            if (BodyList.Count > 0)
+            SnakeModel.Velocity.Value += modifier;
+            foreach (var bodyPart in SnakeModel.BodyList)
             {
-                BodyList[0].SetTarget(transform.position);
-
-                for (int i = BodyList.Count - 1; i > 0; i--)
-                {
-                    Vector3 pos = new Vector3(Mathf.RoundToInt(BodyList[i - 1].transform.position.x), Mathf.RoundToInt(BodyList[i - 1].transform.position.y), 0);
-                    BodyList[i].SetTarget(pos);
-                }
+                bodyPart.BaseModel.Velocity.Value = SnakeModel.Velocity.Value;
             }
         }
 
         public void SetHeadBlockType(BlockConfigData newType)
         {
-            HeadBlockType = newType;
+            SnakeModel.HeadBlockType = newType;
             SnakeView.GetComponent<Renderer>().material = newType.MaterialRef;
         }
 
         public void AddBodyPart(SnakeBodyController bodyPart)
         {
-            BodyList.Add(bodyPart);
+            SnakeModel.BodyList.Add(bodyPart);
             SnakeModel.BodySize.Value += 1;
         }
     }
