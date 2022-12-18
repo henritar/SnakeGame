@@ -1,7 +1,4 @@
-﻿using Assets.Scripts.Project.UMVCS.Controller.Commands;
-using Project.Data.Types;
-using Project.Snake.UMVCS.Controller;
-using Project.Snake.UMVCS.Model;
+﻿using Project.Snake.UMVCS.Controller;
 using Project.UMVCS.Controller.Commands;
 using UnityEngine;
 

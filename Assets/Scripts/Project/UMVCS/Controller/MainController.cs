@@ -120,6 +120,7 @@ namespace Project.Snake.UMVCS.Controller
 
         private void CommandManager_OnAddBodyPart(AddBodyPartCommand e)
         {
+            Debug.Log("CHAMEI ADDBODY PART");
             SnakeBodyView bodyView = Instantiate(_mainView.SnakeBodyViewPrefab, e.BlockPicked.BlockView.transform.position, Quaternion.identity) as SnakeBodyView;
             bodyView.transform.SetParent(_mainView.MainParent);
             SnakeBodyController bodyController = bodyView.GetComponentInChildren<SnakeBodyController>();

@@ -14,6 +14,8 @@ namespace Project.Snake.UMVCS.Controller
         private void Start()
         {
             BlockModel.InitializeBlock(BlockView);
+
+            Context.ModelLocator.AddModel(BlockModel);
         }
 
         private void OnDestroy()

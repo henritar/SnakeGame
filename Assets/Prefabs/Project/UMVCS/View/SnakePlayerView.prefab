@@ -62,7 +62,7 @@ MonoBehaviour:
     OnValidate:
       m_PersistentCalls:
         m_Calls: []
-  Direction:
+  Target:
     _value: {x: 0, y: 0, z: 0}
     OnChanged:
       m_PersistentCalls:
@@ -70,7 +70,7 @@ MonoBehaviour:
     OnValidate:
       m_PersistentCalls:
         m_Calls: []
-  Target:
+  Direction:
     _value: {x: 0, y: 0, z: 0}
     OnChanged:
       m_PersistentCalls:
@@ -223,7 +223,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &7167218844810195785
 GameObject:
   m_ObjectHideFlags: 0

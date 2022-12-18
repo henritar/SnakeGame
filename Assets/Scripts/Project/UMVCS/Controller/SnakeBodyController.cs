@@ -30,7 +30,7 @@ namespace Project.Snake.UMVCS.Controller
             SnakeBodyModel.WaitUps.Value = snake.SnakeModel.BodyList.Count;
             SnakeBodyModel.Target.Value = SnakeBodyView.transform.position;
 
-            SnakeBodyModel.Snake.SnakeModel.Velocity.OnChanged.AddListener(SnakeModel_OnVelocityChanged);
+            snake.SnakeModel.Velocity.OnChanged.AddListener(SnakeModel_OnVelocityChanged);
         }
 
         private void SnakeModel_OnVelocityChanged(Observable obs)

@@ -27,6 +27,12 @@ namespace Project.Snake.UMVCS.Controller
             Context.ModelLocator.AddModel(SnakeAIModel);
         }
 
+        protected override void Update()
+        {
+            base.Update();
+            SetBodyTarget();
+        }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
