@@ -1,12 +1,16 @@
 ﻿using Architectures.UMVCS.Model;
 using Attributes;
 using Data.Types;
+using Interfaces;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
 {
     public class SnakeBodyModel : BaseModel
     {
+
+        private ISnake _snake = null;
+
         [SerializeField]
         private BlockConfigData _bodyBlockType = null;
 
@@ -23,5 +27,7 @@ namespace Project.Snake.UMVCS.Model
         public ObservableInt WaitUps = new ObservableInt();
 
         public BlockConfigData BodyBlockType { get => _bodyBlockType; set => _bodyBlockType = value; }
+
+        public ISnake Snake { get => _snake; set => _snake = value; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Data.Types;
+using Interfaces;
 using Project.Snake.UMVCS.Controller;
 using System;
 using UnityEngine;
@@ -8,9 +9,9 @@ namespace Project.Data.Types
     public class PickingState : BaseState
     {
 
-        private SnakeController _snakeController;
+        private ISnake _snakeController;
 
-        public PickingState(SnakeController sc)
+        public PickingState(ISnake sc)
         {
             _snakeController = sc;
         }

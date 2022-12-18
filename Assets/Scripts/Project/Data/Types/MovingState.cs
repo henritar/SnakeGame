@@ -1,4 +1,5 @@
 using Data.Types;
+using Interfaces;
 using Project.Snake.UMVCS.Controller;
 using System;
 
@@ -6,8 +7,8 @@ namespace Project.Data.Types
 {
     public class MovingState : BaseState
     {
-        private SnakeController _snakeController;
-        public MovingState(SnakeController sc)
+        private ISnake _snakeController;
+        public MovingState(ISnake sc)
         {
             _snakeController = sc;
         }

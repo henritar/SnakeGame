@@ -12,7 +12,13 @@ namespace Project.Snake.UMVCS.Model
     {
         public MainConfigData MainConfigData { get { return ConfigData as MainConfigData; } }
         public StateMachine StateMachine { get { return _stateMachine; } }
-        
+
+        public BlockConfigData HeadBlockType { get => _headBlockType; set => _headBlockType = value; }
+        public List<SnakeBodyController> BodyList { get => _bodyList; set => _bodyList = value; }
+
+        [SerializeField] private BlockConfigData _headBlockType;
+
+        [SerializeField] private List<SnakeBodyController> _bodyList;
 
         private StateMachine _stateMachine = new StateMachine();
 

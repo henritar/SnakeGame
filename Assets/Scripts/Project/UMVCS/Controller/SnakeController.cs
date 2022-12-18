@@ -1,6 +1,8 @@
+using Architectures.UMVCS;
 using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Assets.Scripts.Project.UMVCS.Controller.Commands;
+using Data.Types;
 using Interfaces;
 using Project.Data.Types;
 using Project.Snake.UMVCS.Model;
@@ -16,13 +18,10 @@ namespace Project.Snake.UMVCS.Controller
         public SnakeView SnakeView { get => BaseView as SnakeView; }
         public SnakeModel SnakeModel { get => BaseModel as SnakeModel; }
 
-        public List<SnakeBodyController> BodyList { get => _bodyList; set => _bodyList = value; }
-        public BlockConfigData HeadBlockType { get => _headBlockType; set => _headBlockType = value; }
-        public float BodyVelocity { get => SnakeModel.Velocity.Value; set => SnakeModel.Velocity.Value = value; }
-
-        [SerializeField] private List<SnakeBodyController> _bodyList;
-
-        [SerializeField] private BlockConfigData _headBlockType;
+        public Context IContext { get => Context; }
+        public List<SnakeBodyController> BodyList { get => SnakeModel.BodyList; set => SnakeModel.BodyList = value; }
+        public BlockConfigData HeadBlockType { get => SnakeModel.HeadBlockType; set => SnakeModel.HeadBlockType = value; }
+        public ObservableFloat BodyVelocity { get => SnakeModel.Velocity; set => SnakeModel.Velocity.Value = value.Value; }
 
         private void Start()
         {
