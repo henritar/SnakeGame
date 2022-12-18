@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AIConfigData
   m_EditorClassIdentifier: 
   _initialSnakePosition: {x: 0, y: 0, z: 0}
-  _blockSpawnBounderiesX: {x: 0, y: 0}
-  _blockSpawnBounderiesY: {x: 0, y: 0}
+  _blockSpawnBounderiesX: {x: -17, y: 17}
+  _blockSpawnBounderiesY: {x: -9, y: 9}

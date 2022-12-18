@@ -12,19 +12,25 @@ namespace Project.Snake.UMVCS.Controller
     {
         public SnakeBodyModel SnakeBodyModel { get => BaseModel as SnakeBodyModel; }
         public SnakeBodyView SnakeBodyView { get => BaseView as SnakeBodyView; }
+        
+        protected virtual void Update()
+        {
+            SnakeBodyView.MoveBodyPart(Vector3.MoveTowards(SnakeBodyView.transform.position, SnakeBodyModel.Target.Value, SnakeBodyModel.Velocity.Value * Time.deltaTime));
+        }
+
+        protected virtual void OnDestroy()
+        {
+            SnakeBodyModel.Snake.SnakeModel.Velocity.OnChanged.RemoveListener(SnakeModel_OnVelocityChanged);
+        }
 
         public void InitializeBodyPart(SnakeController snake)
         {
             SnakeBodyModel.Snake = snake;
-            SnakeBodyModel.Snake.SnakeModel.Velocity.OnChanged.AddListener(SnakeModel_OnVelocityChanged);
             SnakeBodyModel.Velocity.Value = snake.SnakeModel.Velocity.Value;
             SnakeBodyModel.WaitUps.Value = snake.SnakeModel.BodyList.Count;
             SnakeBodyModel.Target.Value = SnakeBodyView.transform.position;
-        }
-        
-        protected void Update()
-        {
-            SnakeBodyView.MoveBodyPart(Vector3.MoveTowards(SnakeBodyView.transform.position, SnakeBodyModel.Target.Value, SnakeBodyModel.Velocity.Value * Time.deltaTime));
+
+            SnakeBodyModel.Snake.SnakeModel.Velocity.OnChanged.AddListener(SnakeModel_OnVelocityChanged);
         }
 
         private void SnakeModel_OnVelocityChanged(Observable obs)

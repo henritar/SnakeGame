@@ -13,8 +13,12 @@ namespace Project.Snake.UMVCS.Model
         [SerializeField]
         private BlockConfigData _blockType = null;
 
+        [SerializeField]
+        private Vector3 _position;
+
         public List<BlockConfigData> BlockTypeList { get => BlockTypeList; }
         public BlockConfigData BlockType { get => _blockType; }
+        public Vector3 Position { get => _position; }
 
         public void InitializeBlock(BlockView view)
         {
@@ -22,6 +26,7 @@ namespace Project.Snake.UMVCS.Model
             BlockConfigData blockType = _blockTypeList[randIndex];
 
             _blockType = blockType;
+            _position = view.transform.position;
 
             view.GetComponent<Renderer>().material = blockType.MaterialRef;
         }

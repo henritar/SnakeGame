@@ -57,7 +57,6 @@ namespace Project.Snake.UMVCS.Controller
 
         protected virtual void AddListenersCallbacks()
         {
-
             SnakeView.OnPickBlock.AddListener(SnakeModel_OnBlockPicked);
         }
 
@@ -84,8 +83,8 @@ namespace Project.Snake.UMVCS.Controller
         protected virtual void SnakeModel_OnBlockPicked(BlockController block)
         {
             SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
-            Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
             Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
+            Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
             Context.CommandManager.InvokeCommand(new AddBodyPartCommand(this, block));
         }
 

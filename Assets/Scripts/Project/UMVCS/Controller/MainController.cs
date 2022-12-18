@@ -23,11 +23,12 @@ namespace Project.Snake.UMVCS.Controller
             Context.CommandManager.AddCommandListener<RestartApplicationCommand>(
                 CommandManager_OnRestartApplication);
 
+            Context.CommandManager.AddCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
+
             Context.CommandManager.AddCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
 
             Context.CommandManager.AddCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
 
-            Context.CommandManager.AddCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
 
             Context.ModelLocator.AddModel(_mainModel);
 
@@ -39,9 +40,9 @@ namespace Project.Snake.UMVCS.Controller
             Context.CommandManager.RemoveCommandListener<RestartApplicationCommand>(
                 CommandManager_OnRestartApplication);
 
-            Context.CommandManager.RemoveCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
-
             Context.CommandManager.RemoveCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
+
+            Context.CommandManager.RemoveCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
 
             Context.CommandManager.RemoveCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
 
@@ -57,8 +58,18 @@ namespace Project.Snake.UMVCS.Controller
                     Destroy(bodyPart.SnakeBodyView.gameObject);
                 }
                 Destroy(_mainModel.SnakeController.SnakeView.gameObject);
-                Destroy(Context.ModelLocator.GetModel<BlockModel>()?.transform.parent.gameObject);
             }
+            if (_mainModel.SnakeAIController != null)
+            {
+                foreach (SnakeBodyController bodyPart in _mainModel.SnakeAIController.SnakeModel.BodyList)
+                {
+                    Destroy(bodyPart.SnakeBodyView.gameObject);
+                }
+                Destroy(_mainModel.SnakeAIController.SnakeView.gameObject);
+            }
+            Destroy(Context.ModelLocator.GetModel<BlockModel>()?.transform.parent.gameObject);
+
+            
 
             SnakeView snakeView = Instantiate(_mainView.SnakeViewPrefab) as SnakeView;
             _mainModel.SnakeController = snakeView.GetComponentInChildren<SnakeController>();
@@ -67,6 +78,7 @@ namespace Project.Snake.UMVCS.Controller
 
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
             Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
+
         }
 
         private void CommandManager_OnRestartApplication(RestartApplicationCommand e)
@@ -95,6 +107,8 @@ namespace Project.Snake.UMVCS.Controller
             BlockView newBlock = Instantiate(_mainView.BlockViewPrefab, GetRandomPosition(), Quaternion.identity) as BlockView;
             newBlock.transform.SetParent(_mainView.MainParent);
             _mainModel.BlockController = newBlock.GetComponentInChildren<BlockController>();
+            Debug.Log("BLOCK LOCATION: " + newBlock.transform.position);
+            Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(newBlock.transform.position));
         }
 
         private Vector3 GetRandomPosition()

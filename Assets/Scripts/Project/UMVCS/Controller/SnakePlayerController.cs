@@ -8,6 +8,7 @@ public class SnakePlayerController : SnakeController
     public SnakePlayerView SnakePlayerView { get => BaseView as SnakePlayerView; }
     public SnakePlayerModel SnakePlayerModel { get => BaseModel as SnakePlayerModel; }
 
+
     protected override void AddListenersCallbacks()
     {
         base.AddListenersCallbacks();
