@@ -65,6 +65,14 @@ namespace Project.Snake.UMVCS.Controller
             var boundariesY = SnakeAIModel.MainConfigData.BlockSpawnBounderiesY;
             Vector3 position = new Vector3(Random.Range(boundariesX.x, boundariesX.y), Random.Range(boundariesY.x, boundariesY.y), 0);
             SnakeAIView.transform.position = position;
+            SnakeAIModel.Target.Value= position;
+            var bodyList = SnakeAIModel.BodyList;
+            for (int i = 0; i < SnakeAIModel.BodyList.Count; i++)
+            {
+                bodyList[i].SnakeBodyView.transform.position = position;
+                bodyList[i].SnakeBodyModel.Target.Value = position;
+                bodyList[i].SnakeBodyModel.WaitUps.Value = i;
+            }
         }
 
         private void CommandManager_OnSnakeAIDestination(SnakeAIDestinationCommand e)
