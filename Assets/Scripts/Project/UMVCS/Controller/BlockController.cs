@@ -11,14 +11,14 @@ namespace Project.Snake.UMVCS.Controller
         public BlockView BlockView { get => BaseView as BlockView; }
         public BlockModel BlockModel { get => BaseModel as BlockModel;  }
 
-        private void Start()
+        protected virtual void Start()
         {
             BlockModel.InitializeBlock(BlockView);
 
             Context.ModelLocator.AddModel(BlockModel);
         }
-
-        private void OnDestroy()
+        
+        protected virtual void OnDestroy()
         {
             Context.ModelLocator.RemoveModel(BlockModel);
         }

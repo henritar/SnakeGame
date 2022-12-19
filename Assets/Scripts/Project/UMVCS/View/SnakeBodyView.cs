@@ -18,7 +18,13 @@ namespace Project.Snake.UMVCS.View
         public void OnTriggerEnter2D(Collider2D other)
         {
             SnakeController sc = other.gameObject.GetComponentInChildren<SnakeController>();
-            if (sc as SnakeAIController)
+            if (sc == null) { return; }
+
+            if (sc.SnakeModel.BatteringRamCount.Value > 0)
+            {
+                sc.ChangeBatteringRamCount(-1);
+            }
+            else if (sc as SnakeAIController)
             {
                 OnAIHitEvent?.Invoke(sc as SnakeAIController);
             }

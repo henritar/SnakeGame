@@ -43,5 +43,5 @@ namespace Architectures.UMVCS.Controller
 		[SerializeField]
 		private S _service = null; //Keep this short naming for inspector
 
-	}
+    }
 }

@@ -23,12 +23,14 @@ public class SnakePlayerController : SnakeController
     protected override void AddListenersCallbacks()
     {
         base.AddListenersCallbacks();
+        SnakePlayerView.OnSnakeHitSnake.AddListener(SnakePlayerView_OnSnakeHitSnake);
         Context.CommandManager.AddCommandListener<ChangeSnakeDirectionCommand>(CommandManager_OnChangeSnakeDirection);
     }
 
     protected override void RemoveListenersCallbacks()
     {
         base.RemoveListenersCallbacks();
+        SnakePlayerView.OnSnakeHitSnake.RemoveListener(SnakePlayerView_OnSnakeHitSnake);
         Context.CommandManager.RemoveCommandListener<ChangeSnakeDirectionCommand>(CommandManager_OnChangeSnakeDirection);
     }
 
@@ -46,6 +48,18 @@ public class SnakePlayerController : SnakeController
     {
         Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
         base.SnakeView_OnBlockPicked(block);
+    }
+
+    private void SnakePlayerView_OnSnakeHitSnake(SnakeController otherSnake)
+    {
+        if (SnakeModel.BodySize.Value > otherSnake.SnakeModel.BodySize.Value)
+        {
+            Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(otherSnake as SnakeAIController, true));
+        }
+        else
+        {
+            Context.CommandManager.InvokeCommand(new RestartApplicationCommand());
+        }
     }
 
     private void CommandManager_OnChangeSnakeDirection(ChangeSnakeDirectionCommand e)

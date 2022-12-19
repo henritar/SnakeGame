@@ -4,6 +4,7 @@ using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
@@ -67,12 +68,26 @@ namespace Project.Snake.UMVCS.Controller
             Vector3 position = new Vector3(Random.Range(boundariesX.x, boundariesX.y), Random.Range(boundariesY.x, boundariesY.y), 0);
             SnakeAIView.transform.position = position;
             SnakeAIModel.Target.Value= position;
-            var bodyList = SnakeAIModel.BodyList;
-            for (int i = 0; i < SnakeAIModel.BodyList.Count; i++)
+            
+            if (resetSize)
             {
-                bodyList[i].SnakeBodyView.transform.position = position;
-                bodyList[i].SnakeBodyModel.Target.Value = position;
-                bodyList[i].SnakeBodyModel.WaitUps.Value = i;
+                for (int i = 0; i < SnakeAIModel.BodyList.Count; i++)
+                {
+                    Destroy(SnakeAIModel.BodyList[i].SnakeBodyView.gameObject);
+                }
+                SnakeAIModel.BodyList = new List<SnakeBodyController>();
+                SnakeAIModel.BodySize.Value = 0;
+                SetHeadBlockType(BlockConfigData.CreateNewBlockType(BlockTypeEnum.Head));
+            }
+            else
+            {
+                var bodyList = SnakeAIModel.BodyList;
+                for (int i = 0; i < SnakeAIModel.BodyList.Count; i++)
+                {
+                    bodyList[i].SnakeBodyView.transform.position = position;
+                    bodyList[i].SnakeBodyModel.Target.Value = position;
+                    bodyList[i].SnakeBodyModel.WaitUps.Value = i;
+                }
             }
         }
 

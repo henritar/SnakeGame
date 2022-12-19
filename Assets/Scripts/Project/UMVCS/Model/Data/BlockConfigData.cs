@@ -1,6 +1,7 @@
 using Architectures.UMVCS.Model.Data;
 using Project.Snake.UMVCS.Controller;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
@@ -31,6 +32,16 @@ namespace Project.Snake.UMVCS.Model
         public BlockTypeEnum BlockType { get => _blockType; set => _blockType = value; }
         public Material MaterialRef { get => _materialRef; set => _materialRef = value; }
 
+        public static BlockConfigData CreateNewBlockType(BlockTypeEnum type)
+        {
+            BlockConfigData blockData = Resources.Load<BlockConfigData>(type.ToString() + "BlockData");
+
+            BlockConfigData newBlockType = CreateInstance<BlockConfigData>();
+
+            newBlockType.BlockType = blockData.BlockType;
+            newBlockType.MaterialRef = blockData.MaterialRef;
+            return newBlockType;
+        }
 
         public void ApplyPowerUp(SnakeController snakeController)
         {
@@ -42,6 +53,7 @@ namespace Project.Snake.UMVCS.Model
                     break;
                 case BlockTypeEnum.BatteringRam:
 
+                    snakeController.ChangeBatteringRamCount(1);
                     break;
 
                 case BlockTypeEnum.TimeTravel:

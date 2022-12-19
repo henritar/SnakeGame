@@ -2,12 +2,14 @@ using Architectures.UMVCS;
 using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Assets.Scripts.Project.UMVCS.Controller.Commands;
+using Assets.Utils.Runtime.Managers;
 using Project.Data.Types;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
+using System;
+using System.Collections;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Project.Snake.UMVCS.Controller
 {
@@ -50,11 +52,13 @@ namespace Project.Snake.UMVCS.Controller
 
         protected virtual void AddListenersCallbacks()
         {
+            
             SnakeView.OnPickBlock.AddListener(SnakeView_OnBlockPicked);
         }
 
         protected virtual void RemoveListenersCallbacks()
         {
+            
             SnakeView.OnPickBlock.RemoveListener(SnakeView_OnBlockPicked);
         }
 
@@ -72,6 +76,8 @@ namespace Project.Snake.UMVCS.Controller
             SnakeModel.HeadBlockType.MaterialRef = SnakeView.GetComponent<Renderer>().material;
             SnakeModel.HeadBlockType.BlockType = BlockTypeEnum.Head;
         }
+
+        
 
         protected virtual void SnakeView_OnBlockPicked(BlockController block)
         {
@@ -121,6 +127,39 @@ namespace Project.Snake.UMVCS.Controller
         {
             SnakeModel.BodyList.Add(bodyPart);
             SnakeModel.BodySize.Value += 1;
+        }
+
+        public void ChangeBatteringRamCount(int v)
+        {
+            SnakeModel.BatteringRamCount.Value += v;
+            if (SnakeModel.BatteringRamCount.Value < SnakeModel.BatteringRamCount.PreviousValue)
+            {
+                if (SnakeModel.HeadBlockType.BlockType == BlockTypeEnum.BatteringRam)
+                {
+                    SnakeModel.HeadBlockType = BlockConfigData.CreateNewBlockType(BlockTypeEnum.Head);
+                    SnakeView.GetComponent<Renderer>().material = SnakeModel.HeadBlockType.MaterialRef;
+                }
+                else
+                {
+                    foreach (var bodyPart in SnakeModel.BodyList)
+                    {
+                        if (bodyPart.SnakeBodyModel.BodyBlockType.BlockType == BlockTypeEnum.BatteringRam)
+                        {
+                            bodyPart.SetBodyBlockType(BlockConfigData.CreateNewBlockType(BlockTypeEnum.Head));
+                            break;
+                        }
+                    }
+                }
+                CoroutinerManager.Start(BattleringRamCollisionCoroutine());
+            }
+        }
+
+        private IEnumerator BattleringRamCollisionCoroutine()
+        {
+            SnakeView.GetComponent<BoxCollider2D>().enabled = false;
+            yield return CoroutinerManager.WaitOneSecond;
+            if (SnakeView != null)
+                SnakeView.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 

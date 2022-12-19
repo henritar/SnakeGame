@@ -9,7 +9,7 @@ namespace Project.Snake.UMVCS.View
         private Transform _mainParent = null;
 
         [SerializeField]
-        private SnakeView _snakeViewPrefab = null;
+        private SnakePlayerView _snakeViewPrefab = null;
 
         [SerializeField]
         private SnakeAIView _snakeAIViewPrefab = null;
@@ -21,7 +21,7 @@ namespace Project.Snake.UMVCS.View
         private BlockView _blockViewPrefab = null;
 
         public Transform MainParent { get => _mainParent; }
-        public SnakeView SnakeViewPrefab { get => _snakeViewPrefab; }
+        public SnakePlayerView SnakePlayerViewPrefab { get => _snakeViewPrefab; }
         public SnakeBodyView SnakeBodyViewPrefab { get => _snakeBodyViewPrefab; }
         public BlockView BlockViewPrefab { get => _blockViewPrefab; }
         public SnakeAIView SnakeAIViewPrefab { get => _snakeAIViewPrefab; }

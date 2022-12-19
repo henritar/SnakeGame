@@ -8,14 +8,14 @@ namespace Project.Snake.UMVCS.Model
     public class MainModel : BaseModel
     {
         public MainConfigData MainConfigData { get => ConfigData as MainConfigData; }
-        public SnakeController SnakeController { get => _snakeController; set => _snakeController = value; }
+        public SnakePlayerController SnakePlayerController { get => _snakePlayerController; set => _snakePlayerController = value; }
         public SnakeAIController SnakeAIController { get => _snakeAIController; set => _snakeAIController = value; }
         public SnakeBodyController SnakeBodyController { get => _snakeBodyController; set => _snakeBodyController = value; }
         public BlockController BlockController { get => _blockController; set => _blockController = value; }
 
         [ReadOnly]
         [SerializeField]
-        private SnakeController _snakeController = null;
+        private SnakePlayerController _snakePlayerController = null;
 
         [ReadOnly]
         [SerializeField]

@@ -9,13 +9,14 @@ namespace Project.Snake.UMVCS.View
     public class SnakeView : BaseView
     {
         public PickBlockEvent OnPickBlock = new PickBlockEvent();
+        
 
         public void MoveSnake(Vector3 position)
         {
             transform.position = position;
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             BlockController block = other.gameObject.GetComponentInChildren<BlockController>();
             if (block as BlockController)
