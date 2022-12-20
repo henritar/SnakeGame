@@ -73,6 +73,7 @@ namespace Project.Snake.UMVCS.Controller
                 }
                 SnakeAIModel.BodyList = new List<SnakeBodyController>();
                 SnakeAIModel.BodySize.Value = 0;
+                SnakeAIModel.Velocity.Value = SnakeAppConstants.SnakeVelocity;
                 SetHeadBlockType(BlockConfigData.CreateNewBlockType(BlockTypeEnum.Head));
             }
             else

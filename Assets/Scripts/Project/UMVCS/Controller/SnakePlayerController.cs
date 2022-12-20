@@ -52,13 +52,35 @@ public class SnakePlayerController : SnakeController
 
     private void SnakePlayerView_OnSnakeHitSnake(SnakeController otherSnake)
     {
+
         if (SnakeModel.BodySize.Value > otherSnake.SnakeModel.BodySize.Value)
         {
-            Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(otherSnake as SnakeAIController, true));
+            if (otherSnake.SnakeModel.TimeTravelCount.Value > 0)
+            {
+                otherSnake.ChangeTimeTravelCount(-1);
+            }
+            else
+            {
+                if (otherSnake is SnakeAIController)
+                {
+                    Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(otherSnake as SnakeAIController, true));
+                }
+                else
+                {
+                    Context.CommandManager.InvokeCommand(new KillPlayerSnakeCommand(otherSnake as SnakePlayerController));
+                }
+            }
         }
         else
         {
-            Context.CommandManager.InvokeCommand(new RestartApplicationCommand());
+            if (SnakeModel.TimeTravelCount.Value > 0)
+            {
+                ChangeTimeTravelCount(-1);
+            }
+            else
+            {
+                Context.CommandManager.InvokeCommand(new KillPlayerSnakeCommand(this));
+            }
         }
     }
 

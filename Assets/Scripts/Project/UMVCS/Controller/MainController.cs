@@ -25,6 +25,8 @@ namespace Project.Snake.UMVCS.Controller
 
             Context.CommandManager.AddCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
 
+            Context.CommandManager.AddCommandListener<KillPlayerSnakeCommand>(CommandManager_OnKillPlayerSnake);
+
             Context.CommandManager.AddCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
 
             Context.CommandManager.AddCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
@@ -34,14 +36,29 @@ namespace Project.Snake.UMVCS.Controller
 
         protected virtual void OnDestroy()
         {
-            Context.CommandManager.RemoveCommandListener<RestartApplicationCommand>(
-                CommandManager_OnRestartApplication);
-
             Context.CommandManager.RemoveCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
 
             Context.CommandManager.RemoveCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
 
             Context.CommandManager.RemoveCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
+
+            Context.CommandManager.RemoveCommandListener<KillPlayerSnakeCommand>(CommandManager_OnKillPlayerSnake);
+
+            Context.CommandManager.RemoveCommandListener<RestartApplicationCommand>(
+                CommandManager_OnRestartApplication);
+
+        }
+
+        private void CommandManager_OnKillPlayerSnake(KillPlayerSnakeCommand e)
+        {
+            e.PlayerSnake.KillSnake();
+
+            List<SnakePlayerController> _remainingPlayers = Context.ModelLocator.GetModels<SnakePlayerController>();
+
+            if (_remainingPlayers.Count == 0) 
+            {
+                RestartApplication();
+            }
 
         }
 

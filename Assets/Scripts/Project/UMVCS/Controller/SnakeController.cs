@@ -110,6 +110,14 @@ namespace Project.Snake.UMVCS.Controller
                 : SnakeModel.Direction.Value == Vector3.right ? Quaternion.Euler(0, 0, -90) : Quaternion.Euler(0, 0, 90);
         }
 
+        public void KillSnake()
+        {
+            for (int i = 0; i < SnakeModel.BodyList.Count; i++)
+            {
+                Destroy(SnakeModel.BodyList[i].transform.parent.gameObject);
+            }
+            Destroy(gameObject);
+        }
 
         public void ChangeSnakeVelocity(float modifier)
         {
@@ -159,8 +167,6 @@ namespace Project.Snake.UMVCS.Controller
 
         public void ChangeTimeTravelCount(int v)
         {
-            SnakeBodyController bodyPartToChange = null;
-
             SnakeModel.TimeTravelCount.Value += v;
             string persistedData = "";
             if (SnakeModel.TimeTravelCount.Value < SnakeModel.TimeTravelCount.PreviousValue)
@@ -184,15 +190,6 @@ namespace Project.Snake.UMVCS.Controller
                 if (persistedData == "")
                     return;
                 Context.CommandManager.InvokeCommand(new LoadPersistedDataCommand(persistedData));
-                if (bodyPartToChange) 
-                {
-                    SnakeModel.HeadBlockType = BlockConfigData.CreateNewBlockType(BlockTypeEnum.Head);
-                    SnakeView.GetComponent<Renderer>().material = SnakeModel.HeadBlockType.MaterialRef;
-                }
-                else
-                {
-                    bodyPartToChange.SetBodyBlockType(BlockConfigData.CreateNewBlockType(BlockTypeEnum.Head));
-                }
             }
         }
 
