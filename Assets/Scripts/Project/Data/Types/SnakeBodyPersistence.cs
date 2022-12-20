@@ -10,6 +10,7 @@ namespace Project.Data.Types
     public class SnakeBodyPersistence
     {
         public BlockTypeEnum BlockType;
+        public string TimeTravelPersistedData;
         public Vector3 Position;
         public Vector3 Target;
         public float Velocity;
@@ -19,6 +20,7 @@ namespace Project.Data.Types
         public SnakeBodyPersistence(SnakeBodyModel bodyPart)
         {
             BlockType = bodyPart.BodyBlockType.BlockType;
+            TimeTravelPersistedData = bodyPart.BodyBlockType.TimeTravelPersistedData;
             Position = bodyPart.transform.parent.transform.position;
             Target = bodyPart.Target.Value;
             Velocity = bodyPart.Velocity.Value;

@@ -26,6 +26,7 @@ namespace Project.Data.Types
         public float Velocity;
         public int BlocksToConsume;
         public int BatteringRamCount;
+        public string TimeTravelPersistedData;
         public int TimeTravelCount;
         public Vector3 BlockPosition;
         public List<SnakeBodyPersistence> BodyList;
@@ -38,7 +39,8 @@ namespace Project.Data.Types
             Position = sm.transform.parent.transform.position;
             Target = sm.Target.Value;
             Direction = sm.Direction.Value;
-            Velocity = sm.Velocity.Value;
+            TimeTravelPersistedData = sm.TriggeredTimeTravel ? sm.BodyList[0].BaseModel.BodyBlockType.TimeTravelPersistedData :  sm.HeadBlockType.TimeTravelPersistedData;
+            Velocity = sm.TriggeredTimeTravel ? sm.Velocity.Value + SnakeAppConstants.SnakeVelocityDebuffModifier : sm.Velocity.Value;
             BatteringRamCount = sm.BatteringRamCount.Value;
             TimeTravelCount = sm.TimeTravelCount.Value;
             BodyList = new List<SnakeBodyPersistence>();
@@ -50,20 +52,22 @@ namespace Project.Data.Types
 
             if (sm.TriggeredTimeTravel)
             {
-                for (int i = sm.BodyList.Count - 1; i > 0; i--)
+                Debug.Log(sm.name);
+                for (int i = 0; i < sm.BodyList.Count - 1; i++)
                 {
                     SnakeBodyPersistence bodyPart = new SnakeBodyPersistence
                     {
-                        Position = sm.BodyList[i - 1].SnakeBodyView.transform.position,
-                        Target = sm.BodyList[i - 1].SnakeBodyModel.Target.Value,
-                        Velocity = sm.BodyList[i - 1].SnakeBodyModel.Velocity.Value,
-                        WaitUps = sm.BodyList[i - 1].SnakeBodyModel.WaitUps.Value,
-                        BlockType = sm.BodyList[i].SnakeBodyModel.BodyBlockType.BlockType
+                        Position = sm.BodyList[i].SnakeBodyView.transform.position,
+                        Target = sm.BodyList[i].SnakeBodyModel.Target.Value,
+                        Velocity = sm.BodyList[i].SnakeBodyModel.Velocity.Value + SnakeAppConstants.SnakeVelocityDebuffModifier,
+                        WaitUps = sm.BodyList[i].SnakeBodyModel.WaitUps.Value,
+                        BlockType = sm.BodyList[i + 1].SnakeBodyModel.BodyBlockType.BlockType,
+                        TimeTravelPersistedData = sm.BodyList[i + 1].SnakeBodyModel.BodyBlockType.TimeTravelPersistedData
                     };
 
                     BodyList.Add(bodyPart);
                 }
-                sm.TriggeredTimeTravel = false;
+                
             }
             else
             {

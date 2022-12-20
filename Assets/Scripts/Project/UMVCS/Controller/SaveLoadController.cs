@@ -1,14 +1,13 @@
 ﻿using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Architectures.UMVCS.View;
-using Data.Types;
 using Project.Data.Types;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
 using System.Collections.Generic;
 using UnityEngine;
-using static Project.Snake.UMVCS.Model.SaveLoadModel;
+using UnityEngine.UIElements;
 
 namespace Project.Snake.UMVCS.Controller
 {
@@ -55,6 +54,7 @@ namespace Project.Snake.UMVCS.Controller
             }
 
                 e.Block.TimeTravelPersistedData = JsonUtility.ToJson(SaveLoadModel.PersistentData);
+            Debug.Log(e.Block.TimeTravelPersistedData);
         }
 
         private void CommandManager_OnLoadPersistedData(LoadPersistedDataCommand e)
@@ -81,6 +81,7 @@ namespace Project.Snake.UMVCS.Controller
                 snakeModel.Direction.Value = snakePersistence.Direction;
                 snakeModel.BatteringRamCount.Value = snakePersistence.BatteringRamCount;
                 snakeModel.BodySize.Value = snakePersistence.BodyList.Count;
+                snakeModel.HeadBlockType.TimeTravelPersistedData = snakePersistence.TimeTravelPersistedData;
 
                 if (snakeModel.BodyList.Count > snakePersistence.BodyList.Count)
                 {
@@ -104,7 +105,6 @@ namespace Project.Snake.UMVCS.Controller
                 SnakeAIModel snakeAIModel = snakeModelList[i] as SnakeAIModel;
                 if (snakeAIModel != null)
                 {
-                    Debug.Log(snakePersistence.Type);
                     snakeAIModel.BlockPosition.Value = snakePersistence.BlockPosition;
                 }
 
@@ -118,6 +118,7 @@ namespace Project.Snake.UMVCS.Controller
                     snakeBodyModel.Velocity.Value = snakeBodyPersistence.Velocity;
                     snakeBodyModel.WaitUps.Value = snakeBodyPersistence.WaitUps;
                     snakeModel.BodyList[j].SetBodyBlockType(BlockConfigData.CreateNewBlockType(snakeBodyPersistence.BlockType));
+                    snakeBodyModel.BodyBlockType.TimeTravelPersistedData = snakeBodyPersistence.TimeTravelPersistedData;
                 }
             }
 

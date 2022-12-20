@@ -33,7 +33,5 @@ namespace Project.Snake.UMVCS.Model
 
         public SnakeController Snake { get => _snake; set => _snake = value; }
         public BoxCollider2D BodyCollider { get => _bodyCollider; set => _bodyCollider = value; }
-
-        
     }
 }

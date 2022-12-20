@@ -161,7 +161,7 @@ namespace Project.Snake.UMVCS.Controller
                         }
                     }
                 }
-                CoroutinerManager.Start(BattleringRamCollisionCoroutine());
+                CoroutinerManager.Start(ColliderDisableCoroutine());
             }
         }
 
@@ -173,6 +173,7 @@ namespace Project.Snake.UMVCS.Controller
             {
                 if (SnakeModel.HeadBlockType.BlockType == BlockTypeEnum.TimeTravel)
                 {
+                    Debug.Log("HeadBlockTimeTravel");
                     persistedData = SnakeModel.HeadBlockType.TimeTravelPersistedData;
                 }
                 else
@@ -181,6 +182,7 @@ namespace Project.Snake.UMVCS.Controller
                     {
                         if (bodyPart.SnakeBodyModel.BodyBlockType.BlockType == BlockTypeEnum.TimeTravel)
                         {
+                            Debug.Log("BodyBlockTimeTravel");
                             persistedData = bodyPart.SnakeBodyModel.BodyBlockType.TimeTravelPersistedData;
                             
                             break;
@@ -190,10 +192,11 @@ namespace Project.Snake.UMVCS.Controller
                 if (persistedData == "")
                     return;
                 Context.CommandManager.InvokeCommand(new LoadPersistedDataCommand(persistedData));
+                CoroutinerManager.Start(ColliderDisableCoroutine());
             }
         }
 
-        private IEnumerator BattleringRamCollisionCoroutine()
+        private IEnumerator ColliderDisableCoroutine()
         {
             SnakeView.GetComponent<BoxCollider2D>().enabled = false;
             yield return CoroutinerManager.WaitOneSecond;

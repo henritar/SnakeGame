@@ -78,7 +78,9 @@ namespace Project.Snake.UMVCS.Model
         {
             yield return new WaitForSeconds(0.2f);
             snakeController.Context.CommandManager.InvokeCommand(new PersistDataCommand(this));
-            
+            yield return new WaitForSeconds(0.2f);
+            snakeController.SnakeModel.TriggeredTimeTravel = false;
+
         }
     }
 }

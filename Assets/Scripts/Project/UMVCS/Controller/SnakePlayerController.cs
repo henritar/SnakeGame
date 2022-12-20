@@ -55,30 +55,37 @@ public class SnakePlayerController : SnakeController
 
         if (SnakeModel.BodySize.Value > otherSnake.SnakeModel.BodySize.Value)
         {
+            Debug.Log("BodySize > OtherBody Size");
             if (otherSnake.SnakeModel.TimeTravelCount.Value > 0)
             {
+                Debug.Log("TimeTravelUsed: " + otherSnake.name);
                 otherSnake.ChangeTimeTravelCount(-1);
             }
             else
             {
                 if (otherSnake is SnakeAIController)
                 {
+                    Debug.Log("AIKilled: " + otherSnake.name);
                     Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(otherSnake as SnakeAIController, true));
                 }
                 else
                 {
+                    Debug.Log("SnakeKilled: " + name);
                     Context.CommandManager.InvokeCommand(new KillPlayerSnakeCommand(otherSnake as SnakePlayerController));
                 }
             }
         }
         else
         {
+            Debug.Log("BodySize < OtherBody Size");
             if (SnakeModel.TimeTravelCount.Value > 0)
             {
+                Debug.Log("TimeTravelUsed: " + name);
                 ChangeTimeTravelCount(-1);
             }
             else
             {
+                Debug.Log("SnakeKilled: " + name);
                 Context.CommandManager.InvokeCommand(new KillPlayerSnakeCommand(this));
             }
         }
