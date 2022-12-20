@@ -1,6 +1,7 @@
 using Architectures.UMVCS.Model;
 using Attributes;
 using Project.Snake.UMVCS.Controller;
+using Project.Snake.UMVCS.View;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
@@ -12,6 +13,26 @@ namespace Project.Snake.UMVCS.Model
         public SnakeAIController SnakeAIController { get => _snakeAIController; set => _snakeAIController = value; }
         public SnakeBodyController SnakeBodyController { get => _snakeBodyController; set => _snakeBodyController = value; }
         public BlockController BlockController { get => _blockController; set => _blockController = value; }
+        public Transform MainParent { get => _mainParent; }
+        public SnakePlayerView SnakePlayerViewPrefab { get => _snakePlayerViewPrefab; }
+        public SnakeBodyView SnakeBodyViewPrefab { get => _snakeBodyViewPrefab; }
+        public BlockView BlockViewPrefab { get => _blockViewPrefab; }
+        public SnakeAIView SnakeAIViewPrefab { get => _snakeAIViewPrefab; }
+
+        [SerializeField]
+        private Transform _mainParent = null;
+
+        [SerializeField]
+        private SnakePlayerView _snakePlayerViewPrefab = null;
+
+        [SerializeField]
+        private SnakeAIView _snakeAIViewPrefab = null;
+
+        [SerializeField]
+        private SnakeBodyView _snakeBodyViewPrefab = null;
+
+        [SerializeField]
+        private BlockView _blockViewPrefab = null;
 
         [ReadOnly]
         [SerializeField]
@@ -29,14 +50,5 @@ namespace Project.Snake.UMVCS.Model
         [SerializeField]
         private BlockController _blockController = null;
         
-
-        public override void Initialize()
-        {
-            if (!IsInitialized)
-            {
-
-            }
-            base.Initialize();
-        }
     }
 }

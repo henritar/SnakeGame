@@ -1,17 +1,17 @@
 ﻿using Architectures.UMVCS.Model;
 using Project.Data.Types;
-using Project.Snake.UMVCS.Controller;
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
 {
+    [Serializable]
     public class SaveLoadModel : BaseModel
     {
-        [SerializeField]
-        private List<SnakePersistence> _snakePersistenceList;
+        public List<SnakePersistence> SnakePersistenceList;
 
-        [SerializeField]
-        private List<BlockPersistence> _blockPersistenceList;
+        public List<BlockPersistence> BlockPersistenceList;
     }
 }

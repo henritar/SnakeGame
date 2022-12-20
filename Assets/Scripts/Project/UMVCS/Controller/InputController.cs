@@ -21,6 +21,16 @@ namespace Project.Snake.UMVCS.Controller
             {
                 Context.CommandManager.InvokeCommand(new ChangeSnakeDirectionCommand(dir));
             }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                Context.CommandManager.InvokeCommand(new PersistDataCommand());
+            }
+
+            if(Input.GetKeyDown(KeyCode.Backspace))
+            {
+                Context.CommandManager.InvokeCommand(new LoadPersistedDataCommand());
+            }
             
         }
     }

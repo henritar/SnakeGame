@@ -17,8 +17,8 @@ namespace Project.Snake.UMVCS.Model
         private Vector3 _position;
 
         public List<BlockConfigData> BlockTypeList { get => BlockTypeList; }
-        public BlockConfigData BlockType { get => _blockType; }
         public Vector3 Position { get => _position; }
+        public BlockConfigData BlockType { get => _blockType; set => _blockType = value; }
 
         public void InitializeBlock(BlockView view)
         {

@@ -9,6 +9,7 @@ using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
@@ -34,7 +35,6 @@ namespace Project.Snake.UMVCS.Controller
         {
             RemoveListenersCallbacks();
 
-            Context.ModelLocator.RemoveModel(SnakeModel);
         }
 
         protected virtual void Update()
@@ -68,6 +68,7 @@ namespace Project.Snake.UMVCS.Controller
             SnakeModel.Direction.Value = Vector3.up;
             SnakeModel.Velocity.Value = SnakeAppConstants.SnakeVelocity;
             SnakeModel.BodySize.Value = 0;
+            SnakeModel.BodyList = new List<SnakeBodyController>();
         }
 
         protected virtual void CreateHeadBlockInstance()

@@ -2,8 +2,6 @@
 using Assets.Scripts.Project.UMVCS.Controller.Commands;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
-using Project.UMVCS.Controller.Commands;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +19,6 @@ namespace Project.Snake.UMVCS.Controller
             MainModel mainModel = Context.ModelLocator.GetModel<MainModel>();
             Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(mainModel.BlockController.BlockModel.Position));
 
-            Context.ModelLocator.AddModel(SnakeAIModel);
         }
 
         protected override void Update()
@@ -43,7 +40,6 @@ namespace Project.Snake.UMVCS.Controller
 
             RemoveListenersCallbacks();
 
-            Context.ModelLocator.RemoveModel(SnakeAIModel);
         }
 
         protected override void AddListenersCallbacks()

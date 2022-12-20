@@ -90,7 +90,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _configData: {fileID: 11400000, guid: 7f225a4b49896964faa8149cf4bc3a25, type: 2}
-  _snakeController: {fileID: 0}
+  _mainParent: {fileID: 6826099114954526358}
+  _snakePlayerViewPrefab: {fileID: 7167218843528373244, guid: 23490f3d783c7fd46a81245884dbf650, type: 3}
+  _snakeAIViewPrefab: {fileID: 6744675381656021146, guid: bdd48390f17cbfc428d98efcf76afa11, type: 3}
+  _snakeBodyViewPrefab: {fileID: 5184871657994859143, guid: c0ab9efd657ea6041843c412b287c520, type: 3}
+  _blockViewPrefab: {fileID: 6477561047506931670, guid: bbf5dc818f1429d4f8c0880f65035ef0, type: 3}
+  _snakePlayerController: {fileID: 0}
   _snakeAIController: {fileID: 0}
   _snakeBodyController: {fileID: 0}
   _blockController: {fileID: 0}
@@ -138,11 +143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef26ae24f3a526e4586bffdac52ae260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainParent: {fileID: 6826099114954526358}
-  _snakeViewPrefab: {fileID: 7167218843528373244, guid: 23490f3d783c7fd46a81245884dbf650, type: 3}
-  _snakeAIViewPrefab: {fileID: 6744675381656021146, guid: bdd48390f17cbfc428d98efcf76afa11, type: 3}
-  _snakeBodyViewPrefab: {fileID: 5184871657994859143, guid: c0ab9efd657ea6041843c412b287c520, type: 3}
-  _blockViewPrefab: {fileID: 6477561047506931670, guid: bbf5dc818f1429d4f8c0880f65035ef0, type: 3}
 --- !u!1 &2022957252981580559
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,6 +201,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6089837598041027246}
+  - {fileID: 1610244936054514768}
   m_Father: {fileID: 7222216897492231438}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -233,6 +234,7 @@ Transform:
   m_Children:
   - {fileID: 2468357241240524562}
   - {fileID: 5910079270539987473}
+  - {fileID: 6916341940122689742}
   m_Father: {fileID: 7222216897492231438}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -281,6 +283,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _model: {fileID: 3934742689210380840}
   _view: {fileID: 7804496957149606298}
+  _service: {fileID: 0}
+--- !u!1 &4940038195186567564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6916341940122689742}
+  - component: {fileID: 3825871446030152182}
+  m_Layer: 0
+  m_Name: PersistenceController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6916341940122689742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4940038195186567564}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8238368683854511211}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3825871446030152182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4940038195186567564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 226dd9d251845d342b0b17c20367d0d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _model: {fileID: 1424336680318311058}
+  _view: {fileID: 0}
   _service: {fileID: 0}
 --- !u!1 &7222216897492231443
 GameObject:
@@ -341,6 +389,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1d916e81e7dcc4686c9765d255332f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8902539694291483183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1610244936054514768}
+  - component: {fileID: 1424336680318311058}
+  m_Layer: 0
+  m_Name: PersistenceModel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1610244936054514768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8902539694291483183}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8135971798844533259}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1424336680318311058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8902539694291483183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f15c5971c487f334caed98bd7b987d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _configData: {fileID: 11400000, guid: f66ec6f2a73425c47bd274c4c36848bd, type: 2}
+  SnakePersistenceList: []
+  BlockPersistenceList: []
 --- !u!1 &9001482883029198709
 GameObject:
   m_ObjectHideFlags: 0

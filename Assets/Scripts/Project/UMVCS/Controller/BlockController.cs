@@ -2,7 +2,7 @@
 using Architectures.UMVCS.Service;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
-using System.Diagnostics;
+using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
 {
@@ -15,12 +15,10 @@ namespace Project.Snake.UMVCS.Controller
         {
             BlockModel.InitializeBlock(BlockView);
 
-            Context.ModelLocator.AddModel(BlockModel);
         }
         
         protected virtual void OnDestroy()
         {
-            Context.ModelLocator.RemoveModel(BlockModel);
         }
 
     }

@@ -26,6 +26,11 @@ namespace Architectures.UMVCS
 			return _models.OfType<T>().ToList().FirstOrDefault<T>();
 		}
 
+		public List<T> GetModels<T>()
+		{
+			return _models.OfType<T>().ToList();
+		}
+
 		public void RemoveModel(BaseModel baseModel)
 		{
 			_models.Remove(baseModel);

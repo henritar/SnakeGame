@@ -5,12 +5,14 @@ namespace Project.Snake
         public const string CreateAssetMenuPath = "Projects/Snake/";
         public const int CreateAssetMenuOrder = 1;
 
-        public static int AudioIndexBounce = 0;
-        public static int AudioIndexRising = 1;
-        public static int AudioIndexFalling = 2;
+        public const string GameStatePref = "GameState";
 
-        public static float SnakeVelocity = 5f;
-        public static float SnakeVelocityEnginePowerModifier = 1.5f;
-        public static float SnakeVelocityDebuffModifier = 1.5f;
+        public const int AudioIndexBounce = 0;
+        public const int AudioIndexRising = 1;
+        public const int AudioIndexFalling = 2;
+
+        public const float SnakeVelocity = 5f;
+        public const float SnakeVelocityEnginePowerModifier = 1.5f;
+        public const float SnakeVelocityDebuffModifier = 1.5f;
     }
 }

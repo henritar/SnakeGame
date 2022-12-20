@@ -30,7 +30,7 @@ namespace Project.Snake.UMVCS.Controller
         protected virtual void OnDestroy()
         {
 
-            SnakeBodyModel.Snake.SnakeModel.Velocity.OnChanged.RemoveListener(SnakeModel_OnVelocityChanged);
+            SnakeBodyModel.Snake?.SnakeModel.Velocity.OnChanged.RemoveListener(SnakeModel_OnVelocityChanged);
             SnakeBodyView.OnPlayerHitEvent.RemoveListener(SnakeBodyView_OnPlayerHit);
             SnakeBodyView.OnAIHitEvent.RemoveListener(SnakeBodyView_OnAIHit);
         }
