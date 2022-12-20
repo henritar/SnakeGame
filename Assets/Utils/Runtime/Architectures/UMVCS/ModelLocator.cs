@@ -26,7 +26,12 @@ namespace Architectures.UMVCS
 			return _models.OfType<T>().ToList().FirstOrDefault<T>();
 		}
 
-		public List<T> GetModels<T>()
+        public List<T> GetModelByIndex<T>(int index) where T : BaseModel
+        {
+            return _models.OfType<T>().ToList().Where(x => x.Index == index) as List<T>;
+        }
+
+        public List<T> GetModels<T>()
 		{
 			return _models.OfType<T>().ToList();
 		}

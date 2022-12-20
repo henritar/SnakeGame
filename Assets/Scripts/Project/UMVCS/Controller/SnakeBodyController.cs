@@ -53,7 +53,7 @@ namespace Project.Snake.UMVCS.Controller
 
         private void SnakeBodyView_OnAIHit(SnakeAIController sc)
         {
-            Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(sc, true));
+            Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(SnakeBodyModel.Index, sc, true));
         }
 
         private void SnakeBodyView_OnPlayerHit(SnakePlayerController sc)

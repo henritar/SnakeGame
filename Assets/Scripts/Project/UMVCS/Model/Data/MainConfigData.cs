@@ -1,4 +1,5 @@
 ﻿using Architectures.UMVCS.Model.Data;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
@@ -10,15 +11,15 @@ namespace Project.Snake.UMVCS.Model
 	public class MainConfigData : BaseConfigData
 	{
         [SerializeField]
-        private Vector3 _initialSnakePosition = new Vector3(0, 0, 0);
+        private List<Vector3> _initialSnakePosition = new List<Vector3>();
 
 		[SerializeField]
-        private Vector2Int _blockSpawnBounderiesX = new Vector2Int(0, 0);
+        private List<Vector2Int> _blockSpawnBounderiesX = new List<Vector2Int>();
 		[SerializeField]
-		private Vector2Int _blockSpawnBounderiesY = new Vector2Int(0, 0);
+		private List<Vector2Int> _blockSpawnBounderiesY = new List<Vector2Int>();
 
-        public Vector3 InitialSnakePosition { get => _initialSnakePosition;}
-        public Vector2Int BlockSpawnBounderiesX { get => _blockSpawnBounderiesX; }
-        public Vector2Int BlockSpawnBounderiesY { get => _blockSpawnBounderiesY; }
+        public List<Vector3> InitialSnakePosition { get => _initialSnakePosition;}
+        public List<Vector2Int> BlockSpawnBounderiesX { get => _blockSpawnBounderiesX; }
+        public List<Vector2Int> BlockSpawnBounderiesY { get => _blockSpawnBounderiesY; }
     }
 }

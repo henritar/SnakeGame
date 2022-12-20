@@ -16,10 +16,16 @@ namespace Project.Snake.UMVCS.Controller
             BlockModel.InitializeBlock(BlockView);
 
         }
-        
-        protected virtual void OnDestroy()
-        {
-        }
 
+        public void ShuffleLocation()
+        {
+            int index = BlockModel.Index;
+            MainModel mainModel = Context.ModelLocator.GetModel<MainModel>();
+            var boundariesX = mainModel.MainConfigData.BlockSpawnBounderiesX[index];
+            var boundariesY = mainModel.MainConfigData.BlockSpawnBounderiesY[index];
+            Vector3 position = new Vector3(Random.Range(boundariesX.x, boundariesX.y), Random.Range(boundariesY.x, boundariesY.y), 0);
+            BlockView.transform.position = position;
+            BlockModel.InitializeBlock(BlockView);
+        }
     }
 }

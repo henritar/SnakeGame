@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c8afeacb27d6fd47bd4a3dd28a29c41, type: 3}
   m_Name: MainConfigData
   m_EditorClassIdentifier: 
-  _initialSnakePosition: {x: 0, y: 0, z: 0}
-  _blockSpawnBounderiesX: {x: -17, y: 17}
-  _blockSpawnBounderiesY: {x: -9, y: 9}
+  _initialSnakePosition:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  _blockSpawnBounderiesX:
+  - {x: -17, y: 17}
+  - {x: 0, y: 0}
+  _blockSpawnBounderiesY:
+  - {x: -9, y: 9}
+  - {x: 0, y: 0}

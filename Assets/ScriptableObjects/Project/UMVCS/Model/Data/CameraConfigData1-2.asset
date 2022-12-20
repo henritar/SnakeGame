@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c8afeacb27d6fd47bd4a3dd28a29c41, type: 3}
-  m_Name: AIConfigData
+  m_Script: {fileID: 11500000, guid: d09610ad45b61fd41832ab9006cd0c70, type: 3}
+  m_Name: CameraConfigData1-2
   m_EditorClassIdentifier: 
-  _initialSnakePosition:
-  - {x: 0, y: 0, z: 0}
-  _blockSpawnBounderiesX:
-  - {x: -17, y: 17}
-  _blockSpawnBounderiesY:
-  - {x: -9, y: 9}
+  _cameraOffset: {x: 0, y: 0}
+  _cameraViewPort: {x: 0.5, y: 0.5}

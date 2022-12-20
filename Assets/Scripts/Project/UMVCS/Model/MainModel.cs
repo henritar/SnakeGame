@@ -2,6 +2,7 @@ using Architectures.UMVCS.Model;
 using Attributes;
 using Project.Snake.UMVCS.Controller;
 using Project.Snake.UMVCS.View;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Model
@@ -9,18 +10,27 @@ namespace Project.Snake.UMVCS.Model
     public class MainModel : BaseModel
     {
         public MainConfigData MainConfigData { get => ConfigData as MainConfigData; }
-        public SnakePlayerController SnakePlayerController { get => _snakePlayerController; set => _snakePlayerController = value; }
-        public SnakeAIController SnakeAIController { get => _snakeAIController; set => _snakeAIController = value; }
-        public SnakeBodyController SnakeBodyController { get => _snakeBodyController; set => _snakeBodyController = value; }
-        public BlockController BlockController { get => _blockController; set => _blockController = value; }
-        public Transform MainParent { get => _mainParent; }
+        public List<SnakePlayerController> SnakePlayerController { get => _snakePlayerController; set => _snakePlayerController = value; }
+        public List<SnakeAIController> SnakeAIController { get => _snakeAIController; set => _snakeAIController = value; }
+        public List<SnakeBodyController> SnakeBodyController { get => _snakeBodyController; set => _snakeBodyController = value; }
+        public List<BlockController> BlockController { get => _blockController; set => _blockController = value; }
+        public List<CameraController> CameraController { get => _cameraController; set => _cameraController = value; }
+        public int NumberOfPlayers { get => _numberOfPlayers; set => _numberOfPlayers = value; }
+        public List<Transform> MainParent { get => _mainParent; set => _mainParent = value; }
+        public CameraView CameraViewPrefab { get => _cameraViewPrefab; }
         public SnakePlayerView SnakePlayerViewPrefab { get => _snakePlayerViewPrefab; }
         public SnakeBodyView SnakeBodyViewPrefab { get => _snakeBodyViewPrefab; }
         public BlockView BlockViewPrefab { get => _blockViewPrefab; }
         public SnakeAIView SnakeAIViewPrefab { get => _snakeAIViewPrefab; }
 
         [SerializeField]
-        private Transform _mainParent = null;
+        private int _numberOfPlayers = 1;
+
+        [SerializeField]
+        private List<Transform> _mainParent = new List<Transform>();
+
+        [SerializeField]
+        private CameraView _cameraViewPrefab = null;
 
         [SerializeField]
         private SnakePlayerView _snakePlayerViewPrefab = null;
@@ -36,19 +46,23 @@ namespace Project.Snake.UMVCS.Model
 
         [ReadOnly]
         [SerializeField]
-        private SnakePlayerController _snakePlayerController = null;
+        private List<SnakePlayerController> _snakePlayerController = null;
 
         [ReadOnly]
         [SerializeField]
-        private SnakeAIController _snakeAIController = null;
+        private List<SnakeAIController> _snakeAIController = null;
 
         [ReadOnly]
         [SerializeField]
-        private SnakeBodyController _snakeBodyController = null;
+        private List<SnakeBodyController> _snakeBodyController = null;
 
         [ReadOnly]
         [SerializeField]
-        private BlockController _blockController = null;
-        
+        private List<BlockController> _blockController = null;
+
+        [ReadOnly]
+        [SerializeField]
+        private List<CameraController> _cameraController = null;
+
     }
 }

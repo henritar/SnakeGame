@@ -2,6 +2,7 @@
 using Assets.Scripts.Project.UMVCS.Controller.Commands;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
+using Project.UMVCS.Controller.Commands;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Project.Snake.UMVCS.Controller
             base.Start();
             
             MainModel mainModel = Context.ModelLocator.GetModel<MainModel>();
-            Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(mainModel.BlockController.BlockModel.Position));
+            Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(mainModel.BlockController[SnakeAIModel.Index].BlockModel.Position));
 
         }
 
@@ -59,8 +60,9 @@ namespace Project.Snake.UMVCS.Controller
 
         public void ShuffleLocation(bool resetSize = false)
         {
-            var boundariesX = SnakeAIModel.MainConfigData.BlockSpawnBounderiesX;
-            var boundariesY = SnakeAIModel.MainConfigData.BlockSpawnBounderiesY;
+            int index = SnakeAIModel.Index;
+            var boundariesX = SnakeAIModel.MainConfigData.BlockSpawnBounderiesX[index];
+            var boundariesY = SnakeAIModel.MainConfigData.BlockSpawnBounderiesY[index];
             Vector3 position = new Vector3(Random.Range(boundariesX.x, boundariesX.y), Random.Range(boundariesY.x, boundariesY.y), 0);
             SnakeAIView.transform.position = position;
             SnakeAIModel.Target.Value= position;

@@ -46,7 +46,7 @@ public class SnakePlayerController : SnakeController
 
     protected override void SnakeView_OnBlockPicked(BlockController block)
     {
-        Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand());
+        Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(SnakeModel.Index));
         base.SnakeView_OnBlockPicked(block);
     }
 
@@ -66,7 +66,7 @@ public class SnakePlayerController : SnakeController
                 if (otherSnake is SnakeAIController)
                 {
                     Debug.Log("AIKilled: " + otherSnake.name);
-                    Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(otherSnake as SnakeAIController, true));
+                    Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(otherSnake.SnakeModel.Index, otherSnake as SnakeAIController, true));
                 }
                 else
                 {

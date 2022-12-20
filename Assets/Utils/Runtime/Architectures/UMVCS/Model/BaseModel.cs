@@ -8,10 +8,14 @@ namespace Architectures.UMVCS.Model
 	/// </summary>
 	public class BaseModel : BaseActor
 	{
-		protected BaseConfigData ConfigData { get { return _configData; } }
+		protected BaseConfigData ConfigData { get { return _configData; } set => _configData = value; }
 
-		[SerializeField]
+        public int Index { get => _index; set => _index = value; }
+
+        [SerializeField]
 		private BaseConfigData _configData = null;
+
+		private int _index;
 
 		public override void Initialize()
 		{

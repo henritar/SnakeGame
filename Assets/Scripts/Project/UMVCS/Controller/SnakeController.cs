@@ -84,7 +84,7 @@ namespace Project.Snake.UMVCS.Controller
 
         protected virtual void SnakeView_OnBlockPicked(BlockController block)
         {
-            Context.CommandManager.InvokeCommand(new SpawnBlockCommand());
+            Context.CommandManager.InvokeCommand(new SpawnBlockCommand(SnakeModel.Index));
             Context.CommandManager.InvokeCommand(new AddBodyPartCommand(this, block));
             SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
         }

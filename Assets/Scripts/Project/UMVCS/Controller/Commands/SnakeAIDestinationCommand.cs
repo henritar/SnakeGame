@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Assets.Scripts.Project.UMVCS.Controller.Commands
+namespace Project.UMVCS.Controller.Commands
 {
     public class SnakeAIDestinationCommand : Command
     {
