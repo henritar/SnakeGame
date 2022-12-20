@@ -8,6 +8,7 @@ using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
 using System.Collections.Generic;
 using UnityEngine;
+using static Project.Snake.UMVCS.Model.SaveLoadModel;
 
 namespace Project.Snake.UMVCS.Controller
 {
@@ -17,8 +18,9 @@ namespace Project.Snake.UMVCS.Controller
 
         private void Start()
         {
-            SaveLoadModel.SnakePersistenceList = new List<SnakePersistence>();
-            SaveLoadModel.BlockPersistenceList = new List<BlockPersistence>();
+            SaveLoadModel.PersistentData = new SaveLoadModel.PersistData();
+            SaveLoadModel.PersistentData.SnakePersistenceList = new List<SnakePersistence>();
+            SaveLoadModel.PersistentData.BlockPersistenceList = new List<BlockPersistence>();
 
             Context.CommandManager.AddCommandListener<PersistDataCommand>(CommandManager_OnPersistData);
             Context.CommandManager.AddCommandListener<LoadPersistedDataCommand>(CommandManager_OnLoadPersistedData);
@@ -32,17 +34,16 @@ namespace Project.Snake.UMVCS.Controller
 
         private void CommandManager_OnPersistData(PersistDataCommand e)
         {
-            SaveLoadModel.SnakePersistenceList.Clear();
-            SaveLoadModel.BlockPersistenceList.Clear();
+            SaveLoadModel.PersistentData.SnakePersistenceList.Clear();
+            SaveLoadModel.PersistentData.BlockPersistenceList.Clear();
 
             List<SnakeModel> snakeModelList = Context.ModelLocator.GetModels<SnakeModel>();
             foreach (var snakeModel in snakeModelList)
             {
                 
-                SnakePersistence snake = snakeModel as SnakeAIModel ? new SnakeAIPersistence(snakeModel as SnakeAIModel) : new SnakePersistence(snakeModel);
+                SnakePersistence snake = new SnakePersistence(snakeModel);
 
-                SaveLoadModel.SnakePersistenceList.Add(snake);
-                Debug.Log(snakeModel.name);
+                SaveLoadModel.PersistentData.SnakePersistenceList.Add(snake);
             }
 
             List<BlockModel> blockModelList = Context.ModelLocator.GetModels<BlockModel>();
@@ -50,33 +51,29 @@ namespace Project.Snake.UMVCS.Controller
             {
                 BlockPersistence block = new BlockPersistence(blockModel);
 
-                SaveLoadModel.BlockPersistenceList.Add(block);
+                SaveLoadModel.PersistentData.BlockPersistenceList.Add(block);
             }
 
-            // IF MUST PERSISTE BETWEEN EXECUTIONS {
-                //string jsonPersistence = JsonUtility.ToJson(SaveLoadModel);
-                //PlayerPrefs.SetString(SnakeAppConstants.GameStatePref, jsonPersistence);
-            // }
+                e.Block.TimeTravelPersistedData = JsonUtility.ToJson(SaveLoadModel.PersistentData);
         }
 
         private void CommandManager_OnLoadPersistedData(LoadPersistedDataCommand e)
         {
-            // IF MUST PERSISTE BETWEEN EXECUTIONS {
-            //string jsonPersistence = PlayerPrefs.GetString(SnakeAppConstants.GameStatePref);
+            string jsonPersistence = e.PersistedData;
 
-            //SaveLoadModel _saveLoadModel = JsonUtility.FromJson<SaveLoadModel>(jsonPersistence);
-            //SaveLoadModel.SnakePersistenceList = _saveLoadModel.SnakePersistenceList;
-            //SaveLoadModel.BlockPersistenceList = _saveLoadModel.BlockPersistenceList;
-            // }
+            SaveLoadModel.PersistData _saveLoadModel = JsonUtility.FromJson<SaveLoadModel.PersistData>(jsonPersistence);
+            SaveLoadModel.PersistentData.SnakePersistenceList = _saveLoadModel.SnakePersistenceList;
+            SaveLoadModel.PersistentData.BlockPersistenceList = _saveLoadModel.BlockPersistenceList;
             
             
             List<SnakeModel> snakeModelList = Context.ModelLocator.GetModels<SnakeModel>();
             for (int i = 0; i < snakeModelList.Count; i++)
             {
                 var snakeModel = snakeModelList[i];
-                var snakePersistence = SaveLoadModel.SnakePersistenceList[i];
+                var snakePersistence = SaveLoadModel.PersistentData.SnakePersistenceList[i];
 
                 SnakeController snakeController = snakeModel.transform.parent.GetComponentInChildren<SnakeController>();
+
                 snakeController.SetHeadBlockType(BlockConfigData.CreateNewBlockType(snakePersistence.HeadBlockType));
                 snakeModel.transform.parent.transform.position = snakePersistence.Position;
                 snakeModel.Target.Value = snakePersistence.Target;
@@ -107,7 +104,8 @@ namespace Project.Snake.UMVCS.Controller
                 SnakeAIModel snakeAIModel = snakeModelList[i] as SnakeAIModel;
                 if (snakeAIModel != null)
                 {
-                    snakeAIModel.BlockPosition.Value = (snakePersistence as SnakeAIPersistence).BlockPosition;
+                    Debug.Log(snakePersistence.Type);
+                    snakeAIModel.BlockPosition.Value = snakePersistence.BlockPosition;
                 }
 
                 for (int j = 0; j < snakePersistence.BodyList.Count; j++)
@@ -120,7 +118,6 @@ namespace Project.Snake.UMVCS.Controller
                     snakeBodyModel.Velocity.Value = snakeBodyPersistence.Velocity;
                     snakeBodyModel.WaitUps.Value = snakeBodyPersistence.WaitUps;
                     snakeModel.BodyList[j].SetBodyBlockType(BlockConfigData.CreateNewBlockType(snakeBodyPersistence.BlockType));
-
                 }
             }
 
@@ -128,7 +125,7 @@ namespace Project.Snake.UMVCS.Controller
             for (int i = 0; i < blockModelList.Count; i++)
             {
                 var blockModel = blockModelList[i];
-                var blockPersistence = SaveLoadModel.BlockPersistenceList[i];
+                var blockPersistence = SaveLoadModel.PersistentData.BlockPersistenceList[i];
 
                 blockModel.transform.parent.transform.position = blockPersistence.Position;
                 var blockType = BlockConfigData.CreateNewBlockType(blockPersistence.BlockType);

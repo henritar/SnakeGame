@@ -28,6 +28,10 @@ namespace Project.Snake.UMVCS.Model
 
         [Observable(IsEditable = false)]
         [SerializeField]
+        public ObservableInt TimeTravelCount = new ObservableInt();
+
+        [Observable(IsEditable = false)]
+        [SerializeField]
         public ObservableFloat Velocity = new ObservableFloat();
 
         [Observable(IsEditable = false)]

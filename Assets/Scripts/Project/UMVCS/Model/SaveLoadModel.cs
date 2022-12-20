@@ -10,8 +10,14 @@ namespace Project.Snake.UMVCS.Model
     [Serializable]
     public class SaveLoadModel : BaseModel
     {
-        public List<SnakePersistence> SnakePersistenceList;
+        public PersistData PersistentData;
 
-        public List<BlockPersistence> BlockPersistenceList;
+        [Serializable]
+        public class PersistData
+        {
+            public List<SnakePersistence> SnakePersistenceList;
+
+            public List<BlockPersistence> BlockPersistenceList;
+        }
     }
 }

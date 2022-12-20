@@ -10,6 +10,7 @@ using Project.UMVCS.Controller.Commands;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
@@ -42,6 +43,7 @@ namespace Project.Snake.UMVCS.Controller
             SnakeModel.StateMachine.UpdateStates();
 
             SnakeView.MoveSnake(Vector3.MoveTowards(SnakeView.transform.position, SnakeModel.Target.Value, SnakeModel.Velocity.Value * Time.deltaTime));
+
         }
 
         protected virtual void InitializeStateMachine()
@@ -152,6 +154,45 @@ namespace Project.Snake.UMVCS.Controller
                     }
                 }
                 CoroutinerManager.Start(BattleringRamCollisionCoroutine());
+            }
+        }
+
+        public void ChangeTimeTravelCount(int v)
+        {
+            SnakeBodyController bodyPartToChange = null;
+
+            SnakeModel.TimeTravelCount.Value += v;
+            string persistedData = "";
+            if (SnakeModel.TimeTravelCount.Value < SnakeModel.TimeTravelCount.PreviousValue)
+            {
+                if (SnakeModel.HeadBlockType.BlockType == BlockTypeEnum.TimeTravel)
+                {
+                    persistedData = SnakeModel.HeadBlockType.TimeTravelPersistedData;
+                }
+                else
+                {
+                    foreach (var bodyPart in SnakeModel.BodyList)
+                    {
+                        if (bodyPart.SnakeBodyModel.BodyBlockType.BlockType == BlockTypeEnum.TimeTravel)
+                        {
+                            persistedData = bodyPart.SnakeBodyModel.BodyBlockType.TimeTravelPersistedData;
+                            
+                            break;
+                        }
+                    }
+                }
+                if (persistedData == "")
+                    return;
+                Context.CommandManager.InvokeCommand(new LoadPersistedDataCommand(persistedData));
+                if (bodyPartToChange) 
+                {
+                    SnakeModel.HeadBlockType = BlockConfigData.CreateNewBlockType(BlockTypeEnum.Head);
+                    SnakeView.GetComponent<Renderer>().material = SnakeModel.HeadBlockType.MaterialRef;
+                }
+                else
+                {
+                    bodyPartToChange.SetBodyBlockType(BlockConfigData.CreateNewBlockType(BlockTypeEnum.Head));
+                }
             }
         }
 

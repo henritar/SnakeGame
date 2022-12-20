@@ -14,7 +14,6 @@ public class SnakePlayerView : SnakeView
 
         if (snake != null)
         {
-            Debug.Log("Snakes Collided");
             OnSnakeHitSnake?.Invoke(snake);
         }
     }

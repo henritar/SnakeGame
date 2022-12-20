@@ -24,6 +24,10 @@ namespace Project.Snake.UMVCS.View
             {
                 sc.ChangeBatteringRamCount(-1);
             }
+            else if (sc.SnakeModel.TimeTravelCount.Value > 0)
+            {
+                sc.ChangeTimeTravelCount(-1);
+            }
             else if (sc as SnakeAIController)
             {
                 OnAIHitEvent?.Invoke(sc as SnakeAIController);

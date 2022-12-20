@@ -1,4 +1,5 @@
-﻿using Project.Snake.UMVCS.Model;
+﻿using Project.Snake;
+using Project.Snake.UMVCS.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace Project.Data.Types
         public Vector3 Direction;
         public float Velocity;
         public int BatteringRamCount;
+        public int TimeTravelCount;
+        public Vector3 BlockPosition;
         public List<SnakeBodyPersistence> BodyList;
 
         public SnakePersistence(SnakeModel sm)
@@ -34,9 +37,15 @@ namespace Project.Data.Types
             Position = sm.transform.parent.transform.position;
             Target = sm.Target.Value;
             Direction = sm.Direction.Value;
-            Velocity = sm.Velocity.Value;
+            Velocity = sm.Velocity.Value + SnakeAppConstants.SnakeVelocityDebuffModifier;
             BatteringRamCount = sm.BatteringRamCount.Value;
+            TimeTravelCount = sm.TimeTravelCount.Value;
             BodyList = new List<SnakeBodyPersistence>();
+
+            if (Type == SnakeTypeEnum.AI) 
+            {
+                BlockPosition = (sm as SnakeAIModel).BlockPosition.Value;
+            }
 
             foreach (var bodyPart in sm.BodyList)
             {

@@ -8,14 +8,14 @@ namespace Project.Snake.UMVCS.Model
 {
     public class SnakeBodyModel : BaseModel
     {
-
+        [SerializeField]
         private SnakeController _snake = null;
 
         [SerializeField]
-        private BoxCollider2D _bodyCollider;
+        private BlockConfigData _bodyBlockType = null;
 
         [SerializeField]
-        private BlockConfigData _bodyBlockType = null;
+        private BoxCollider2D _bodyCollider;
 
         [Observable(IsEditable = false)]
         [SerializeField]
@@ -33,5 +33,7 @@ namespace Project.Snake.UMVCS.Model
 
         public SnakeController Snake { get => _snake; set => _snake = value; }
         public BoxCollider2D BodyCollider { get => _bodyCollider; set => _bodyCollider = value; }
+
+        
     }
 }
