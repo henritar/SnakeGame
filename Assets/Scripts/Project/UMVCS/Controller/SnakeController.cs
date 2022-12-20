@@ -94,12 +94,12 @@ namespace Project.Snake.UMVCS.Controller
             var bodyList = SnakeModel.BodyList;
             if (bodyList.Count > 0)
             {
-                bodyList[0].SetTarget(new Vector3(Mathf.RoundToInt(SnakeView.transform.position.x), Mathf.RoundToInt(SnakeView.transform.position.y), SnakeView.transform.position.z));
+                bodyList[0].SetTarget(new Vector3(Mathf.RoundToInt(SnakeView.transform.position.x), Mathf.RoundToInt(SnakeView.transform.position.y), SnakeView.transform.position.z), this);
 
                 for (int i = bodyList.Count - 1; i > 0; i--)
                 {
                     Vector3 pos = new Vector3(Mathf.RoundToInt(bodyList[i - 1].transform.position.x), Mathf.RoundToInt(bodyList[i - 1].transform.position.y), 0);
-                    bodyList[i].SetTarget(pos);
+                    bodyList[i].SetTarget(pos, this);
                 }
             }
         }

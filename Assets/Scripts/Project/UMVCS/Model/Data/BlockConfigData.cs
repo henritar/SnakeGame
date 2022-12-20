@@ -66,6 +66,7 @@ namespace Project.Snake.UMVCS.Model
 
                 case BlockTypeEnum.TimeTravel:
                     snakeController.ChangeTimeTravelCount(1);
+                    snakeController.SnakeModel.TriggeredTimeTravel = true;
                     CoroutinerManager.Start(TimeTravelPowerUpCoroutine(snakeController));
                     break;
 
@@ -77,6 +78,7 @@ namespace Project.Snake.UMVCS.Model
         {
             yield return new WaitForSeconds(0.2f);
             snakeController.Context.CommandManager.InvokeCommand(new PersistDataCommand(this));
+            
         }
     }
 }

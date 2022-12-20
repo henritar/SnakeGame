@@ -15,12 +15,13 @@ namespace Project.Data.Types
         public float Velocity;
         public int WaitUps;
 
+        public SnakeBodyPersistence() { }
         public SnakeBodyPersistence(SnakeBodyModel bodyPart)
         {
             BlockType = bodyPart.BodyBlockType.BlockType;
             Position = bodyPart.transform.parent.transform.position;
             Target = bodyPart.Target.Value;
-            Velocity = bodyPart.Velocity.Value + SnakeAppConstants.SnakeVelocityDebuffModifier;
+            Velocity = bodyPart.Velocity.Value;
             WaitUps = bodyPart.WaitUps.Value;
         }
     }

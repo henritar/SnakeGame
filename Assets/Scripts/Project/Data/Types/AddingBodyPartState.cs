@@ -3,7 +3,6 @@ using Project.Snake;
 using Project.Snake.UMVCS.Controller;
 using Project.UMVCS.Controller.Commands;
 using System;
-using UnityEngine;
 
 namespace Project.Data.Types
 {
@@ -19,7 +18,7 @@ namespace Project.Data.Types
         {
             _snakeController = sc;
             _blocksToConsume = 0;
-        }
+         }
 
         public override void DestroyState()
         {

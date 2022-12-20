@@ -15,10 +15,13 @@ namespace Project.Snake.UMVCS.Model
 
         public BlockConfigData HeadBlockType { get => _headBlockType; set => _headBlockType = value; }
         public List<SnakeBodyController> BodyList { get => _bodyList; set => _bodyList = value; }
+        public bool TriggeredTimeTravel { get => triggeredTimeTravel; set => triggeredTimeTravel = value; }
 
         [SerializeField] private BlockConfigData _headBlockType;
 
         [SerializeField] private List<SnakeBodyController> _bodyList;
+
+        [SerializeField] private bool triggeredTimeTravel;
 
         private StateMachine _stateMachine = new StateMachine();
 

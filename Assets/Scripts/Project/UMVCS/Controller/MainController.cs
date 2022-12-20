@@ -1,13 +1,11 @@
 using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
-using Architectures.UMVCS.View;
 using Assets.Scripts.Project.UMVCS.Controller.Commands;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Project.Snake.UMVCS.Controller
 {

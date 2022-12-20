@@ -13,6 +13,6 @@ namespace Project.Snake
 
         public const float SnakeVelocity = 5f;
         public const float SnakeVelocityEnginePowerModifier = 1.5f;
-        public const float SnakeVelocityDebuffModifier = 1.5f;
+        public const float SnakeVelocityDebuffModifier = 3f;
     }
 }

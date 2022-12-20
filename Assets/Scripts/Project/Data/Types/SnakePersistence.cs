@@ -24,6 +24,7 @@ namespace Project.Data.Types
         public Vector3 Target;
         public Vector3 Direction;
         public float Velocity;
+        public int BlocksToConsume;
         public int BatteringRamCount;
         public int TimeTravelCount;
         public Vector3 BlockPosition;
@@ -33,11 +34,11 @@ namespace Project.Data.Types
         {
             Type = sm is SnakePlayerModel ? SnakeTypeEnum.Player : SnakeTypeEnum.AI;
             Name = sm.name;
-            HeadBlockType = sm.HeadBlockType.BlockType;
+            HeadBlockType = sm.TriggeredTimeTravel ? sm.BodyList[0].BaseModel.BodyBlockType.BlockType : sm.HeadBlockType.BlockType;
             Position = sm.transform.parent.transform.position;
             Target = sm.Target.Value;
             Direction = sm.Direction.Value;
-            Velocity = sm.Velocity.Value + SnakeAppConstants.SnakeVelocityDebuffModifier;
+            Velocity = sm.Velocity.Value;
             BatteringRamCount = sm.BatteringRamCount.Value;
             TimeTravelCount = sm.TimeTravelCount.Value;
             BodyList = new List<SnakeBodyPersistence>();
@@ -47,10 +48,32 @@ namespace Project.Data.Types
                 BlockPosition = (sm as SnakeAIModel).BlockPosition.Value;
             }
 
-            foreach (var bodyPart in sm.BodyList)
+            if (sm.TriggeredTimeTravel)
             {
-                BodyList.Add(new SnakeBodyPersistence(bodyPart.SnakeBodyModel));
+                for (int i = sm.BodyList.Count - 1; i > 0; i--)
+                {
+                    SnakeBodyPersistence bodyPart = new SnakeBodyPersistence
+                    {
+                        Position = sm.BodyList[i - 1].SnakeBodyView.transform.position,
+                        Target = sm.BodyList[i - 1].SnakeBodyModel.Target.Value,
+                        Velocity = sm.BodyList[i - 1].SnakeBodyModel.Velocity.Value,
+                        WaitUps = sm.BodyList[i - 1].SnakeBodyModel.WaitUps.Value,
+                        BlockType = sm.BodyList[i].SnakeBodyModel.BodyBlockType.BlockType
+                    };
+
+                    BodyList.Add(bodyPart);
+                }
+                sm.TriggeredTimeTravel = false;
             }
+            else
+            {
+                foreach (var bodyPart in sm.BodyList)
+                {
+                    BodyList.Add(new SnakeBodyPersistence(bodyPart.SnakeBodyModel));
+                }
+            }
+            
         }
+
     }
 }
