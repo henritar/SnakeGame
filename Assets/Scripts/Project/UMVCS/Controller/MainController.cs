@@ -16,17 +16,36 @@ namespace Project.Snake.UMVCS.Controller
         private MainView MainView { get { return BaseView as MainView; } }
 
 
-
         protected void Start()
         {
-            MainModel.BlockController = new List<BlockController>();
-            MainModel.SnakeAIController= new List<SnakeAIController>();
-            MainModel.SnakePlayerController= new List<SnakePlayerController>();
-            MainModel.SnakeBodyController= new List<SnakeBodyController>();
-            MainModel.MainParent = new List<Transform>();
+            InitializeModelProperties();
 
+            AddCommandManagerListeners();
+
+            CreateParentsAndCamera();
+
+            RestartApplication();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            RemoveCommandManagerListeners();
+
+        }
+
+        private void InitializeModelProperties()
+        {
+            MainModel.BlockController = new List<BlockController>();
+            MainModel.SnakeAIController = new List<SnakeAIController>();
+            MainModel.SnakePlayerController = new List<SnakePlayerController>();
+            MainModel.SnakeBodyController = new List<SnakeBodyController>();
+            MainModel.MainParent = new List<Transform>();
+        }
+
+        private void AddCommandManagerListeners()
+        {
             Context.CommandManager.AddCommandListener<RestartApplicationCommand>(
-                CommandManager_OnRestartApplication);
+                            CommandManager_OnRestartApplication);
 
             Context.CommandManager.AddCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
 
@@ -35,10 +54,33 @@ namespace Project.Snake.UMVCS.Controller
             Context.CommandManager.AddCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
 
             Context.CommandManager.AddCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
+        }
 
-            CreateParentsAndCamera();
+        private void RemoveCommandManagerListeners()
+        {
+            Context.CommandManager.RemoveCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
 
-            RestartApplication();
+            Context.CommandManager.RemoveCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
+
+            Context.CommandManager.RemoveCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
+
+            Context.CommandManager.RemoveCommandListener<KillPlayerSnakeCommand>(CommandManager_OnKillPlayerSnake);
+
+            Context.CommandManager.RemoveCommandListener<RestartApplicationCommand>(
+                CommandManager_OnRestartApplication);
+        }
+
+        private void CommandManager_OnKillPlayerSnake(KillPlayerSnakeCommand e)
+        {
+            e.PlayerSnake.KillSnake();
+
+            List<SnakePlayerController> _remainingPlayers = Context.ModelLocator.GetModels<SnakePlayerController>();
+
+            if (_remainingPlayers.Count == 0) 
+            {
+                RestartApplication();
+            }
+
         }
 
         private void CreateParentsAndCamera()
@@ -55,40 +97,13 @@ namespace Project.Snake.UMVCS.Controller
 
         private void CreateCamera(int index)
         {
-                CameraView cameraView = Instantiate(MainModel.CameraViewPrefab, Vector3.back * 10, Quaternion.identity) as CameraView;
-                CameraController cameraController = cameraView.GetComponentInChildren<CameraController>();
-                cameraController.CameraModel.Index = index;
-                MainModel.CameraController.Add(cameraController);
-                cameraView.transform.SetParent(MainModel.MainParent[index]);
+            CameraView cameraView = Instantiate(MainModel.CameraViewPrefab, Vector3.back * 10, Quaternion.identity) as CameraView;
+            CameraController cameraController = cameraView.GetComponentInChildren<CameraController>();
+            cameraController.CameraModel.Index = index;
+            MainModel.CameraController.Add(cameraController);
+            cameraView.transform.SetParent(MainModel.MainParent[index]);
         }
 
-        protected virtual void OnDestroy()
-        {
-            Context.CommandManager.RemoveCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
-
-            Context.CommandManager.RemoveCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
-
-            Context.CommandManager.RemoveCommandListener<SpawnAISnakeCommand>(CommandManager_OnSpawnAISnake);
-
-            Context.CommandManager.RemoveCommandListener<KillPlayerSnakeCommand>(CommandManager_OnKillPlayerSnake);
-
-            Context.CommandManager.RemoveCommandListener<RestartApplicationCommand>(
-                CommandManager_OnRestartApplication);
-
-        }
-
-        private void CommandManager_OnKillPlayerSnake(KillPlayerSnakeCommand e)
-        {
-            e.PlayerSnake.KillSnake();
-
-            List<SnakePlayerController> _remainingPlayers = Context.ModelLocator.GetModels<SnakePlayerController>();
-
-            if (_remainingPlayers.Count == 0) 
-            {
-                RestartApplication();
-            }
-
-        }
 
         private void RestartApplication()
         {
