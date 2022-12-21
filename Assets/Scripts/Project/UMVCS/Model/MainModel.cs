@@ -10,6 +10,11 @@ namespace Project.Snake.UMVCS.Model
     public class MainModel : BaseModel
     {
         public MainConfigData MainConfigData { get => ConfigData as MainConfigData; }
+
+        public List<Vector3> InitialSnakePosition { get => _initialSnakePosition; set => _initialSnakePosition = value; }
+        public List<Vector2Int> BlockSpawnBounderiesX { get => _blockSpawnBounderiesX; set => _blockSpawnBounderiesX = value; }
+        public List<Vector2Int> BlockSpawnBounderiesY { get => _blockSpawnBounderiesY; set => _blockSpawnBounderiesY = value;  }
+
         public List<SnakePlayerController> SnakePlayerController { get => _snakePlayerController; set => _snakePlayerController = value; }
         public List<SnakeAIController> SnakeAIController { get => _snakeAIController; set => _snakeAIController = value; }
         public List<SnakeBodyController> SnakeBodyController { get => _snakeBodyController; set => _snakeBodyController = value; }
@@ -44,6 +49,7 @@ namespace Project.Snake.UMVCS.Model
         [SerializeField]
         private BlockView _blockViewPrefab = null;
 
+
         [ReadOnly]
         [SerializeField]
         private List<SnakePlayerController> _snakePlayerController = null;
@@ -64,5 +70,13 @@ namespace Project.Snake.UMVCS.Model
         [SerializeField]
         private List<CameraController> _cameraController = null;
 
+
+        [SerializeField]
+        private List<Vector3> _initialSnakePosition = new List<Vector3>();
+
+        [SerializeField]
+        private List<Vector2Int> _blockSpawnBounderiesX = new List<Vector2Int>();
+        [SerializeField]
+        private List<Vector2Int> _blockSpawnBounderiesY = new List<Vector2Int>();
     }
 }

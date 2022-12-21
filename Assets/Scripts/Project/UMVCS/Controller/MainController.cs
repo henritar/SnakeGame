@@ -20,17 +20,15 @@ namespace Project.Snake.UMVCS.Controller
         {
             InitializeModelProperties();
 
-            InitializePlayersOffSet();
+            //InitializePlayersOffSet();
         }
 
         protected void Start()
         {
 
-            CreateParentsAndCamera();
-            
             AddCommandManagerListeners();
-
-            RestartApplication();
+            
+            
         }
 
         protected virtual void OnDestroy()
@@ -50,6 +48,8 @@ namespace Project.Snake.UMVCS.Controller
 
         private void AddCommandManagerListeners()
         {
+            Context.CommandManager.AddCommandListener<StartApplicationCommand>(CommandManager_OnStartApplication);
+
             Context.CommandManager.AddCommandListener<RestartApplicationCommand>(
                             CommandManager_OnRestartApplication);
 
@@ -60,10 +60,18 @@ namespace Project.Snake.UMVCS.Controller
             Context.CommandManager.AddCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
 
             Context.CommandManager.AddCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
+
+            Context.CommandManager.AddCommandListener<ChangeNumberPlayer>(CommandManager_OnChangeNumberPlayers);
         }
+
+       
 
         private void RemoveCommandManagerListeners()
         {
+            Context.CommandManager.RemoveCommandListener<StartApplicationCommand>(CommandManager_OnStartApplication);
+
+            Context.CommandManager.RemoveCommandListener<ChangeNumberPlayer>(CommandManager_OnChangeNumberPlayers);
+
             Context.CommandManager.RemoveCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
 
             Context.CommandManager.RemoveCommandListener<SpawnBlockCommand>(CommandManager_OnSpawnBlock);
@@ -89,14 +97,18 @@ namespace Project.Snake.UMVCS.Controller
 
         }
 
+
+
         private void InitializePlayersOffSet()
         {
             for (int i = 1; i < MainModel.NumberOfPlayers; i++)
             {
+                
                 MainModel.MainConfigData.InitialSnakePosition.Add(MainModel.MainConfigData.InitialSnakePosition[0] + 100 * i * Vector3.one);
                 MainModel.MainConfigData.BlockSpawnBounderiesX.Add(MainModel.MainConfigData.BlockSpawnBounderiesX[0] + 100 * i * Vector2Int.one);
                 MainModel.MainConfigData.BlockSpawnBounderiesY.Add(MainModel.MainConfigData.BlockSpawnBounderiesY[0] + 100 * i * Vector2Int.one);
             }
+            Debug.Log(MainModel.MainConfigData.InitialSnakePosition.Count);
         }
 
         private void CreateParentsAndCamera()
@@ -143,7 +155,7 @@ namespace Project.Snake.UMVCS.Controller
                         cameraConfigData.Init(viewPort, Vector2.one * viewPort);
                         break;
                 }
-
+                Debug.Log(index);
                 CreateCamera(index, cameraConfigData);
             }
         }
@@ -217,9 +229,26 @@ namespace Project.Snake.UMVCS.Controller
             }
         }
 
+        private void CommandManager_OnStartApplication(StartApplicationCommand e)
+        {
+            if (MainModel.NumberOfPlayers == 0)
+                return;
+
+            Context.CommandManager.InvokeCommand(new ToggleStartMenuCommand(false));
+
+            CreateParentsAndCamera();
+
+            RestartApplication();
+        }
+
         private void CommandManager_OnRestartApplication(RestartApplicationCommand e)
         {
             RestartApplication();
+        }
+
+        private void CommandManager_OnChangeNumberPlayers(ChangeNumberPlayer e)
+        {
+            MainModel.NumberOfPlayers = e.NumberOfPlayers;
         }
 
         private void CommandManager_OnSpawnAISnake(SpawnAISnakeCommand e)

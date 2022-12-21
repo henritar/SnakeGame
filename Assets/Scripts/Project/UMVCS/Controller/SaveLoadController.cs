@@ -54,7 +54,6 @@ namespace Project.Snake.UMVCS.Controller
             }
 
                 e.Block.TimeTravelPersistedData = JsonUtility.ToJson(SaveLoadModel.PersistentData);
-            Debug.Log(e.Block.TimeTravelPersistedData);
         }
 
         private void CommandManager_OnLoadPersistedData(LoadPersistedDataCommand e)

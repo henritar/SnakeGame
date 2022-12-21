@@ -62,8 +62,9 @@ namespace Project.Snake.UMVCS.Controller
         public void ShuffleLocation(bool resetSize = false)
         {
             int index = SnakeAIModel.Index;
-            var boundariesX = SnakeAIModel.MainConfigData.BlockSpawnBounderiesX[index];
-            var boundariesY = SnakeAIModel.MainConfigData.BlockSpawnBounderiesY[index];
+            MainModel mainModel = Context.ModelLocator.GetModel<MainModel>();
+            var boundariesX = mainModel.MainConfigData.BlockSpawnBounderiesX[index];
+            var boundariesY = mainModel.MainConfigData.BlockSpawnBounderiesY[index];
             Vector3 position = new Vector3(Random.Range(boundariesX.x, boundariesX.y), Random.Range(boundariesY.x, boundariesY.y), 0);
             SnakeAIView.transform.position = position;
             SnakeAIModel.Target.Value= position;

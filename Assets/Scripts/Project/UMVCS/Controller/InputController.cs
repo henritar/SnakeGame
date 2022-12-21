@@ -1,8 +1,10 @@
 ﻿using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Architectures.UMVCS.View;
+using Assets.Utils.Runtime.Managers;
 using Project.Snake.UMVCS.Model;
 using Project.UMVCS.Controller.Commands;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +17,7 @@ namespace Project.Snake.UMVCS.Controller
         private void Awake()
         {
             InputModel.KeyCodes = new HashSet<KeyCode>();
-
+            
         }
 
         protected void Update()
@@ -29,6 +31,11 @@ namespace Project.Snake.UMVCS.Controller
             if (!dir.Equals(Vector3.zero))
             {
                 Context.CommandManager.InvokeCommand(new ChangeSnakeDirectionCommand(dir));
+            }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                Context.CommandManager.InvokeCommand(new StartApplicationCommand());
+                
             }
             
         }
@@ -47,25 +54,41 @@ namespace Project.Snake.UMVCS.Controller
                     InputModel.KeyCodes.Add(e.keyCode);
                     //Debug.Log("InputController: Added key code: " + e.keyCode);
                 }
-                if (InputModel.KeyCodes.Count == 2)
+                else if (InputModel.KeyCodes.Count == 2)
                 {
-                    //ADD EVENT
+
+                    CoroutinerManager.Start(AddKeysCoroutine());
                     //Debug.Log("InputController: AddEventTrigger");
+
                 }
             }
             if (e.type == EventType.KeyUp &&
                  e.keyCode.ToString().Length == 1 &&
                     char.IsLetter(e.keyCode.ToString()[0]))
             {
-                InputModel.KeyCodes.Remove(e.keyCode);
+                
                 //Debug.Log("InputController: Removed key code: " + e.keyCode);
                 if (InputModel.KeyCodes.Count < 2)
                 {
                     //Debug.Log("InputController: RemoveEventTrigger");
                     //REMOVE EVENT
+                    if (InputModel.IsCoroutineRunning)
+                    {
+                        CoroutinerManager.Stop(AddKeysCoroutine());
+                        InputModel.IsCoroutineRunning = true;
+                    }
                 }
+                InputModel.KeyCodes.Remove(e.keyCode);
             }
+        }
 
+
+        private IEnumerator AddKeysCoroutine()
+        {
+            InputModel.IsCoroutineRunning = false;
+            yield return CoroutinerManager.WaitOneSecond;
+            Context.CommandManager.InvokeCommand(new AddNewPlayerCommand(InputModel.KeyCodes));
+            InputModel.IsCoroutineRunning = true;
         }
     }
 }
