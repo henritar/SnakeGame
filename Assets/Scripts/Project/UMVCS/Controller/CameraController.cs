@@ -16,9 +16,9 @@ namespace Project.Snake.UMVCS.Controller
             
         }
 
-        public void InitCamera(CameraConfigData cameraConfigData)
+        public void InitCamera()
         {
-            CameraModel.InitCamera(cameraConfigData);
+            CameraModel.InitCamera();
         }
     }
 }

@@ -16,13 +16,19 @@ namespace Project.Snake.UMVCS.Controller
         private MainView MainView { get { return BaseView as MainView; } }
 
 
-        protected void Start()
+        private void Awake()
         {
             InitializeModelProperties();
 
-            AddCommandManagerListeners();
+            InitializePlayersOffSet();
+        }
+
+        protected void Start()
+        {
 
             CreateParentsAndCamera();
+            
+            AddCommandManagerListeners();
 
             RestartApplication();
         }
@@ -83,23 +89,73 @@ namespace Project.Snake.UMVCS.Controller
 
         }
 
+        private void InitializePlayersOffSet()
+        {
+            for (int i = 1; i < MainModel.NumberOfPlayers; i++)
+            {
+                MainModel.MainConfigData.InitialSnakePosition.Add(MainModel.MainConfigData.InitialSnakePosition[0] + 100 * i * Vector3.one);
+                MainModel.MainConfigData.BlockSpawnBounderiesX.Add(MainModel.MainConfigData.BlockSpawnBounderiesX[0] + 100 * i * Vector2Int.one);
+                MainModel.MainConfigData.BlockSpawnBounderiesY.Add(MainModel.MainConfigData.BlockSpawnBounderiesY[0] + 100 * i * Vector2Int.one);
+            }
+        }
+
         private void CreateParentsAndCamera()
         {
+            int ratio = 1, i = 0;
+
+            do
+            {
+                ratio = (int) Mathf.Pow(2, i++);
+            } while (MainModel.NumberOfPlayers > ratio);
+
+            float offSet = 1f / ratio;
+
+
+            float power = Mathf.Pow(2, i - 2);
+            Vector2 viewPort = i == 1 ? Vector2.one : i % 2 == 0 ? new Vector2(offSet * power, offSet) : new Vector2(offSet * power, offSet * power);
 
             for (int index = 0; index < MainModel.NumberOfPlayers; index++)
             {
                 GameObject mainParent = new GameObject(SnakeAppConstants.MainParent + index);
                 mainParent.transform.SetParent(MainView.transform);
                 MainModel.MainParent.Add(mainParent.transform);
-                CreateCamera(index);
+                
+                
+                CameraConfigData cameraConfigData = ScriptableObject.CreateInstance<CameraConfigData>();
+
+                switch (index % 4)
+                {
+                    case 0:
+                        if (index == 0)
+                        {
+                            cameraConfigData.Init(viewPort, Vector2.zero);
+                            break;
+                        }
+                        cameraConfigData.Init(viewPort, Vector2.one * viewPort);
+                        break;
+                    case 1:
+                        cameraConfigData.Init(viewPort, Vector2.right * viewPort);
+                        break;
+                    case 2:
+                        cameraConfigData.Init(viewPort, Vector2.up * viewPort);
+                        break;
+                    case 3:
+                        cameraConfigData.Init(viewPort, Vector2.one * viewPort);
+                        break;
+                }
+
+                CreateCamera(index, cameraConfigData);
             }
         }
 
-        private void CreateCamera(int index)
+        private void CreateCamera(int index, CameraConfigData cameraConfigData)
         {
-            CameraView cameraView = Instantiate(MainModel.CameraViewPrefab, Vector3.back * 10, Quaternion.identity) as CameraView;
+            Vector3 cameraPosition = new Vector3(MainModel.MainConfigData.InitialSnakePosition[index].x, MainModel.MainConfigData.InitialSnakePosition[index].y, -10);
+            CameraView cameraView = Instantiate(MainModel.CameraViewPrefab, cameraPosition, Quaternion.identity) as CameraView;
             CameraController cameraController = cameraView.GetComponentInChildren<CameraController>();
             cameraController.CameraModel.Index = index;
+            cameraController.CameraModel.CameraConfigData = cameraConfigData;
+            cameraController.CameraModel.InitCamera();
             MainModel.CameraController.Add(cameraController);
             cameraView.transform.SetParent(MainModel.MainParent[index]);
         }
@@ -148,7 +204,7 @@ namespace Project.Snake.UMVCS.Controller
 
             for (int i = 0; i < MainModel.NumberOfPlayers; i++)
             {
-                SnakePlayerView snakePlayerView = Instantiate(MainModel.SnakePlayerViewPrefab) as SnakePlayerView;
+                SnakePlayerView snakePlayerView = Instantiate(MainModel.SnakePlayerViewPrefab, MainModel.MainConfigData.InitialSnakePosition[i], Quaternion.identity) as SnakePlayerView;
                 snakePlayerView.transform.SetParent(MainModel.MainParent[i].transform);
                 SnakePlayerController snakePlayerController = snakePlayerView.GetComponentInChildren<SnakePlayerController>();
                 snakePlayerController.SnakeModel.Index = i;
@@ -170,7 +226,6 @@ namespace Project.Snake.UMVCS.Controller
         {
             if (e.Index < MainModel.SnakeAIController.Count)
             {
-                Debug.Log(MainModel.SnakeAIController.Count);
                 MainModel.SnakeAIController[e.Index].ShuffleLocation(e.ResetSnake);
             }
             else
@@ -199,7 +254,7 @@ namespace Project.Snake.UMVCS.Controller
                 MainModel.BlockController.Add(blockController);
             }
             
-            Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(newBlock.transform.position));
+            Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(newBlock.transform.position, e.Index));
     }
 
         private Vector3 GetRandomPosition(int index)

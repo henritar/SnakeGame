@@ -18,7 +18,8 @@ namespace Project.Snake.UMVCS.Controller
             base.Start();
             
             MainModel mainModel = Context.ModelLocator.GetModel<MainModel>();
-            Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(mainModel.BlockController[SnakeAIModel.Index].BlockModel.Position));
+            Debug.Log(mainModel.BlockController.Count);
+            Context.CommandManager.InvokeCommand(new SnakeAIDestinationCommand(mainModel.BlockController[SnakeAIModel.Index].BlockModel.Position, SnakeAIModel.Index));
 
         }
 
@@ -92,7 +93,8 @@ namespace Project.Snake.UMVCS.Controller
 
         private void CommandManager_OnSnakeAIDestination(SnakeAIDestinationCommand e)
         {
-            SnakeAIModel.BlockPosition.Value = e.Destination;
+            if(e.Index == SnakeModel.Index)
+                SnakeAIModel.BlockPosition.Value = e.Destination;
         }
 
         private void SetTargetDirection()

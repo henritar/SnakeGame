@@ -14,11 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialSnakePosition:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
   _blockSpawnBounderiesX:
   - {x: -17, y: 17}
-  - {x: 0, y: 0}
   _blockSpawnBounderiesY:
   - {x: -9, y: 9}
-  - {x: 0, y: 0}
