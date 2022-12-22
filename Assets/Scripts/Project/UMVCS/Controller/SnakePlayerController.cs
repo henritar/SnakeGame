@@ -93,14 +93,17 @@ public class SnakePlayerController : SnakeController
 
     private void CommandManager_OnChangeSnakeDirection(ChangeSnakeDirectionCommand e)
     {
-        var dir = e.Direction;
-        if (dir.x != 0)
+        if (e.Index == SnakePlayerModel.Index)
         {
-            ValidateDirectionChange(Vector3.right * dir.x);
-        }
-        else if (dir.y != 0)
-        {
-            ValidateDirectionChange(Vector3.up * dir.y);
+            var dir = e.Direction;
+            if (dir.x != 0)
+            {
+                ValidateDirectionChange(Vector3.right * dir.x);
+            }
+            else if (dir.y != 0)
+            {
+                ValidateDirectionChange(Vector3.up * dir.y);
+            }
         }
     }
 }

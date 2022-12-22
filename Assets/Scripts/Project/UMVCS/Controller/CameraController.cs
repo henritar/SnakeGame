@@ -11,14 +11,5 @@ namespace Project.Snake.UMVCS.Controller
         public CameraModel CameraModel { get => BaseModel as CameraModel; }
         public CameraView CameraView { get => BaseView as CameraView; }
 
-        private void Start()
-        {
-            
-        }
-
-        public void InitCamera()
-        {
-            CameraModel.InitCamera();
-        }
     }
 }

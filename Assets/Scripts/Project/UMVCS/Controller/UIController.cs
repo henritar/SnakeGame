@@ -32,8 +32,8 @@ namespace Project.Snake.UMVCS.Controller
 
         private void CommandManager_OnToggleStartMenu(ToggleStartMenuCommand e)
         {
+            UIModel.StartMenuCanvas.gameObject.SetActive(e.Toggle);
             UIModel.UICamera.gameObject.SetActive(e.Toggle);
-            UIView.gameObject.SetActive(e.Toggle);
         }
 
         private void CommandManager_OnAddNewPlayer(AddNewPlayerCommand e) 

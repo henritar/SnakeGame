@@ -17,9 +17,12 @@ namespace Project.Snake.UMVCS.Model
         private List<Vector2Int> _blockSpawnBounderiesX = new List<Vector2Int>();
 		[SerializeField]
 		private List<Vector2Int> _blockSpawnBounderiesY = new List<Vector2Int>();
+		[SerializeField]
+		private List<string> _cameraInputControllers = new List<string>();
 
         public List<Vector3> InitialSnakePosition { get => _initialSnakePosition;}
         public List<Vector2Int> BlockSpawnBounderiesX { get => _blockSpawnBounderiesX; }
         public List<Vector2Int> BlockSpawnBounderiesY { get => _blockSpawnBounderiesY; }
+        public List<string> CameraInputControllers { get => _cameraInputControllers;  }
     }
 }

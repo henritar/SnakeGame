@@ -30,7 +30,22 @@ namespace Project.Snake.UMVCS.Controller
             Vector3 dir = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
             if (!dir.Equals(Vector3.zero))
             {
-                Context.CommandManager.InvokeCommand(new ChangeSnakeDirectionCommand(dir));
+                Context.CommandManager.InvokeCommand(new ChangeSnakeDirectionCommand(dir, 0));
+            }
+            Vector3 dir1 = new Vector3(Input.GetAxisRaw("Horizontal1"), Input.GetAxisRaw("Vertical1"), 0);
+            if (!dir.Equals(Vector3.zero))
+            {
+                Context.CommandManager.InvokeCommand(new ChangeSnakeDirectionCommand(dir, 1));
+            }
+            Vector3 dir2 = new Vector3(Input.GetAxisRaw("Horizontal2"), Input.GetAxisRaw("Vertical2"), 0);
+            if (!dir.Equals(Vector3.zero))
+            {
+                Context.CommandManager.InvokeCommand(new ChangeSnakeDirectionCommand(dir, 2));
+            }
+            Vector3 dir3 = new Vector3(Input.GetAxisRaw("Horizontal3"), Input.GetAxisRaw("Vertical3"), 0);
+            if (!dir.Equals(Vector3.zero))
+            {
+                Context.CommandManager.InvokeCommand(new ChangeSnakeDirectionCommand(dir, 3));
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {

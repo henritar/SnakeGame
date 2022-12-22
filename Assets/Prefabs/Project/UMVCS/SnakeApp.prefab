@@ -102,6 +102,9 @@ MonoBehaviour:
   _snakeBodyController: []
   _blockController: []
   _cameraController: []
+  _initialSnakePosition: []
+  _blockSpawnBounderiesX: []
+  _blockSpawnBounderiesY: []
 --- !u!1 &962194222145901057
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +153,8 @@ MonoBehaviour:
   _numberOfPlayers: 0
   _newPlayerUIPrefab: {fileID: 2533077041619325770, guid: 1379e9e3ed6afff4a81a044cde6c8f10, type: 3}
   _playerPanel: {fileID: 6953984968786663350}
+  _startMenuCanvas: {fileID: 6231777639832942856}
+  _HUDCameraPrefab: {fileID: 8599475179861741501, guid: 96da1180a14fd3142b44627fba6b49cd, type: 3}
 --- !u!1 &1144060307009976604
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +185,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2948548661151597341}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -562,7 +567,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2948548661151597341}
-  - {fileID: 2718154302425731851}
   m_Father: {fileID: 436847960019591318}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -602,12 +606,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6616443246683908320}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -960, y: -540, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5586762983652263229}
-  m_RootOrder: 1
+  m_Father: {fileID: 2948548661151597341}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &140373332326722427
 Camera:
@@ -743,7 +747,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2948548661151597341}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -885,7 +889,6 @@ GameObject:
   - component: {fileID: 6231777639832942856}
   - component: {fileID: 1127183645622114447}
   - component: {fileID: 3628345786937272510}
-  - component: {fileID: 1751317217019995755}
   m_Layer: 0
   m_Name: StartScreenCanvas
   m_TagString: Untagged
@@ -904,6 +907,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 2718154302425731851}
   - {fileID: 36930648916895712}
   - {fileID: 1643750412019715238}
   m_Father: {fileID: 5586762983652263229}
@@ -975,21 +979,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1751317217019995755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8891924262463364356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
 --- !u!1 &8902539694291483183
 GameObject:
   m_ObjectHideFlags: 0

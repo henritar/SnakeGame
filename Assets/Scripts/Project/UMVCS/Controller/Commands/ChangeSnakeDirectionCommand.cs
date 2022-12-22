@@ -7,12 +7,16 @@ namespace Project.UMVCS.Controller.Commands
     public class ChangeSnakeDirectionCommand : Command
     {
         public Vector3 Direction { get => _direction; }
+        public int Index { get => _index; set => _index = value; }
 
         private Vector3 _direction;
 
-        public ChangeSnakeDirectionCommand(Vector3 dir)
+        private int _index;
+
+        public ChangeSnakeDirectionCommand(Vector3 dir, int index)
         {
             _direction = dir;   
+            _index = index;
         }
     }
 }

@@ -121,6 +121,7 @@ namespace Project.Snake.UMVCS.Controller
             } while (MainModel.NumberOfPlayers > ratio);
 
             float offSet = 1f / ratio;
+            Debug.Log(offSet);
 
 
             float power = Mathf.Pow(2, i - 2);
@@ -155,19 +156,22 @@ namespace Project.Snake.UMVCS.Controller
                         cameraConfigData.Init(viewPort, Vector2.one * viewPort);
                         break;
                 }
-                Debug.Log(index);
+                cameraConfigData.InputKeys = MainModel.MainConfigData.CameraInputControllers;
                 CreateCamera(index, cameraConfigData);
             }
         }
 
         private void CreateCamera(int index, CameraConfigData cameraConfigData)
         {
+            UIModel uIModel = Context.ModelLocator.GetModel<UIModel>();
+            GameObject go = Instantiate(uIModel.HUDCameraPrefab.gameObject, MainModel.MainParent[index]);
             Vector3 cameraPosition = new Vector3(MainModel.MainConfigData.InitialSnakePosition[index].x, MainModel.MainConfigData.InitialSnakePosition[index].y, -10);
             CameraView cameraView = Instantiate(MainModel.CameraViewPrefab, cameraPosition, Quaternion.identity) as CameraView;
+            go.GetComponent<Canvas>().worldCamera = cameraView.GetComponent<Camera>();
             CameraController cameraController = cameraView.GetComponentInChildren<CameraController>();
             cameraController.CameraModel.Index = index;
             cameraController.CameraModel.CameraConfigData = cameraConfigData;
-            cameraController.CameraModel.InitCamera();
+            cameraController.CameraModel.InitCamera(index, cameraConfigData);
             MainModel.CameraController.Add(cameraController);
             cameraView.transform.SetParent(MainModel.MainParent[index]);
         }
