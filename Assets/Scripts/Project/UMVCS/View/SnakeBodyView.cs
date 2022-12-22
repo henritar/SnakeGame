@@ -7,8 +7,8 @@ namespace Project.Snake.UMVCS.View
 {
     public class SnakeBodyView : BaseView
     {
-        public OnAIHitEvent OnAIHitEvent = new OnAIHitEvent();
-        public OnPlayerHitEvent OnPlayerHitEvent = new OnPlayerHitEvent();
+        public AIHitEvent OnAIHitEvent = new AIHitEvent();
+        public PlayerHitEvent OnPlayerHitEvent = new PlayerHitEvent();
 
         public void MoveBodyPart(Vector3 position)
         {

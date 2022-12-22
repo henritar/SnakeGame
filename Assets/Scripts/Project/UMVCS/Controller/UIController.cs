@@ -40,7 +40,7 @@ namespace Project.Snake.UMVCS.Controller
         {
             e.KeyCode.ExceptWith(UIModel.KeyCodes);
 
-            if (e.KeyCode.Count < 2)
+            if (e.KeyCode.Count < 2 || UIModel.NumberOfPlayers == 4)
             {
                 return;
             }

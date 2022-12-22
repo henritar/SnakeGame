@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace Project.UMVCS.Controller.Events
 {
-    public class OnAIHitEvent : UnityEvent<SnakeAIController>, IEvent
+    public class AIHitEvent : UnityEvent<SnakeAIController>, IEvent
     {
     }
 }

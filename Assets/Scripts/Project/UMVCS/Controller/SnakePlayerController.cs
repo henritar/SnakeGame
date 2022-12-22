@@ -27,31 +27,10 @@ public class SnakePlayerController : SnakeController
 
         if (SnakePlayerView.transform.position == SnakePlayerModel.Target.Value)
         {
+            
             SetBodyTarget();
-            if (SnakePlayerView.transform.position.x > SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakePlayerModel.Index].y)
-            {
-                SnakePlayerView.transform.position = new Vector3(SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakePlayerModel.Index].x, SnakePlayerView.transform.position.y);
-                SnakePlayerModel.Target.Value = SnakePlayerView.transform.position + SnakePlayerModel.Direction.Value;
-            }
-            else if(SnakePlayerView.transform.position.x < SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakePlayerModel.Index].x)
-            {
-                SnakePlayerView.transform.position = new Vector3(SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakePlayerModel.Index].y, SnakePlayerView.transform.position.y);
-                SnakePlayerModel.Target.Value = SnakePlayerView.transform.position + SnakePlayerModel.Direction.Value;
-            }
-            else if (SnakePlayerView.transform.position.y > SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakePlayerModel.Index].y)
-            {
-                SnakePlayerView.transform.position = new Vector3(SnakePlayerView.transform.position.x, SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakePlayerModel.Index].x);
-                SnakePlayerModel.Target.Value = SnakePlayerView.transform.position + SnakePlayerModel.Direction.Value;
-            }
-            else if (SnakePlayerView.transform.position.y < SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakePlayerModel.Index].x)
-            {
-                SnakePlayerView.transform.position = new Vector3(SnakePlayerView.transform.position.x, SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakePlayerModel.Index].y);
-                SnakePlayerModel.Target.Value = SnakePlayerView.transform.position + SnakePlayerModel.Direction.Value;
-            }
-            else
-            {
-                SnakePlayerModel.Target.Value += SnakePlayerModel.Direction.Value;
-            }
+            
+            SnakePlayerModel.Target.Value += SnakePlayerModel.Direction.Value;
 
             LookAtTarget();
         }

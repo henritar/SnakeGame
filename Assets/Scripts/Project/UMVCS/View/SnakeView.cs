@@ -9,6 +9,7 @@ namespace Project.Snake.UMVCS.View
     public class SnakeView : BaseView
     {
         public PickBlockEvent OnPickBlock = new PickBlockEvent();
+        public SnakeHitBoundsEvent OnSnakeHitBounds = new SnakeHitBoundsEvent();
 
         public void MoveSnake(Vector3 position)
         {
@@ -21,6 +22,11 @@ namespace Project.Snake.UMVCS.View
             if (block as BlockController)
             {
                 OnPickBlock?.Invoke(block);
+            }
+            if (other.CompareTag("Bounds"))
+            {
+                Debug.Log(other.gameObject.tag);
+                OnSnakeHitBounds?.Invoke();
             }
         }
     }

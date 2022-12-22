@@ -4,7 +4,7 @@ using Project.Snake.UMVCS.Controller;
 
 namespace Project.UMVCS.Controller.Events
 {
-    public class OnPlayerHitEvent : UnityEvent<SnakePlayerController>, IEvent
+    public class PlayerHitEvent : UnityEvent<SnakePlayerController>, IEvent
     {
     }
 }

@@ -54,13 +54,13 @@ namespace Project.Snake.UMVCS.Controller
 
         protected virtual void AddListenersCallbacks()
         {
-            
+            SnakeView.OnSnakeHitBounds.AddListener(SnakeView_OnSnakeHitbounds);
             SnakeView.OnPickBlock.AddListener(SnakeView_OnBlockPicked);
         }
 
         protected virtual void RemoveListenersCallbacks()
         {
-            
+            SnakeView.OnSnakeHitBounds.RemoveListener(SnakeView_OnSnakeHitbounds);
             SnakeView.OnPickBlock.RemoveListener(SnakeView_OnBlockPicked);
         }
 
@@ -80,13 +80,18 @@ namespace Project.Snake.UMVCS.Controller
             SnakeModel.HeadBlockType.BlockType = BlockTypeEnum.Head;
         }
 
-        
-
         protected virtual void SnakeView_OnBlockPicked(BlockController block)
         {
             Context.CommandManager.InvokeCommand(new SpawnBlockCommand(SnakeModel.Index));
             Context.CommandManager.InvokeCommand(new AddBodyPartCommand(this, block));
             SnakeModel.StateMachine.CurrentStateType = typeof(PickingState);
+        }
+        private void SnakeView_OnSnakeHitbounds()
+        {
+            if (this is SnakePlayerController)
+                Context.CommandManager.InvokeCommand(new KillPlayerSnakeCommand(this as SnakePlayerController));
+            else
+                Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(SnakeModel.Index));
         }
 
         protected void SetBodyTarget()
@@ -116,7 +121,7 @@ namespace Project.Snake.UMVCS.Controller
             {
                 Destroy(SnakeModel.BodyList[i].transform.parent.gameObject);
             }
-            Destroy(gameObject);
+            Destroy(SnakeView.gameObject);
         }
 
         public void RestoreSnakeVelocity()
