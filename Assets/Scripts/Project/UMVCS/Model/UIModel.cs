@@ -33,7 +33,7 @@ namespace Project.Snake.UMVCS.Model
         [SerializeField]
         private Canvas _startMenuCanvas = null;
         [SerializeField]
-        private Canvas _HUDCameraPrefab = null;
+        private HUDCameraModel _HUDCameraPrefab = null;
 
         public List<PlayerSnakeUI> PlayerSnakeUIList { get => _playerSnakeUIList; set => _playerSnakeUIList = value; }
         public Camera UICamera { get => _UICamera; set => _UICamera = value; }
@@ -44,6 +44,6 @@ namespace Project.Snake.UMVCS.Model
 
         public NewPlayerUIView NewPlayerUIPrefab { get => _newPlayerUIPrefab; }
         public Canvas StartMenuCanvas { get => _startMenuCanvas; }
-        public Canvas HUDCameraPrefab { get => _HUDCameraPrefab; set => _HUDCameraPrefab = value; }
+        public HUDCameraModel HUDCameraPrefab { get => _HUDCameraPrefab; set => _HUDCameraPrefab = value; }
     }
 }

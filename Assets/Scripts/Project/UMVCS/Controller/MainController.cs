@@ -6,6 +6,7 @@ using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
@@ -164,11 +165,13 @@ namespace Project.Snake.UMVCS.Controller
         private void CreateCamera(int index, CameraConfigData cameraConfigData)
         {
             UIModel uIModel = Context.ModelLocator.GetModel<UIModel>();
-            GameObject go = Instantiate(uIModel.HUDCameraPrefab.gameObject, MainModel.MainParent[index]);
+            HUDCameraModel HUDCamera = Instantiate(uIModel.HUDCameraPrefab, MainModel.MainParent[index]) as HUDCameraModel;
             Vector3 cameraPosition = new Vector3(MainModel.MainConfigData.InitialSnakePosition[index].x, MainModel.MainConfigData.InitialSnakePosition[index].y, -10);
             CameraView cameraView = Instantiate(MainModel.CameraViewPrefab, cameraPosition, Quaternion.identity) as CameraView;
-            go.GetComponent<Canvas>().worldCamera = cameraView.GetComponent<Camera>();
+            HUDCamera.GetComponent<Canvas>().worldCamera = cameraView.GetComponent<Camera>();
             CameraController cameraController = cameraView.GetComponentInChildren<CameraController>();
+            HUDCamera.InputKey.text = MainModel.MainConfigData.CameraInputControllers[index];
+            HUDCamera.PlayerName.text = "Player " + (index + 1);
             cameraController.CameraModel.Index = index;
             cameraController.CameraModel.CameraConfigData = cameraConfigData;
             cameraController.CameraModel.InitCamera(index, cameraConfigData);

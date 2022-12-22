@@ -1,6 +1,5 @@
 ﻿using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
-using Assets.Scripts.Project.UMVCS.Model;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 

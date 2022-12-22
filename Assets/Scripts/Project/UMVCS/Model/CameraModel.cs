@@ -1,10 +1,9 @@
 ﻿using Architectures.UMVCS.Model;
-using Project.Snake.UMVCS.Model;
-using System.Reflection;
 using TMPro;
 using UnityEngine;
 
-namespace Assets.Scripts.Project.UMVCS.Model
+
+namespace Project.Snake.UMVCS.Model
 {
     public class CameraModel : BaseModel
     {
@@ -25,8 +24,6 @@ namespace Assets.Scripts.Project.UMVCS.Model
                 _camera = Camera.main;
             }
             _camera.rect = new Rect(CameraConfigData.CameraViewPort, CameraConfigData.CameraOffset);
-            //_playerName.text = "Player " + index;
-            //_inputKey.text = CameraConfigData.InputKeys[index];
         }
     }
 }

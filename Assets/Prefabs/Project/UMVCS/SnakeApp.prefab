@@ -154,7 +154,7 @@ MonoBehaviour:
   _newPlayerUIPrefab: {fileID: 2533077041619325770, guid: 1379e9e3ed6afff4a81a044cde6c8f10, type: 3}
   _playerPanel: {fileID: 6953984968786663350}
   _startMenuCanvas: {fileID: 6231777639832942856}
-  _HUDCameraPrefab: {fileID: 8599475179861741501, guid: 96da1180a14fd3142b44627fba6b49cd, type: 3}
+  _HUDCameraPrefab: {fileID: 3797545232674338535, guid: 96da1180a14fd3142b44627fba6b49cd, type: 3}
 --- !u!1 &1144060307009976604
 GameObject:
   m_ObjectHideFlags: 0
