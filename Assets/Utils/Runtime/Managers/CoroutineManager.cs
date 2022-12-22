@@ -6,6 +6,7 @@ namespace Assets.Utils.Runtime.Managers
 {
     public class CoroutinerManager : SingletonMonoBehaviour<CoroutinerManager>
     {
+        public static WaitForSeconds WaitDotFiveSecond = new WaitForSeconds(0.5f);
         public static WaitForSeconds WaitOneSecond = new WaitForSeconds(1);
         public static WaitForSeconds WaitTwoSeconds = new WaitForSeconds(2);
         public static WaitForSeconds WaitFiveSeconds = new WaitForSeconds(5);

@@ -7,10 +7,7 @@ using Project.Data.Types;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Project.Snake.UMVCS.Controller
@@ -69,8 +66,6 @@ namespace Project.Snake.UMVCS.Controller
             SnakeModel.Target.Value = SnakeView.transform.position;
             SnakeModel.Direction.Value = Vector3.up;
             SnakeModel.Velocity.Value = SnakeAppConstants.SnakeVelocity;
-            SnakeModel.BodySize.Value = 0;
-            SnakeModel.BodyList = new List<SnakeBodyController>();
         }
 
         protected virtual void CreateHeadBlockInstance()
@@ -99,12 +94,12 @@ namespace Project.Snake.UMVCS.Controller
             var bodyList = SnakeModel.BodyList;
             if (bodyList.Count > 0)
             {
-                bodyList[0].SetTarget(new Vector3(SnakeView.transform.position.x, SnakeView.transform.position.y), this);
+                bodyList[0].SetTarget(new Vector3(SnakeView.transform.position.x, SnakeView.transform.position.y));
 
                 for (int i = bodyList.Count - 1; i > 0; i--)
                 {
                     Vector3 pos = new Vector3(bodyList[i - 1].transform.position.x, bodyList[i - 1].transform.position.y, 0);
-                    bodyList[i].SetTarget(pos, this);
+                    bodyList[i].SetTarget(pos);
                 }
             }
         }
@@ -122,6 +117,8 @@ namespace Project.Snake.UMVCS.Controller
                 Destroy(SnakeModel.BodyList[i].transform.parent.gameObject);
             }
             Destroy(SnakeView.gameObject);
+            MainModel mainModel = Context.ModelLocator.GetModel<MainModel>();
+            mainModel.SnakePlayerController.RemoveAt(SnakeModel.Index);
         }
 
         public void RestoreSnakeVelocity()

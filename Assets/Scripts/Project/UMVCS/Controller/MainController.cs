@@ -1,6 +1,7 @@
 using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Assets.Scripts.Project.UMVCS.Controller.Commands;
+using Project.Data.Types;
 using Project.Snake.UMVCS.Model;
 using Project.Snake.UMVCS.View;
 using Project.UMVCS.Controller.Commands;
@@ -21,14 +22,12 @@ namespace Project.Snake.UMVCS.Controller
         {
             InitializeModelProperties();
 
-            //InitializePlayersOffSet();
+            InitializePlayersOffSet();
         }
 
         protected void Start()
         {
-
             AddCommandManagerListeners();
-            
             
         }
 
@@ -63,12 +62,16 @@ namespace Project.Snake.UMVCS.Controller
             Context.CommandManager.AddCommandListener<AddBodyPartCommand>(CommandManager_OnAddBodyPart);
 
             Context.CommandManager.AddCommandListener<ChangeNumberPlayer>(CommandManager_OnChangeNumberPlayers);
-        }
 
-       
+            Context.CommandManager.AddCommandListener<UpdatePlayersSpriteCommand>(CommandManager_OnUpdatePlayersSprite);
+
+
+        }
 
         private void RemoveCommandManagerListeners()
         {
+            Context.CommandManager.AddCommandListener<UpdatePlayersSpriteCommand>(CommandManager_OnUpdatePlayersSprite);
+
             Context.CommandManager.RemoveCommandListener<StartApplicationCommand>(CommandManager_OnStartApplication);
 
             Context.CommandManager.RemoveCommandListener<ChangeNumberPlayer>(CommandManager_OnChangeNumberPlayers);
@@ -88,17 +91,12 @@ namespace Project.Snake.UMVCS.Controller
         private void CommandManager_OnKillPlayerSnake(KillPlayerSnakeCommand e)
         {
             e.PlayerSnake.KillSnake();
-
-            List<SnakePlayerController> _remainingPlayers = Context.ModelLocator.GetModels<SnakePlayerController>();
-
-            if (_remainingPlayers.Count == 0) 
+            if (MainModel.SnakePlayerController.Count == 0) 
             {
                 RestartAllApplication();
             }
 
         }
-
-
 
         private void InitializePlayersOffSet()
         {
@@ -228,6 +226,23 @@ namespace Project.Snake.UMVCS.Controller
                 snakePlayerController.SnakeModel.Index = i;
                 MainModel.SnakePlayerController.Add(snakePlayerController); 
                 snakePlayerView.MoveSnake(MainModel.MainConfigData.InitialSnakePosition[i]);
+                
+                switch (MainModel.SnakeTypeSelected[i])
+                {
+                    case SelectionSnakeMenuEnum.defaultSnake:
+                        InitializeNewBodyPartOfType(i, BlockTypeEnum.Head, MainModel.MainConfigData.InitialSnakePosition[i] + Vector3.down);
+                        InitializeNewBodyPartOfType(i, BlockTypeEnum.Head, MainModel.MainConfigData.InitialSnakePosition[i] + Vector3.down);
+                        break;
+                    case SelectionSnakeMenuEnum.imortalSnake:
+                        MainModel.SnakePlayerController[i].SetHeadBlockType(BlockConfigData.CreateNewBlockType(BlockTypeEnum.BatteringRam));
+                        InitializeNewBodyPartOfType(i, BlockTypeEnum.BatteringRam, MainModel.MainConfigData.InitialSnakePosition[i] + Vector3.down);
+                        InitializeNewBodyPartOfType(i, BlockTypeEnum.BatteringRam, MainModel.MainConfigData.InitialSnakePosition[i] + Vector3.down);
+                        break;
+                    case SelectionSnakeMenuEnum.speedySnake:
+                        InitializeNewBodyPartOfType(i, BlockTypeEnum.EnginePower, MainModel.MainConfigData.InitialSnakePosition[i] + Vector3.down);
+                        InitializeNewBodyPartOfType(i, BlockTypeEnum.EnginePower, MainModel.MainConfigData.InitialSnakePosition[i] + Vector3.down);
+                        break;
+                }
 
                 Context.CommandManager.InvokeCommand(new SpawnBlockCommand(i));
                 Context.CommandManager.InvokeCommand(new SpawnAISnakeCommand(i));
@@ -235,6 +250,20 @@ namespace Project.Snake.UMVCS.Controller
             }
         }
 
+        private SnakeBodyView InitializeNewBodyPartOfType(int i, BlockTypeEnum type, Vector3 position)
+        {
+            SnakeBodyView bodyView = Instantiate(MainModel.SnakeBodyViewPrefab, position, Quaternion.identity, MainModel.MainParent[i].transform) as SnakeBodyView;
+            SnakeBodyController bodyController = bodyView.GetComponentInChildren<SnakeBodyController>();
+            bodyController.InitializeBodyPart(MainModel.SnakePlayerController[i]);
+            bodyController.SetBodyBlockType(BlockConfigData.CreateNewBlockType(type));
+            MainModel.SnakePlayerController[i].AddBodyPart(bodyController);
+            return bodyView;
+        }
+
+        private void CommandManager_OnUpdatePlayersSprite(UpdatePlayersSpriteCommand e)
+        {
+            MainModel.SnakeTypeSelected = e.PlayersSnake;
+        }
         private void CommandManager_OnStartApplication(StartApplicationCommand e)
         {
             if (MainModel.NumberOfPlayers == 0)
@@ -249,7 +278,7 @@ namespace Project.Snake.UMVCS.Controller
 
         private void CommandManager_OnRestartApplication(RestartApplicationCommand e)
         {
-        RestartAllApplication();
+            RestartAllApplication();
         }
 
         private void CommandManager_OnChangeNumberPlayers(ChangeNumberPlayer e)

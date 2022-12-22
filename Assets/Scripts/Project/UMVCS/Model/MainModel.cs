@@ -1,5 +1,6 @@
 using Architectures.UMVCS.Model;
 using Attributes;
+using Project.Data.Types;
 using Project.Snake.UMVCS.Controller;
 using Project.Snake.UMVCS.View;
 using System.Collections.Generic;
@@ -23,12 +24,16 @@ namespace Project.Snake.UMVCS.Model
         public SnakeBodyView SnakeBodyViewPrefab { get => _snakeBodyViewPrefab; }
         public BlockView BlockViewPrefab { get => _blockViewPrefab; }
         public SnakeAIView SnakeAIViewPrefab { get => _snakeAIViewPrefab; }
+        public List<SelectionSnakeMenuEnum> SnakeTypeSelected { get => _snakeTypeSelected; set => _snakeTypeSelected = value; }
 
         [SerializeField]
         private int _numberOfPlayers = 1;
 
         [SerializeField]
         private List<Transform> _mainParent = new List<Transform>();
+
+        [SerializeField]
+        private List<SelectionSnakeMenuEnum> _snakeTypeSelected = new List<SelectionSnakeMenuEnum>();
 
         [SerializeField]
         private CameraView _cameraViewPrefab = null;

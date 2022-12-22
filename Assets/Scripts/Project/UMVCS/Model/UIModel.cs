@@ -1,5 +1,6 @@
 ﻿using Architectures.UMVCS.Model;
 using Assets.Scripts.Project.UMVCS.View;
+using Project.Data.Types;
 using Project.Snake.UMVCS.View;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,14 @@ namespace Project.Snake.UMVCS.Model
 {
     public class UIModel : BaseModel
     {
+        [System.Serializable]
         public struct PlayerSnakeUI
         {
             public TextMeshProUGUI playerTag;
             public TextMeshProUGUI leftKey;
             public TextMeshProUGUI rightKey;
+            public int snakeSpriteIndex;
+            public NewPlayerUIModel uiRef;
         }
 
         [SerializeField] 
@@ -34,6 +38,10 @@ namespace Project.Snake.UMVCS.Model
         private Canvas _startMenuCanvas = null;
         [SerializeField]
         private HUDCameraModel _HUDCameraPrefab = null;
+        [SerializeField]
+        private List<SelectionSnakeMenuEnum> _playersSnake = new List<SelectionSnakeMenuEnum>();
+        [SerializeField]
+        private List<Texture2D> _snakesSpritesList = new List<Texture2D>();
 
         public List<PlayerSnakeUI> PlayerSnakeUIList { get => _playerSnakeUIList; set => _playerSnakeUIList = value; }
         public Camera UICamera { get => _UICamera; set => _UICamera = value; }
@@ -45,5 +53,7 @@ namespace Project.Snake.UMVCS.Model
         public NewPlayerUIView NewPlayerUIPrefab { get => _newPlayerUIPrefab; }
         public Canvas StartMenuCanvas { get => _startMenuCanvas; }
         public HUDCameraModel HUDCameraPrefab { get => _HUDCameraPrefab; set => _HUDCameraPrefab = value; }
+        public List<SelectionSnakeMenuEnum> PlayersSnake { get => _playersSnake; set => _playersSnake = value; }
+        public List<Texture2D> SnakesSpritesList { get => _snakesSpritesList; set => _snakesSpritesList = value; }
     }
 }

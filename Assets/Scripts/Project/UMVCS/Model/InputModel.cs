@@ -8,7 +8,9 @@ namespace Project.Snake.UMVCS.Model
     {
         public HashSet<KeyCode> KeyCodes = new HashSet<KeyCode>();
 
-        public bool IsCoroutineRunning;
+        public bool IsAddCoroutineRunning;
+
+        public bool IsChangeSpriteCoroutineRunning;
 
     }
 }

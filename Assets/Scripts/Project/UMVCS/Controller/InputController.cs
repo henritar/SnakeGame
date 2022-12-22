@@ -1,6 +1,7 @@
 ﻿using Architectures.UMVCS.Controller;
 using Architectures.UMVCS.Service;
 using Architectures.UMVCS.View;
+using Assets.Scripts.Project.UMVCS.Controller.Commands;
 using Assets.Utils.Runtime.Managers;
 using Project.Snake.UMVCS.Model;
 using Project.UMVCS.Controller.Commands;
@@ -50,7 +51,6 @@ namespace Project.Snake.UMVCS.Controller
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 Context.CommandManager.InvokeCommand(new StartApplicationCommand());
-                
             }
             
         }
@@ -76,6 +76,10 @@ namespace Project.Snake.UMVCS.Controller
                     //Debug.Log("InputController: AddEventTrigger");
 
                 }
+                if (!InputModel.IsChangeSpriteCoroutineRunning)
+                {
+                    CoroutinerManager.Start(ChangeSpriteCoroutine(e.keyCode));
+                }
             }
             if (e.type == EventType.KeyUp &&
                  e.keyCode.ToString().Length == 1 &&
@@ -87,10 +91,10 @@ namespace Project.Snake.UMVCS.Controller
                 {
                     //Debug.Log("InputController: RemoveEventTrigger");
                     //REMOVE EVENT
-                    if (InputModel.IsCoroutineRunning)
+                    if (InputModel.IsAddCoroutineRunning)
                     {
                         CoroutinerManager.Stop(AddKeysCoroutine());
-                        InputModel.IsCoroutineRunning = true;
+                        InputModel.IsAddCoroutineRunning = true;
                     }
                 }
                 InputModel.KeyCodes.Remove(e.keyCode);
@@ -100,10 +104,18 @@ namespace Project.Snake.UMVCS.Controller
 
         private IEnumerator AddKeysCoroutine()
         {
-            InputModel.IsCoroutineRunning = false;
+            InputModel.IsAddCoroutineRunning = false;
             yield return CoroutinerManager.WaitOneSecond;
             Context.CommandManager.InvokeCommand(new AddNewPlayerCommand(InputModel.KeyCodes));
-            InputModel.IsCoroutineRunning = true;
+            InputModel.IsAddCoroutineRunning = true;
+        }
+
+        private IEnumerator ChangeSpriteCoroutine(KeyCode e)
+        {
+            InputModel.IsChangeSpriteCoroutineRunning = true;
+            yield return CoroutinerManager.WaitDotFiveSecond;
+            Context.CommandManager.InvokeCommand(new ChangeSnakeTypeCommand(e)); ;
+            InputModel.IsChangeSpriteCoroutineRunning = false;
         }
     }
 }

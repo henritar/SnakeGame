@@ -88,7 +88,7 @@ namespace Project.Snake.UMVCS.Controller
             SnakeBodyView.GetComponent<Renderer>().material = blockType.MaterialRef;
         }
 
-        public void SetTarget(Vector3 pos, SnakeController head)
+        public void SetTarget(Vector3 pos)
         {
             if (SnakeBodyModel.WaitUps.Value > 0)
             {

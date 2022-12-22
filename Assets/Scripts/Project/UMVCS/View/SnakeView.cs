@@ -1,6 +1,5 @@
 ﻿using Architectures.UMVCS.View;
 using Project.Snake.UMVCS.Controller;
-using Project.Snake.UMVCS.Model;
 using Project.UMVCS.Controller.Events;
 using UnityEngine;
 
@@ -25,7 +24,6 @@ namespace Project.Snake.UMVCS.View
             }
             if (other.CompareTag("Bounds"))
             {
-                Debug.Log(other.gameObject.tag);
                 OnSnakeHitBounds?.Invoke();
             }
         }

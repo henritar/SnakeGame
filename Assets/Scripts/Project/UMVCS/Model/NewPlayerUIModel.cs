@@ -12,9 +12,9 @@ public class NewPlayerUIModel : BaseModel
     [SerializeField]
     private TextMeshProUGUI _rightKey;
     [SerializeField]
-    private Image _sprite;
+    private RawImage _sprite;
     public TextMeshProUGUI PlayerTag { get => _playerTag; set => _playerTag = value; }
     public TextMeshProUGUI LeftKey { get => _leftKey; set => _leftKey = value; }
     public TextMeshProUGUI RightKey { get => _rightKey; set => _rightKey = value; }
-    public Image Sprite { get => _sprite; set => _sprite = value; }
+    public RawImage Sprite { get => _sprite; set => _sprite = value; }
 }
