@@ -47,11 +47,6 @@ namespace Project.Snake.UMVCS.Controller
 
             UIModel.KeyCodes.UnionWith(e.KeyCode);
 
-            foreach (var key in UIModel.KeyCodes)
-            {
-                Debug.Log(key);
-            }
-
             List<KeyCode> keys = e.KeyCode.ToList();
             Context.CommandManager.InvokeCommand(new ChangeNumberPlayer(++UIModel.NumberOfPlayers));
 

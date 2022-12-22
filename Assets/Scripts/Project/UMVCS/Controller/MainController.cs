@@ -93,7 +93,7 @@ namespace Project.Snake.UMVCS.Controller
 
             if (_remainingPlayers.Count == 0) 
             {
-                RestartApplication();
+                RestartAllApplication();
             }
 
         }
@@ -109,7 +109,6 @@ namespace Project.Snake.UMVCS.Controller
                 MainModel.MainConfigData.BlockSpawnBounderiesX.Add(MainModel.MainConfigData.BlockSpawnBounderiesX[0] + 100 * i * Vector2Int.one);
                 MainModel.MainConfigData.BlockSpawnBounderiesY.Add(MainModel.MainConfigData.BlockSpawnBounderiesY[0] + 100 * i * Vector2Int.one);
             }
-            Debug.Log(MainModel.MainConfigData.InitialSnakePosition.Count);
         }
 
         private void CreateParentsAndCamera()
@@ -122,7 +121,6 @@ namespace Project.Snake.UMVCS.Controller
             } while (MainModel.NumberOfPlayers > ratio);
 
             float offSet = 1f / ratio;
-            Debug.Log(offSet);
 
 
             float power = Mathf.Pow(2, i - 2);
@@ -180,8 +178,9 @@ namespace Project.Snake.UMVCS.Controller
         }
 
 
-        private void RestartApplication()
+        private void RestartAllApplication()
         {
+            
             if(MainModel.SnakePlayerController.Count > 0)
             {
                 foreach (var controller in MainModel.SnakePlayerController)
@@ -245,12 +244,12 @@ namespace Project.Snake.UMVCS.Controller
 
             CreateParentsAndCamera();
 
-            RestartApplication();
+            RestartAllApplication();
         }
 
         private void CommandManager_OnRestartApplication(RestartApplicationCommand e)
         {
-            RestartApplication();
+        RestartAllApplication();
         }
 
         private void CommandManager_OnChangeNumberPlayers(ChangeNumberPlayer e)

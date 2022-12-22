@@ -12,6 +12,9 @@ namespace Project.Snake.UMVCS.Model
         private SnakeController _snake = null;
 
         [SerializeField]
+        private MainModel _mainModelRef;
+
+        [SerializeField]
         private BlockConfigData _bodyBlockType = null;
 
         [SerializeField]
@@ -33,5 +36,6 @@ namespace Project.Snake.UMVCS.Model
 
         public SnakeController Snake { get => _snake; set => _snake = value; }
         public BoxCollider2D BodyCollider { get => _bodyCollider; set => _bodyCollider = value; }
+        public MainModel MainModelRef { get => _mainModelRef; set => _mainModelRef = value; }
     }
 }

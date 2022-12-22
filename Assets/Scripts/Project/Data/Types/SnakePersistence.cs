@@ -52,7 +52,6 @@ namespace Project.Data.Types
 
             if (sm.TriggeredTimeTravel)
             {
-                Debug.Log(sm.name);
                 for (int i = 0; i < sm.BodyList.Count - 1; i++)
                 {
                     SnakeBodyPersistence bodyPart = new SnakeBodyPersistence

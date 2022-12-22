@@ -1,10 +1,9 @@
-﻿using System;
-using Attributes;
-using Data.Types;
-using Project.Snake.UMVCS.Model;
+﻿using Project.Snake.UMVCS.Model;
 using UnityEngine;
 
 public class SnakePlayerModel : SnakeModel
 {
-    
+    [SerializeField]
+    private MainModel _mainModelRef;
+    public MainModel MainModelRef { get => _mainModelRef; set => _mainModelRef = value; }
 }
