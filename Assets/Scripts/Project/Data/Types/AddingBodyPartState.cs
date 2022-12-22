@@ -38,6 +38,7 @@ namespace Project.Data.Types
         public override void ExitState()
         {
             _snakeController.Context.CommandManager.RemoveCommandListener<LoadBlockCommand>(CommandManager_OnLoadBlockCommand);
+            _snakeController.RestoreSnakeVelocity();
         }
 
         public override void InitializeState()

@@ -38,7 +38,7 @@ public class SnakePlayerController : SnakeController
                 SnakePlayerView.transform.position = new Vector3(SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakePlayerModel.Index].y, SnakePlayerView.transform.position.y);
                 SnakePlayerModel.Target.Value = SnakePlayerView.transform.position + SnakePlayerModel.Direction.Value;
             }
-            if (SnakePlayerView.transform.position.y > SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakePlayerModel.Index].y)
+            else if (SnakePlayerView.transform.position.y > SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakePlayerModel.Index].y)
             {
                 SnakePlayerView.transform.position = new Vector3(SnakePlayerView.transform.position.x, SnakePlayerModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakePlayerModel.Index].x);
                 SnakePlayerModel.Target.Value = SnakePlayerView.transform.position + SnakePlayerModel.Direction.Value;

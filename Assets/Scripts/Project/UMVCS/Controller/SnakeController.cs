@@ -94,11 +94,11 @@ namespace Project.Snake.UMVCS.Controller
             var bodyList = SnakeModel.BodyList;
             if (bodyList.Count > 0)
             {
-                bodyList[0].SetTarget(new Vector3(Mathf.RoundToInt(SnakeView.transform.position.x), Mathf.RoundToInt(SnakeView.transform.position.y), SnakeView.transform.position.z), this);
+                bodyList[0].SetTarget(new Vector3(SnakeView.transform.position.x, SnakeView.transform.position.y), this);
 
                 for (int i = bodyList.Count - 1; i > 0; i--)
                 {
-                    Vector3 pos = new Vector3(Mathf.RoundToInt(bodyList[i - 1].transform.position.x), Mathf.RoundToInt(bodyList[i - 1].transform.position.y), 0);
+                    Vector3 pos = new Vector3(bodyList[i - 1].transform.position.x, bodyList[i - 1].transform.position.y, 0);
                     bodyList[i].SetTarget(pos, this);
                 }
             }
@@ -117,6 +117,19 @@ namespace Project.Snake.UMVCS.Controller
                 Destroy(SnakeModel.BodyList[i].transform.parent.gameObject);
             }
             Destroy(gameObject);
+        }
+
+        public void RestoreSnakeVelocity()
+        {
+            int enginePowerBlocks = 0;
+            foreach (var bodyPart in SnakeModel.BodyList)
+            {
+                if (bodyPart.SnakeBodyModel.BodyBlockType.BlockType == BlockTypeEnum.EnginePower)
+                {
+                    enginePowerBlocks++;
+                }
+            }
+            SnakeModel.Velocity.Value = SnakeAppConstants.SnakeVelocity + enginePowerBlocks * SnakeAppConstants.SnakeVelocityEnginePowerModifier; 
         }
 
         public void ChangeSnakeVelocity(float modifier)
@@ -200,6 +213,7 @@ namespace Project.Snake.UMVCS.Controller
             yield return CoroutinerManager.WaitOneSecond;
             if (SnakeView != null)
                 SnakeView.GetComponent<BoxCollider2D>().enabled = true;
+            RestoreSnakeVelocity();
         }
     }
 

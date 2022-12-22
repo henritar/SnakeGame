@@ -16,6 +16,7 @@ namespace Project.Snake.UMVCS.Controller
 
         private void Start()
         {
+            SnakeBodyModel.MainModelRef = Context.ModelLocator.GetModel<MainModel>();
             SnakeBodyModel.BodyCollider = SnakeBodyView.GetComponent<BoxCollider2D>();
             SnakeBodyModel.BodyCollider.enabled = false;
             SnakeBodyView.OnPlayerHitEvent.AddListener(SnakeBodyView_OnPlayerHit);
@@ -24,27 +25,26 @@ namespace Project.Snake.UMVCS.Controller
 
         protected virtual void Update()
         {
-
-            //if (SnakeBodyView.transform.position.x > SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakeBodyModel.Snake.SnakeModel.Index].y)
-            //{
-            //    SnakeBodyView.transform.position = new Vector3(SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakeBodyModel.Snake.SnakeModel.Index].x, SnakeBodyView.transform.position.y);
-            //}
-            //else if (SnakeBodyView.transform.position.x < SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakeBodyModel.Snake.SnakeModel.Index].x)
-            //{
-            //    SnakeBodyView.transform.position = new Vector3(SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakeBodyModel.Snake.SnakeModel.Index].y, SnakeBodyView.transform.position.y);
-            //}
-            //if (SnakeBodyView.transform.position.y > SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakeBodyModel.Snake.SnakeModel.Index].y)
-            //{
-            //    SnakeBodyView.transform.position = new Vector3(SnakeBodyView.transform.position.x, SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakeBodyModel.Snake.SnakeModel.Index].x);
-            //}
-            //else if (SnakeBodyView.transform.position.y < SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakeBodyModel.Snake.SnakeModel.Index].x)
-            //{
-            //    SnakeBodyView.transform.position = new Vector3(SnakeBodyView.transform.position.x, SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakeBodyModel.Snake.SnakeModel.Index].y);
-            //}
-            //else
-            //{
+            if (SnakeBodyView.transform.position.x > SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakeBodyModel.Snake.SnakeModel.Index].y)
+            {
+                SnakeBodyView.transform.position = new Vector3(SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakeBodyModel.Snake.SnakeModel.Index].x, SnakeBodyView.transform.position.y);
+            }
+            else if (SnakeBodyView.transform.position.x < SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakeBodyModel.Snake.SnakeModel.Index].x)
+            {
+                SnakeBodyView.transform.position = new Vector3(SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesX[SnakeBodyModel.Snake.SnakeModel.Index].y, SnakeBodyView.transform.position.y);
+            }
+            else if (SnakeBodyView.transform.position.y > SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakeBodyModel.Snake.SnakeModel.Index].y)
+            {
+                SnakeBodyView.transform.position = new Vector3(SnakeBodyView.transform.position.x, SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakeBodyModel.Snake.SnakeModel.Index].x);
+            }
+            else if (SnakeBodyView.transform.position.y < SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakeBodyModel.Snake.SnakeModel.Index].x)
+            {
+                SnakeBodyView.transform.position = new Vector3(SnakeBodyView.transform.position.x, SnakeBodyModel.MainModelRef.MainConfigData.BlockSpawnBounderiesY[SnakeBodyModel.Snake.SnakeModel.Index].y);
+            }
+            else
+            {
                 SnakeBodyView.MoveBodyPart(Vector3.MoveTowards(SnakeBodyView.transform.position, SnakeBodyModel.Target.Value, SnakeBodyModel.Velocity.Value * Time.deltaTime));
-            //}
+            }
             
         }
 
